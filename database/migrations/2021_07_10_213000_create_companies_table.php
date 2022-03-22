@@ -16,10 +16,10 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('buyer_id')->nullable();
-            $table->unsignedBigInteger('partner_id')->nullable();
-            $table->unsignedBigInteger('advertiser_id')->nullable();
-            $table->unsignedBigInteger('payment_id')->nullable();
+            $table->integer('buyer_id')->nullable();
+            $table->integer('partner_id')->nullable();
+            $table->integer('advertiser_id')->nullable();
+            $table->integer('payment_id')->nullable();
 
             $table->string('name')->nullable();
             $table->date('birth_date')->nullable();
@@ -39,10 +39,10 @@ class CreateCompaniesTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('buyer_id')->references('id')->on('buyers')->onDelete('cascade');
-            $table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
-            $table->foreign('advertiser_id')->references('id')->on('advertisers')->onDelete('cascade');
-            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
+//            $table->foreign('buyer_id')->references('id')->on('buyers')->onDelete('cascade');
+//            $table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
+//            $table->foreign('advertiser_id')->references('id')->on('advertisers')->onDelete('cascade');
+//            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
         });
     }
 

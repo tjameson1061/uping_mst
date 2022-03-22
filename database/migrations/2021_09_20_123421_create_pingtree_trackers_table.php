@@ -16,11 +16,11 @@ class CreatePingtreeTrackersTable extends Migration
         Schema::create('pingtree_trackers', function (Blueprint $table) {
             $table->id();
             $table->char('vid')->nullable();
-            $table->unsignedBigInteger('buyersetup_id');
+            $table->unsignedBigInteger('buyer_setup_id');
             $table->float('epl');
             $table->timestamps();
 
-            $table->foreign('buyersetup_id')->references('id')->on('buyer-setup');
+            $table->foreign('buyer_setup_id')->references('id')->on('buyer_setups');
         });
     }
 
