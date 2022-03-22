@@ -23,7 +23,7 @@ const router = new VueRouter({
     },
     routes: [
         {
-            path: '/', redirect: {name: 'admin-dashboard-leads-uk',}
+            path: '/', redirect: {name: 'auth-login',}
         },
         ...apps,
         ...dashboard,
