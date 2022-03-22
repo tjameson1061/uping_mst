@@ -210,7 +210,7 @@ export default [
     {
         path: '/partner/lead/uk/list',
         name: 'apps-partner-lead-uk-list',
-        component: () => import('@/views/apps/partnerdashboard/report/uk/uk-lead-list/LeadList.vue'),
+        component: () => import('@/views/apps/partnerdashboard/uk-lead/uk-lead-list/LeadList.vue'),
         meta: {
             requiresAuth: true,
             partnerAuth: true
@@ -220,7 +220,7 @@ export default [
     {
         path: '/partner/lead/us/list',
         name: 'apps-partner-lead-us-list',
-        component: () => import('@/views/apps/partnerdashboard/report/us/us-lead-list/LeadList.vue'),
+        component: () => import('@/views/apps/partnerdashboard/us-lead/us-lead-list/LeadList.vue'),
         meta: {
             requiresAuth: true,
             partnerAuth: true
