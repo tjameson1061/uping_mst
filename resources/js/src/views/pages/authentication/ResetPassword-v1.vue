@@ -206,7 +206,7 @@ export default {
                   })
                     console.log(resetData.value)
                     debugger
-                    axios.post('http://127.0.0.1:8000/api/reset-password', resetData.value )
+                    axios.post('/api/reset-password', resetData.value )
                         .then(response => {
                             console.log(response)
                             debugger
