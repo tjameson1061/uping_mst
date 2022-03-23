@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <!-- Media -->
+<!--    <pre>-->
+<!--      {{ partnerData}}-->
+<!--    </pre>-->
+
+<!--     Media-->
     <b-media class="mb-2">
       <template #aside>
         <b-avatar
@@ -152,34 +156,6 @@
 
       </b-row>
 
-    <!-- PERMISSION TABLE -->
-<!--    <b-card-->
-<!--      no-body-->
-<!--      class="border mt-1"-->
-<!--    >-->
-<!--      <b-card-header class="p-1">-->
-<!--        <b-card-title class="font-medium-2">-->
-<!--          <feather-icon-->
-<!--            icon="LockIcon"-->
-<!--            size="18"-->
-<!--          />-->
-<!--          <span class="align-middle ml-50">Permission</span>-->
-<!--        </b-card-title>-->
-<!--      </b-card-header>-->
-<!--      <b-table-->
-<!--        striped-->
-<!--        responsive-->
-<!--        class="mb-0"-->
-<!--        :items="permissionsData"-->
-<!--      >-->
-<!--        <template #cell(module)="data">-->
-<!--          {{ data.value }}-->
-<!--        </template>-->
-<!--        <template #cell()="data">-->
-<!--          <b-form-checkbox :checked="data.value" />-->
-<!--        </template>-->
-<!--      </b-table>-->
-<!--    </b-card>-->
 
     <!-- Action Buttons -->
     <b-button
@@ -282,20 +258,6 @@ export default {
       { label: 'Inactive', value: 0 },
     ]
 
-    const permissionsData = [
-      {
-        module: 'AFF_111',
-        UK: true,
-        USA: false,
-        Offer: false,
-      },
-      {
-        module: 'AFF_222',
-          UK: true,
-          USA: false,
-          Offer: false,
-      },
-    ]
 
       function updatePartnerForm(ev) {
           ev.preventDefault();
@@ -358,7 +320,6 @@ export default {
       avatarText,
       roleOptions,
       statusOptions,
-      permissionsData,
 
         toast,
         ToastificationContent,

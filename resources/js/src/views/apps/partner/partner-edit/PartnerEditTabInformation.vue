@@ -288,15 +288,18 @@
                 required: true,
             },
         },
-        methods: {
-            updatePartnerCompanyForm(ev) {
+        setup(props) {
+
+            const toast = useToast()
+
+            function updatePartnerCompanyForm(ev) {
                 ev.preventDefault();
 
                 // loading.value = true;
 
                 // console.log(props.buyerData.user)
                 // debugger
-                store.dispatch("app-partner/updateCompanyInfo", this.partnerData.partner[0])
+                store.dispatch("app-partner/updateCompanyInfo", props.partnerData.partner[0])
                     .then((res) => {
                         console.log(res)
                         // debugger
@@ -329,27 +332,15 @@
                         }
                     });
             }
-        },
-        setup() {
 
-            // const PARTNERS = 'app-partners'
-            const toast = useToast()
-
-            // // Register module
-            // if (!store.hasModule(PARTNERS)) store.registerModule(PARTNERS, PartnerStoreModule)
-            //
-            // // UnRegister on leave
-            // onUnmounted(() => {
-            //     if (store.hasModule(PARTNERS)) store.unregisterModule(PARTNERS)
-            // })
 
             const {goBack} = usePartnersList()
 
 
             return {
                 goBack,
-                partnerData,
                 toast,
+                updatePartnerCompanyForm
 
             }
         },

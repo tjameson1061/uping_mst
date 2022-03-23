@@ -133,14 +133,14 @@ export default {
   setup() {
     const partnerData = ref(null)
 
-    const PARTNER_APP_STORE_MODULE_NAME = 'app-partner'
+    const PARTNER = 'app-partner'
 
     // Register module
-    if (!store.hasModule(PARTNER_APP_STORE_MODULE_NAME)) store.registerModule(PARTNER_APP_STORE_MODULE_NAME, partnerStoreModule)
+    if (!store.hasModule(PARTNER)) store.registerModule(PARTNER, partnerStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(PARTNER_APP_STORE_MODULE_NAME)) store.unregisterModule(PARTNER_APP_STORE_MODULE_NAME)
+      if (store.hasModule(PARTNER)) store.unregisterModule(PARTNER)
     })
 
     store.dispatch('app-partner/fetchPartner', { id: router.currentRoute.params.id })

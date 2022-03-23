@@ -203,15 +203,19 @@
                 required: true,
             },
         },
-        methods: {
-            updatePartnerPaymentInfo(ev) {
+        setup(props) {
+            const PARTNERS = 'app-partners'
+            const toast = useToast()
+
+
+            function updatePartnerPaymentInfo(ev) {
                 ev.preventDefault();
 
                 // loading.value = true;
 
                 // console.log(props.buyerData.user)
                 // debugger
-                store.dispatch("app-partner/updatePartnerPaymentInfo", this.partnerData.partner[0])
+                store.dispatch("app-partner/updatePartnerPaymentInfo", props.partnerData.partner[0])
                     .then((res) => {
                         console.log(res)
                         // debugger
@@ -244,11 +248,6 @@
                         }
                     });
             }
-        },
-
-        setup(props) {
-            const PARTNERS = 'app-partners'
-            const toast = useToast()
 
             // Register module
             if (!store.hasModule(PARTNERS)) store.registerModule(PARTNERS, partnerStoreModule)
@@ -267,7 +266,6 @@
                 {text: 'Female', value: 2},
             ]
 
-            // const contactOptionsOptions = ['Email', 'Message', 'Phone']
             const contactOptionsOptions = [
                 {text: 'Email', value: 1},
                 {text: 'Phone', value: 2},
@@ -278,10 +276,11 @@
 
 
             return {
-                partnerData,
+                updatePartnerPaymentInfo,
+
                 genderOptions,
                 contactOptionsOptions,
-                updatePartnerPaymentInfo,
+
                 ToastificationContent,
                 toast
             }
