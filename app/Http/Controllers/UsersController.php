@@ -166,11 +166,9 @@ class UsersController extends Controller
 
     public function getUserData($id)
     {
-        Log::debug('USER ID::', (array)$id);
-        $user = User::find($id);
-        Log::debug('USER ID::', (array)$user);
+        $user = User::find($id)->with('company')->first();
 
-        $user['company'] = Company::where('user_id', $id)->first();
+//        $user['company'] = Company::where('user_id', $id)->first();
 
 
         return Response::json(['user' => $user], 200);
