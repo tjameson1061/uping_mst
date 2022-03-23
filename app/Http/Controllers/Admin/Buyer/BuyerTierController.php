@@ -83,7 +83,7 @@ class  BuyerTierController extends Controller
         $tier->timeout = $request['buyerTier']['timeout'];
         $tier->mode = $request['buyerTier']['mode']['value'];
         $tier->status = $request['buyerTier']['status']['value'] ?? 1;
-        $tier->rotate = $request['buyerTier']['rotate']['value'];
+        $tier->rotate = $request['buyerTier']['rotate']['value'] ?? 0;
 
         $res = $tier->save();
 //        dd($res);

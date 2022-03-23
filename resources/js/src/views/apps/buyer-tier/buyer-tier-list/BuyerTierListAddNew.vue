@@ -453,29 +453,29 @@
                         </b-form-group>
                     </validation-provider>
 
-                    <!-- Rotate-->
-                    <validation-provider
-                        #default="validationContext"
-                        name="Rotate"
-                        rules="required"
-                    >
-                        <b-form-group
-                            label="Rotate"
-                            label-for="rotate"
-                            :state="getValidationState(validationContext)"
-                        >
-                            <v-select
-                                v-model="buyerTierData.rotate"
-                                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                :options="rotateOptions"
-                                :clearable="false"
-                                input-id="rotate"
-                            />
-                            <b-form-invalid-feedback :state="getValidationState(validationContext)">
-                                {{ validationContext.errors[0] }}
-                            </b-form-invalid-feedback>
-                        </b-form-group>
-                    </validation-provider>
+<!--                    &lt;!&ndash; Rotate&ndash;&gt;-->
+<!--                    <validation-provider-->
+<!--                        #default="validationContext"-->
+<!--                        name="Rotate"-->
+<!--                        rules="required"-->
+<!--                    >-->
+<!--                        <b-form-group-->
+<!--                            label="Rotate"-->
+<!--                            label-for="rotate"-->
+<!--                            :state="getValidationState(validationContext)"-->
+<!--                        >-->
+<!--                            <v-select-->
+<!--                                v-model="buyerTierData.rotate"-->
+<!--                                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+<!--                                :options="rotateOptions"-->
+<!--                                :clearable="false"-->
+<!--                                input-id="rotate"-->
+<!--                            />-->
+<!--                            <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
+<!--                                {{ validationContext.errors[0] }}-->
+<!--                            </b-form-invalid-feedback>-->
+<!--                        </b-form-group>-->
+<!--                    </validation-provider>-->
 
 
 
