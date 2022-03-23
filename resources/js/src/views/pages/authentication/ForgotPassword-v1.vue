@@ -77,7 +77,7 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { BCard, BLink, BCardText, BCardTitle, BFormGroup, BFormInput, BForm, BButton, BImg, } from 'bootstrap-vue'
 import { required, email } from '@validations'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
+import axios from 'axios'
 
 export default {
   components: {
@@ -120,7 +120,7 @@ export default {
               variant: 'success',
             },
           })
-            this.$http.post("/forgot-password", {email: this.user.email}).then(result => {
+            axios.post("/forgot-password", {email: this.user.email}).then(result => {
                 this.response = result.data;
               this.$toast({
                 component: ToastificationContent,
