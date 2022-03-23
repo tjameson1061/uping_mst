@@ -94,7 +94,7 @@ class BuyerFilterController extends Controller
         $buyerfilter->buyer_setup_id = $request['filter']['tier_id'];
         $buyerfilter->buyer_id =  BuyerSetup::where('id', $buyerfilter->buyer_setup_id)->first()->buyer_id;
         $buyerfilter->filter_type = $request['filter']['filter_type'];
-        $buyerfilter->conditions = json_encode($request['filter']['conditions']);
+        $buyerfilter->conditions = json_encode($request['filter']['object']);
         $buyerfilter->conversion_type = $request['filter']['conversion_type'];
         $buyerfilter->status = 1;
         $res = $buyerfilter->save();
