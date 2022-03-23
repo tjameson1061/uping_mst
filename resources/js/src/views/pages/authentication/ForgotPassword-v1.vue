@@ -119,7 +119,7 @@ export default {
           //     variant: 'success',
           //   },
           // })
-            this.$http.post("/forgot-password", {email: this.user.email}).then(result => {
+            this.$http.post("/api/forgot-password", {email: this.user.email}).then(result => {
                 this.response = result.data;
               this.$toast({
                 component: ToastificationContent,
