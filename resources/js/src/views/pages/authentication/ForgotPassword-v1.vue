@@ -96,7 +96,6 @@ export default {
   },
     data() {
         return {
-            email: null,
             has_error: false,
             user: {
                 email: '',
@@ -146,7 +145,7 @@ export default {
                         },
                     })
 
-                debugger
+                // debugger
                 this.$refs.simpleRules.setErrors(error.response.data.error)
             });
         }

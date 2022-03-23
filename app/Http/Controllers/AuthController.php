@@ -27,16 +27,18 @@ class AuthController extends Controller
 
     public function validatePasswordRequest(Request $request)
     {
+        Log::debug($request->email);
         $user = DB::table('users')->where('email', '=', $request->email)
             ->first();
         //Check if the user exists
 //        if (count($user) < 1) {
 //            return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
 //        }
+        Log::debug($user->email);
 
         //Create Password Reset Token
         DB::table('password_resets')->insert([
-            'email' => $request->email,
+            'email' => $user->email,
             'token' => Str::random(60),
             'created_at' => Carbon::now()
         ]);
