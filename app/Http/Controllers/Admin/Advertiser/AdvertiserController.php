@@ -34,7 +34,7 @@ class AdvertiserController extends Controller
 
         $wherelist = array();
         if ($query != null) {
-            $wherelist[] = ['leadtype', 'LIKE', '%{$query}%']; // 'LIKE', "%{$searchTerm}%") TODO
+            $wherelist[] = ['leadtype', 'LIKE' . '%' . $query . '%'];
         }
         if ($status != null) {
             $wherelist[] = ['status', '=', $status];
