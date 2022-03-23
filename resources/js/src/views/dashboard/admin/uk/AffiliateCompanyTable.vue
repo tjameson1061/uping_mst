@@ -10,8 +10,6 @@
       responsive
       :fields="fields"
       class="mb-0"
-      :sticky-header="true"
-      :noCollapse="true"
       :striped="true"
       :borderless="true"
 
