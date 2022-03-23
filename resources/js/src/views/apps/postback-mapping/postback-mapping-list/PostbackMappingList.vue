@@ -25,7 +25,7 @@
       class="mb-0"
     >
 
-        {{ postbackData}}
+<!--        {{ postbackData}}-->
 
       <div class="m-2">
 

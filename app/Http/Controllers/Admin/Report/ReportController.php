@@ -41,7 +41,7 @@ class ReportController extends Controller
     {
         $filterData= [];
         $filterData['user_ids'] = User::groupBy('id')->whereNotNull('id')->get(['id', 'username']);
-        $filterData['vendor_ids'] = Partner::groupBy('vendor_id')->whereNotNull('vendor_id')->get(['id', 'vendor_id']);
+        $filterData['vendor_ids'] = Partner::groupBy('vendor_id')->whereNotNull('vendor_id')->get([ 'vendor_id']);
 //        dd($filterData['vendor_ids']);
         $filterData['sub_ids'] = UKLead::groupBy('subid')->whereNotNull('subid')->get(['id','subid']);
         $filterData['tier_ids'] = UKLead::groupBy('tier')->whereNotNull('tier')->get(['id','tier']);
