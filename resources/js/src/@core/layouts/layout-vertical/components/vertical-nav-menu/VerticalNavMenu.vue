@@ -46,7 +46,7 @@
                       :src="appLogoImage"
                       alt="logo"
                       width="115"
-                      height="35"
+                      height="32"
 
                   />
                   <b-img
@@ -54,7 +54,7 @@
                       :src="appLogoImageWhite"
                       alt="logo"
                       width="115"
-                      height="35"
+                      height="32"
                   />
               </h2>
             </b-link>
