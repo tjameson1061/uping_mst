@@ -12,7 +12,7 @@
                     md="4"
                     class="mb-md-0 mb-2"
                 >
-                    <label>Role</label>
+                    <label>Buyer Type</label>
                     <v-select
                         :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                         :value="buyerTypeFilter"
