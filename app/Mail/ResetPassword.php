@@ -37,6 +37,7 @@ class ResetPassword extends Mailable
     public function build()
     {
         return $this->view('emails.mail-reset-password')
-            ->with(['token' =>$this->token, 'url' => $this->link, 'user' => $this->user]);
+                ->subject('Reset Password - UPING')
+                ->with(['token' =>$this->token, 'url' => $this->link, 'user' => $this->user]);
     }
 }
