@@ -35,9 +35,9 @@ class MappingController
     public function fetchFilterDataOptions(Request $request)
     {
         $filterTierData= [];
-        $filterTierData['vendor_ids'] = UKLead::groupBy('vid')->whereNotNull('vid')->get(['id', 'vid']);
-        $filterTierData['sub_ids'] = UKLead::groupBy('subid')->whereNotNull('subid')->get(['id','subid']);
-        $filterTierData['tier_ids'] = BuyerSetup::groupBy('id')->whereNotNull('id')->get(['id','buyername']);
+        $filterTierData['vendor_ids'] = UKLead::groupBy('vid')->whereNotNull('vid')->get([ 'vid']);
+        $filterTierData['sub_ids'] = UKLead::groupBy('subid')->whereNotNull('subid')->get(['subid']);
+        $filterTierData['tier_ids'] = BuyerSetup::groupBy('id')->whereNotNull('id')->get(['buyername']);
         $filterTierData['buyer_ids'] = Buyer::groupBy('id')->whereNotNull('id')->get(['id','name']);
         $filterTierData['vidLeadPrice_ids'] = UKLead::groupBy('vidLeadPrice')->whereNotNull('vidLeadPrice')->get(['vidLeadPrice']);
         $filterTierData['buyerLeadPrice_ids'] = UKLead::groupBy('buyerLeadPrice')->whereNotNull('buyerLeadPrice')->get(['buyerLeadPrice']);

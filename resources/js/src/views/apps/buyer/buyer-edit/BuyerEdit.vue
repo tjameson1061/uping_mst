@@ -91,14 +91,14 @@
 
             const buyerData = ref(null)
 
-            const BUYER_APP_STORE_MODULE_NAME = 'app-buyer'
+            const BUYER = 'app-buyer'
 
             // Register module
-            if (!store.hasModule(BUYER_APP_STORE_MODULE_NAME)) store.registerModule(BUYER_APP_STORE_MODULE_NAME, buyerStoreModule)
+            if (!store.hasModule(BUYER)) store.registerModule(BUYER, buyerStoreModule)
 
             // UnRegister on leave
             onUnmounted(() => {
-                if (store.hasModule(BUYER_APP_STORE_MODULE_NAME)) store.unregisterModule(BUYER_APP_STORE_MODULE_NAME)
+                if (store.hasModule(BUYER)) store.unregisterModule(BUYER)
             })
 
 
