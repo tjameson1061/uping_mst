@@ -152,6 +152,7 @@
 
             const blankPartnerData = {
                 user_id: '',
+                lead_type: '',
                 vendor_id: '',
 
 

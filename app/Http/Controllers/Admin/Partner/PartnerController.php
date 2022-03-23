@@ -83,9 +83,9 @@ class PartnerController extends Controller
 
     public function store(Request $request)
     {
-//        dd($request->input());
         $partner = new Partner();
         $partner->user_id = $request['partner']['user_id'];
+        $partner->lead_type = $request['partner']['lead_type'];
         $partner->company_id = User::find($partner->user_id)->first()->id;
         $partner->vendor_id = $request['partner']['vendor_id'];
         $partner->icoLicense = $request['partner']['icoLicense'] ?? '';
