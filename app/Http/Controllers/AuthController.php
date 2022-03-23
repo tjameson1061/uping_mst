@@ -77,6 +77,7 @@ class AuthController extends Controller
         $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
         //Generate, the password reset link. The token generated is embedded in the link
         $link = 'https://portal.uping.co.uk' . '/reset-password/' . $token . '/' . urlencode($user->email);
+        Log::debug('LINK::', (array) $link);
 
         Log::debug('here::', (array) $email);
 
