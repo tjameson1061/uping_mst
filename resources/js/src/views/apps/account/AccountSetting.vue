@@ -89,10 +89,11 @@
         },
 
         setup() {
-            const userData = getUserData()
+            const user = getUserData()
+            const userData = ref({})
             // this.userData =
             // this.userData = getUserData()
-            axios.get(`/api/admin/getUserData/${userData.id}`).then(res => {
+            axios.get(`/api/admin/getUserData/${user.id}`).then(res => {
                 userData.value = res.data
             })
 

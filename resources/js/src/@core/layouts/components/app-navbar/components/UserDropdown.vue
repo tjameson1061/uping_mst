@@ -28,7 +28,7 @@
     </template>
 
     <b-dropdown-item
-            v-if="userData.is_admin === 1"
+            v-if="userData.is_admin == 1"
         :to="{ name: 'admin-account-setting' }"
       link-class="d-flex align-items-center"
     >
