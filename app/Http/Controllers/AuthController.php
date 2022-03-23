@@ -44,9 +44,12 @@ class AuthController extends Controller
             'token' => Str::random(60),
             'created_at' => Carbon::now()
         ]);
+
         //Get the token just created above
         $tokenData = DB::table('password_resets')
             ->where('email', $user->email)->first();
+        Log::debug("TokenData::", (array)$tokenData);
+
 
         if ($this->sendResetEmail($user->email, $tokenData->token)) {
             Log::debug('here');
@@ -67,9 +70,11 @@ class AuthController extends Controller
         $link = config('base_url') . '/reset-password/' . $token . '/' . urlencode($user->email);
 
         try {
+
             //Here send the link with CURL with an external email API
              Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
-            return true;
+
+             return true;
         } catch (\Exception $e) {
             return false;
         }
