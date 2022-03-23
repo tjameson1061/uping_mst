@@ -51,7 +51,8 @@ class DashboardController extends Controller
     {
 
 
-        $referrers = Source::with('uk_lead')->select('referringUrl', 'created_at')
+        $referrers = Source::with('uk_lead')
+//            ->select('referringUrl', 'created_at')
             ->groupBy('referringUrl')
             ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
             ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
