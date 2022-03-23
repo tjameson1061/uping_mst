@@ -43,10 +43,10 @@ class ReportController extends Controller
         $filterData['user_ids'] = User::groupBy('id')->whereNotNull('id')->get(['id', 'username']);
         $filterData['vendor_ids'] = Partner::groupBy('vendor_id')->whereNotNull('vendor_id')->get([ 'vendor_id']);
 //        dd($filterData['vendor_ids']);
-        $filterData['sub_ids'] = UKLead::groupBy('subid')->whereNotNull('subid')->get(['id','subid']);
-        $filterData['tier_ids'] = UKLead::groupBy('tier')->whereNotNull('tier')->get(['id','tier']);
-        $filterData['vidLeadPrice_ids'] = UKLead::groupBy('vidLeadPrice')->whereNotNull('vidLeadPrice')->get(['id','vidLeadPrice']);
-        $filterData['buyerLeadPrice_ids'] = UKLead::groupBy('buyerLeadPrice')->whereNotNull('buyerLeadPrice')->get(['id','buyerLeadPrice']);
+        $filterData['sub_ids'] = UKLead::groupBy('subid')->whereNotNull('subid')->get(['subid']);
+        $filterData['tier_ids'] = UKLead::groupBy('tier')->whereNotNull('tier')->get(['tier']);
+        $filterData['vidLeadPrice_ids'] = UKLead::groupBy('vidLeadPrice')->whereNotNull('vidLeadPrice')->get(['vidLeadPrice']);
+        $filterData['buyerLeadPrice_ids'] = UKLead::groupBy('buyerLeadPrice')->whereNotNull('buyerLeadPrice')->get(['buyerLeadPrice']);
 
 
         return Response::json(['filterData' => $filterData], 200);
@@ -56,11 +56,11 @@ class ReportController extends Controller
     {
         $filterData= [];
         $filterData['user_ids'] = User::groupBy('id')->whereNotNull('id')->get(['id', 'username']);
-        $filterData['vendor_ids'] = USLead::groupBy('vid')->whereNotNull('vid')->get(['id', 'vid']);
-        $filterData['sub_ids'] = USLead::groupBy('subid')->whereNotNull('subid')->get(['id','subid']);
-        $filterData['tier_ids'] = USLead::groupBy('tier')->whereNotNull('tier')->get(['id','tier']);
-        $filterData['vidLeadPrice_ids'] = USLead::groupBy('vidLeadPrice')->whereNotNull('vidLeadPrice')->get(['id','vidLeadPrice']);
-        $filterData['buyerLeadPrice_ids'] = USLead::groupBy('buyerLeadPrice')->whereNotNull('buyerLeadPrice')->get(['id','buyerLeadPrice']);
+        $filterData['vendor_ids'] = USLead::groupBy('vid')->whereNotNull('vid')->get([ 'vid']);
+        $filterData['sub_ids'] = USLead::groupBy('subid')->whereNotNull('subid')->get(['subid']);
+        $filterData['tier_ids'] = USLead::groupBy('tier')->whereNotNull('tier')->get(['tier']);
+        $filterData['vidLeadPrice_ids'] = USLead::groupBy('vidLeadPrice')->whereNotNull('vidLeadPrice')->get(['vidLeadPrice']);
+        $filterData['buyerLeadPrice_ids'] = USLead::groupBy('buyerLeadPrice')->whereNotNull('buyerLeadPrice')->get(['buyerLeadPrice']);
 
 
 
