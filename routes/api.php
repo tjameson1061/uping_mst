@@ -241,7 +241,9 @@ Route::group([
 
 
             Route::get('/getUserData/{id}', [UsersController::class, 'getUserData']);
-
+            Route::patch('/updateAccountInfo/{id}', [UsersController::class, 'updateAccountInfo']);
+            Route::patch('/updateAccountPassword/{id}', [UsersController::class, 'updateAccountPassword']);
+            Route::patch('/updateCompany/{id}', [UsersController::class, 'updateCompany']);
 
             Route::get('getAllCompanyData', [CompanyController::class, 'getAllCompanyData']);
 

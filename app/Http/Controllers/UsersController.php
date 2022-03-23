@@ -176,4 +176,74 @@ class UsersController extends Controller
     }
 
 
+    public function updateAccountInfo(Request $request, $id)
+    {
+
+//        dd($request->input());
+        $user = User::find($id);
+        $user->name = $request['user']['name'];
+        $user->avatar = $request['user']['avatar'] ?? 'default.jpg';
+        $user->username = $request['user']['username'];
+        $user->email = $request['user']['email'];
+        $user->is_admin =  0;
+        $user->status = $request['user']['status'];
+
+//        $company_info = Company::where('user_id', $user->id)->first();
+//        $company_info->phone = $request['phone'] ?? '';
+//        $company_info->country = $request['country'] ?? '';
+
+//        $data = $company_info->toArray();
+//        $res = $company_info->save($data);
+
+        $data = $user->toArray();
+        $res = $user->save($data);
+
+
+        return Response::json('Account updated successfully.', 200);
+    }
+
+    public function UpdateAccountPassword(Request $request, $id)
+    {
+        $user = User::find($id);
+        $res = $user->update(['password' => Hash::make($request['value'])]);
+
+        return Response::json('Password changed', 200);
+
+//
+//            $request->validate([
+//                'current_password' => ['required', new MatchOldPassword],
+//                'new_password' => ['required'],
+//                'new_confirm_password' => ['same:new_password'],
+//            ]);
+    }
+
+
+    public function updateCompany(Request $request, $id)
+    {
+
+//        dd($request->input());
+        $company_info = Company::find($id);
+        $company_info->name = $request['name'] ?? '';
+        $company_info->phone = $request['phone'] ?? '';
+        $company_info->birth_date = $request['birth_date'] ?? '';
+        $company_info->website = $request['website'] ?? '';
+        $company_info->skype = $request['skype'] ?? '';
+        $company_info->contact_options = $request['contact_options'] ?? '';
+        $company_info->address1 = $request['address1'] ?? '';
+        $company_info->address2 = $request['address2'] ?? '';
+        $company_info->postcode = $request['postcode'] ?? '';
+        $company_info->city = $request['city'] ?? '';
+        $company_info->state = $request['state'] ?? '';
+        $company_info->country = $request['country'] ?? '';
+
+        $data = $company_info->toArray();
+        $res = $company_info->save($data);
+//        dd($res);
+
+        return response()->json('User Information updated successfully.');
+
+    }
+
+
+
 }
