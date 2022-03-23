@@ -75,7 +75,7 @@
     import {useToast} from 'vue-toastification/composition'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {getUserData} from "@/auth/utils";
-    import axios from '@/libs/axios'
+    import axios from 'axios'
     import {onUnmounted, ref} from "@vue/composition-api";
     import ukLeadsStoreModule from "../../apps/partnerdashboard/uk-lead/LeadStoreModule";
 
@@ -90,38 +90,14 @@
             ToastificationContent,
         },
         setup() {
-            // const ACCOUNT_SETTINGS = "admin-account-setting";
-            // const userData = ref({})
             const userData = getUserData()
             console.log(userData.id)
 
 
-            // // Register module
-            // if (!store.hasModule(ACCOUNT_SETTINGS))
-            //     store.registerModule(ACCOUNT_SETTINGS, AccountSettingsStoreModule);
-            //
-            // // UnRegister on leave
-            // onUnmounted(() => {
-            //     if (store.hasModule(ACCOUNT_SETTINGS)) store.unregisterModule(ACCOUNT_SETTINGS);
-            // });
-
-
-
-            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
-                userData.value = res.data
+            axios.get(`https://portal.uping.co.uk/api/admin/getUserData/${userData.id}`)
+                .then(res => {
+                    userData.value = res.data
             })
-            //
-            // store.dispatch(`admin-account-setting/getUserData/${userData.id}`)
-            //     .then(response => {
-            //         userData.value = response.data
-            //     })
-            //     .catch(error => {
-            //         if (error.response.status === 404) {
-            //             userData.value = undefined
-            //         }
-            //     })
-
-
 
             return {
                 userData,
