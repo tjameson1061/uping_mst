@@ -103,10 +103,10 @@ class AuthController extends Controller
             ->delete();
 
         //Send Email Reset Success Email
-        if ($this->sendSuccessEmail($tokenData->email))
-        {
+        if ($this->sendSuccessEmail($tokenData->email)) {
             return response()->json('Successfully changed password', 200);
         }
+    }
 
         /**
          * Send the password reset notification.
