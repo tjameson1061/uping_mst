@@ -59,7 +59,7 @@ class CompanyController extends Controller
 //        Log::debug($req)
         $company_info = Company::where('user_id', $id)->first();
         $company_info->phone = $request['company']['phone'] ?? '';
-        $company_info->birth_date = $request['company']['birth_date']  ?? '';
+//        $company_info->birth_date = $request['company']['birth_date']  ?? '';
         $company_info->website = $request['company']['website']  ?? '';
         $company_info->skype = $request['company']['skype']  ?? '';
         $company_info->contact_options = $request['company']['contact_options']  ?? '';
