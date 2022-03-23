@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Partner\Partner;
 use App\Models\User\Company;
 use App\Models\User\Payment;
+use App\Notifications\PasswordReset;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,4 +70,14 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
     {
         return [];
     }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordReset($token));
+    }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
+    }
+
 }
