@@ -28,13 +28,26 @@
     </template>
 
     <b-dropdown-item
-        :to="{ name: 'account-setting' }"
+            v-if="userData.is_admin === 1"
+        :to="{ name: 'admin-account-setting' }"
       link-class="d-flex align-items-center"
     >
       <feather-icon
         size="16"
         icon="UserIcon"
         class="mr-50"
+      />
+      <span>Profile</span>
+    </b-dropdown-item>
+    <b-dropdown-item
+            v-else
+            :to="{ name: 'partner-account-setting' }"
+            link-class="d-flex align-items-center"
+    >
+      <feather-icon
+              size="16"
+              icon="UserIcon"
+              class="mr-50"
       />
       <span>Profile</span>
     </b-dropdown-item>
