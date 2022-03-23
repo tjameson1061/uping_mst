@@ -39,15 +39,17 @@ class AuthController extends Controller
         Log::debug("Email::", (array)$request->email);
 
         //Create Password Reset Token
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
+        $res = DB::table('password_resets')->insert([
+            'email' => $request->email,
             'token' => Str::random(60),
             'created_at' => Carbon::now()
         ]);
+        Log::debug("TokenData::", (array)$res);
+
 
         //Get the token just created above
         $tokenData = DB::table('password_resets')
-            ->where('email', $user->email)->first();
+            ->where('email', $request->email)->first();
         Log::debug("TokenData::", (array)$tokenData);
 
 
@@ -72,6 +74,8 @@ class AuthController extends Controller
         Log::debug('here::', (array) $email);
 
         Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+
+        return true;
 
 //
 //        try {
