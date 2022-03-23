@@ -92,7 +92,7 @@
             const userData = getUserData()
             // this.userData =
             // this.userData = getUserData()
-            axios.get(`/partner/getUserData/${userData.id}`).then(res => {
+            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
                 userData.value = res.data
             })
 
