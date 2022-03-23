@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
+use App\Mail\ResetPasswordSuccess;
 use App\Mail\Welcome;
 use App\Models\User;
 use App\Models\User\Company;
@@ -75,6 +76,22 @@ class AuthController extends Controller
              Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
 
              return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    private function sendSuccessEmail($email)
+    {
+        //Retrieve the user from the database
+        $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
+        //Generate, the password reset link. The token generated is embedded in the link
+
+        try {
+
+            //Here send the link with CURL with an external email API
+            Mail::to($user->email)->send(new ResetPasswordSuccess($user));
+
+            return true;
         } catch (\Exception $e) {
             return false;
         }
