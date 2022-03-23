@@ -88,7 +88,7 @@ class AuthController extends Controller
         try {
 
             //Here send the link with CURL with an external email API
-             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+             Mail::to($user->email)->subject('UPING Reset Password')->send(new ResetPassword($token, $link, $user));
 
              return true;
         } catch (\Exception $e) {
