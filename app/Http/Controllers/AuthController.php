@@ -33,7 +33,7 @@ class AuthController extends Controller
             ->first()->toArray();
 
         //Check if the user exists
-        if (count($user) < 1) {
+        if (count($user) == 0) {
             Log::debug('HERE', (array) $user);
             return response()->json(['email' => trans('User does not exist')]);
         }
