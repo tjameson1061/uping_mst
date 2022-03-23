@@ -30,12 +30,12 @@ class AuthController extends Controller
         Log::debug((array)$request->email);
         $user = DB::table('users')->where('email', '=', $request->email)
             ->first();
-        Log::debug((array)$user);
+
         //Check if the user exists
         if (empty($user) < 1) {
             return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
         }
-        Log::debug((array)$user->email);
+
 
         //Create Password Reset Token
         DB::table('password_resets')->insert([
@@ -64,10 +64,10 @@ class AuthController extends Controller
 
         try {
             //Here send the link with CURL with an external email API
-            Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
-            return response()->json('status', trans('A reset link has been sent to your email address.'));
+             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+            return true;
         } catch (\Exception $e) {
-            return response()->json(['error' => trans('A Network Error occurred. Please try again.')]);
+            return false;
         }
     }
 

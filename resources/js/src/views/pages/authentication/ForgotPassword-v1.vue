@@ -111,14 +111,14 @@ export default {
     validationForm() {
       this.$refs.simpleRules.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Reset Password Request Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
+          // this.$toast({
+          //   component: ToastificationContent,
+          //   props: {
+          //     title: 'Reset Password Request Submitted',
+          //     icon: 'EditIcon',
+          //     variant: 'success',
+          //   },
+          // })
             axios.post("https://portal.uping.co.uk/api/forgot-password", {email: this.user.email}).then(result => {
                 this.response = result.data;
               this.$toast({

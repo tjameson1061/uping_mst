@@ -43,7 +43,7 @@
             <tr>
   <td class="sm-py-32 sm-px-24" style="mso-line-height-rule: exactly; padding: 48px; text-align: center; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
     <a href="https://portal.uping.co.uk" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly;">
-      <img src="images/logo.png" width="155" alt="UPING Admin" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;">
+      <img src="./images/logo.png" width="155" alt="UPING Admin" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;">
     </a>
   </td>
 </tr>
