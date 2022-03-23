@@ -70,6 +70,7 @@ class  BuyerTierController extends Controller
         $tier->buyername = $request['buyerTier']['buyername'];
         $tier->buyer_id = $request['buyerTier']['buyer_id']['id'];
         $tier->tier_price = $request['buyerTier']['tier_price'];
+        $tier->buyer_tier_id = $request['buyerTier']['buyer_tier_id'];
         $tier->model_type = $request['buyerTier']['model_type']['value'];
         $tier->posting_order = $request['buyerTier']['posting_order'];
         $tier->parameter1 = $request['buyerTier']['parameter1'];

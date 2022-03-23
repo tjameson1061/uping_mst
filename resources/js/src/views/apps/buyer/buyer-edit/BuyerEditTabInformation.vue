@@ -215,18 +215,29 @@
             <b-row class="mt-2">
                 <b-col>
                     <b-button
-                        variant="primary"
-                        class="mb-1 mb-sm-0 mr-0 mr-sm-1"
-                        type="submit"
-                        :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                            variant="primary"
+                            class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                            :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                            type="submit"
                     >
                         Save Changes
                     </b-button>
                     <b-button
-                        variant="outline-secondary"
-                        :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                            variant="outline-secondary"
+                            class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                            type="reset"
+                            :block="$store.getters['app/currentBreakPoint'] === 'xs'"
                     >
                         Reset
+                    </b-button>
+
+                    <b-button
+                            variant="outline-secondary"
+                            type="reset"
+                            :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                            @click="goBack"
+                    >
+                        Back
                     </b-button>
                 </b-col>
             </b-row>

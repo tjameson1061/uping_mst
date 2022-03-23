@@ -362,7 +362,7 @@
                         rules="required"
                     >
                         <b-form-group
-                            label="Parameter 1"
+                            label="Timeout"
                             label-for="timeout"
                         >
                             <b-form-input
@@ -371,7 +371,32 @@
                                 autofocus
                                 :state="getValidationState(validationContext)"
                                 trim
-                                placeholder="JohnDoe007"
+                                placeholder="120"
+                            />
+
+                            <b-form-invalid-feedback>
+                                {{ validationContext.errors[0] }}
+                            </b-form-invalid-feedback>
+                        </b-form-group>
+                    </validation-provider>
+
+                    <!--  timeout -->
+                    <validation-provider
+                            #default="validationContext"
+                            name="buyer_tier_id"
+                            rules="required"
+                    >
+                        <b-form-group
+                                label="Buyer Tier ID"
+                                label-for="buyer_tier_id"
+                        >
+                            <b-form-input
+                                    id="buyer_tier_id"
+                                    v-model="buyerTierData.buyer_tier_id"
+                                    autofocus
+                                    :state="getValidationState(validationContext)"
+                                    trim
+                                    placeholder="120"
                             />
 
                             <b-form-invalid-feedback>
@@ -567,6 +592,7 @@
                 posting_order: '',
 
 
+                buyer_tier_id: '',
                 lead_type: '',
                 rotate: '',
                 model_type: '',
