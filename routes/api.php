@@ -27,6 +27,7 @@ use App\Http\Controllers\PostbackTrackerController;
 use App\Http\Controllers\Partner\PartController;
 use App\Http\Controllers\Partner\PartDashboardController;
 use App\Http\Controllers\Partner\PartReportController;
+use App\Http\Controllers\UsersController;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -231,6 +232,7 @@ Route::group([
             Route::get('downloadInvoice/{id}', [InvoiceController::class, 'downloadInvoice']);
 
 
+            Route::get('/getUserData/{id}', [UsersController::class, 'getUserData']);
 
 
             Route::get('getAllCompanyData', [CompanyController::class, 'getAllCompanyData']);

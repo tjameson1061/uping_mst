@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
@@ -160,6 +161,19 @@ class UsersController extends Controller
         $res = $user->delete();
 
         return response()->json('User deleted successfully.');
+
+    }
+
+    public function getUserData($id)
+    {
+        Log::debug('USER ID::', (array)$id);
+        $user = User::find($id);
+        Log::debug('USER ID::', (array)$user);
+
+        $user['company'] = Company::where('user_id', $id)->first();
+
+
+        return Response::json(['user' => $user], 200);
 
     }
 

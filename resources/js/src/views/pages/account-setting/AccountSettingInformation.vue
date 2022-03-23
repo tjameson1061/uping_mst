@@ -53,22 +53,6 @@
                     </b-form-group>
                 </b-col>
 
-                <b-col
-                    cols="12"
-                    md="6"
-                    lg="4"
-                >
-                    <b-form-group
-                        label="Company Name"
-                        label-for="company"
-                    >
-                        <b-form-input
-                            id="company"
-                            v-model="userData.user.company.name"
-                        />
-                    </b-form-group>
-                </b-col>
-
                 <!-- Field: Website -->
                 <b-col
                     cols="12"

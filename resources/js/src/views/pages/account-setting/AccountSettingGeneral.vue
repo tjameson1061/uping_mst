@@ -14,25 +14,29 @@
                 <!--/ avatar -->
             </b-media-aside>
 
+            <b-col sm="6">
+
             <b-media-body class="mt-75 ml-75">
-                <b-button
-                    variant="primary"
-                    @click="$refs.refInputEl.click()"
-                >
-                    <input
-                        ref="refInputEl"
-                        type="file"
-                        class="d-none"
-                        @input="inputImageRenderer"
-                        v-on:change="onFileChange"
-                    >
-                    <span class="d-none d-sm-inline">Update</span>
-                    <feather-icon
-                        icon="EditIcon"
-                        class="d-inline d-sm-none"
-                    />
-                </b-button>
+                <!-- upload button -->
+<!--                <b-button-->
+<!--                    v-ripple.400="'rgba(255, 255, 255, 0.15)'"-->
+<!--                    variant="primary"-->
+<!--                    size="sm"-->
+<!--                    class="mb-75 mr-75"-->
+<!--                    @click="$refs.refInputEl.click()"-->
+<!--                >-->
+<!--                    Update Avatar-->
+<!--                </b-button>-->
+                <b-form-file
+                    ref="refInputEl"
+                    type="file"
+                    accept=".jpg, .png, .gif"
+                    hidden="true"
+                    @input="inputImageRenderer"
+                    v-on:change="onFileChange"
+                />
             </b-media-body>
+                </b-col>
         </b-media>
 
 
@@ -73,6 +77,18 @@
                             placeholder="Email"
                         />
 
+                    </b-form-group>
+                </b-col>
+                <b-col sm="6">
+                    <b-form-group
+                        label="Company"
+                        label-for="account-company"
+                    >
+                        <b-form-input
+                            v-model="userData.user.company.name"
+                            name="company_name"
+                            placeholder="Company name"
+                        />
                     </b-form-group>
                 </b-col>
 
@@ -148,7 +164,6 @@
     import { useToast } from 'vue-toastification/composition'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {avatarText} from '@core/utils/filter'
-    import {getUserData} from "@/auth/utils";
 
     export default {
         components: {
@@ -186,41 +201,62 @@
                 name: '',
                 file: '',
                 success: ''
-            };
+            }
         },
         methods: {
-            onFileChange(e){
+            resetForm() {
+                this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
+            },
+            goBack() {
+                history.back();
+            },
+            updateAccountSettingsForm(ev) {
+                    ev.preventDefault();
+                    console.log(ev)
+                    // debugger
+
+                    // loading.value = true;
+
+                    // console.log(props.userData.user)
+                    // debugger
+                    this.$http.patch('/partner/updateAccountInfo/1', this.userData)
+                        .then((res) => {
+                            console.log(res)
+                            // debugger
+                            this.$toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'Notification',
+                                    text: 'Account Details updated successfully',
+                                    variant: 'success',
+                                    icon: 'CheckIcon'
+                                },
+                            })
+                        })
+                        .catch((error) => {
+                            // loading.value = false;
+                            this.$toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'Notification',
+                                    text: 'Error updating account details',
+                                    variant: 'danger',
+                                    icon: 'ZapIcon'
+                                },
+                            })
+
+                            if (error.response.status === 404) {
+                                errors.value = error.response.data.errors;
+                            }
+                        });
+            },
+            onFileChange(e) {
                 console.log(e.target.files[0]);
                 this.file = e.target.files[0];
             },
-            formSubmit(e) {
-                e.preventDefault();
-                let currentObj = this;
-
-                const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
-                }
-
-                let formData = new FormData();
-                formData.append('file', this.file);
-
-                axios.post('/formSubmit', formData, config)
-                    .then(function (response) {
-                        currentObj.success = response.data.success;
-                    })
-                    .catch(function (error) {
-                        currentObj.output = error;
-                    });
-            },
-
-            resetForm() {
-        this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
-    },
-         goBack() {
-        history.back();
-    },
         },
-        setup(props) {
+
+        setup() {
             const refInputEl = ref(null)
             const previewEl = ref(null)
             const toast = useToast()
@@ -231,58 +267,22 @@
             })
 
 
-            function  updateAccountSettingsForm(ev) {
-                ev.preventDefault();
-                console.log(ev)
-                // debugger
-
-                // loading.value = true;
-
-
-                console.log(this.userData.user)
-                debugger
-                this.$http.patch(`/partner/updateAccountInfo/${this.userData.user.id}`, props.userData)
-                    .then((res) => {
-                        console.log(res)
-                        // debugger
-                        this.$toast({
-                            component: ToastificationContent,
-                            props: {
-                                title: 'Notification',
-                                text: 'Account Details updated successfully',
-                                variant: 'success',
-                                icon: 'CheckIcon'
-                            },
-                        })
-                    })
-                    .catch((error) => {
-                        // loading.value = false;
-                        this.$toast({
-                            component: ToastificationContent,
-                            props: {
-                                title: 'Notification',
-                                text: 'Error updating account details',
-                                variant: 'danger',
-                                icon: 'ZapIcon'
-                            },
-                        })
-
-                        if (error.response.status === 404) {
-                            errors.value = error.response.data.errors;
-                        }
-                    });
-            }
-
-
             return {
+                updateAccountForm,
                 avatarText,
+                //  ? Demo - Update Image on click of update button
                 refInputEl,
                 previewEl,
                 inputImageRenderer,
 
+                name,
+                file,
+                success,
+
+                userData,
+
                 toast,
-                ToastificationContent,
-                updateAccountSettingsForm
+                ToastificationContent
             }
         },
     }
