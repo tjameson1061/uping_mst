@@ -225,7 +225,7 @@ class UsersController extends Controller
         $company_info = Company::find($id);
         $company_info->name = $request['name'] ?? '';
         $company_info->phone = $request['phone'] ?? '';
-        $company_info->birth_date = $request['birth_date'] ?? '';
+//        $company_info->birth_date = $request['birth_date'] ?? '';
         $company_info->website = $request['website'] ?? '';
         $company_info->skype = $request['skype'] ?? '';
         $company_info->contact_options = $request['contact_options'] ?? '';
