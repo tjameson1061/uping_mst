@@ -91,7 +91,7 @@ Route::get('adv_postback', [PostbackTrackerController::class, 'adv_postback'])->
 Route::get('/reset-password/{token}', function (Request $request, $token) {
     return redirect('/reset-password/'.$token.'/'.$request->email );
 })->middleware('guest')->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 Route::post('/forgot-password', [AuthController::class, 'validatePasswordRequest']);
 
 

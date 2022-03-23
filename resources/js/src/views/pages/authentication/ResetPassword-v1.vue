@@ -206,7 +206,7 @@ export default {
                   })
                     console.log(resetData.value)
                     debugger
-                    axios.post('/api/reset-password', resetData.value )
+                    axios.post('/api/resetPassword', resetData.value )
                         .then(response => {
                             console.log(response)
                             debugger
