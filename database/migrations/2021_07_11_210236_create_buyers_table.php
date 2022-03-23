@@ -19,7 +19,7 @@ class CreateBuyersTable extends Migration
             $table->integer('company_id')->nullable();
             $table->char('name')->unique();
             $table->char('account_contact1', 255)->nullable();
-            $table->char('avatar')->default('default.jpg')->nullable();
+            $table->longText('avatar')->nullable();
             $table->char('account_contact2', 255)->nullable();
             $table->char('buyer_type', 255)->nullable();
             $table->char('fcaLicense', 255)->nullable();
