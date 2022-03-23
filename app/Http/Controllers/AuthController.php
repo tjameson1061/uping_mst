@@ -56,7 +56,7 @@ class AuthController extends Controller
         Log::debug("TokenData::", (array)$tokenData);
 
 
-        if ($this->sendResetEmail($user->email, $tokenData->token)) {
+        if ($this->sendResetEmail($request->email, $tokenData->token)) {
             Log::debug('here');
             return response()->json('status', trans('A reset link has been sent to your email address.'));
         } else {
@@ -76,21 +76,21 @@ class AuthController extends Controller
 
         Log::debug('here::', (array) $email);
 
-        Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+//        Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
 
-        return true;
+//        return true;
 
 //
-//        try {
-//
-//            //Here send the link with CURL with an external email API
-//             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
-//
-//             return true;
-//        } catch (\Exception $e) {
-//            Log::debug('EXCEPT::', (array) $e);
-//            return false;
-//        }
+        try {
+
+            //Here send the link with CURL with an external email API
+             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+
+             return true;
+        } catch (\Exception $e) {
+            Log::debug('EXCEPT::', (array) $e);
+            return false;
+        }
     }
 
     public function resetPassword(Request $request)
