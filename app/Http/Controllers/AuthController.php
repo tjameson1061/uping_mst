@@ -85,8 +85,9 @@ class AuthController extends Controller
         Log::debug('REQ::', (array)$request->input());
         //Validate input
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|confirmed',
+            'email' => 'required|email',
+            'password' => 'required',
+            'cPassword' => 'required',
             'token' => 'required']);
 
         //check if payload is valid before moving on
