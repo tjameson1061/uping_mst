@@ -75,6 +75,7 @@
     import {useToast} from 'vue-toastification/composition'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {getUserData} from "@/auth/utils";
+    import axios from 'axios'
 
     export default {
         components: {
@@ -96,7 +97,7 @@
         },
         beforeCreate() {
             this.userData = getUserData()
-            this.$http.get(`/partner/getUserData/${userData.id}`).then(res => {
+            axios.get(`/partner/getUserData/${userData.id}`).then(res => {
                 this.userData = res.data
             })
         },
