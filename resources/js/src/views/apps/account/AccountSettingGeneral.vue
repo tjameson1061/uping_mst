@@ -219,14 +219,14 @@
 
                 // console.log(props.userData.user)
                 // debugger
-                this.$http.patch('/partner/updateAccountInfo/1', this.userData)
+                this.$http.patch(`/admin/updateAccountInfo/${props.userdata.id}`, props.userData)
                     .then((res) => {
                         console.log(res)
                         // debugger
                         this.$toast({
                             component: ToastificationContent,
                             props: {
-                                title: 'Notification',
+                                title: 'Account Details',
                                 text: 'Account Details updated successfully',
                                 variant: 'success',
                                 icon: 'CheckIcon'
@@ -238,7 +238,7 @@
                         this.$toast({
                             component: ToastificationContent,
                             props: {
-                                title: 'Notification',
+                                title: 'Account Details',
                                 text: 'Error updating account details',
                                 variant: 'danger',
                                 icon: 'ZapIcon'
