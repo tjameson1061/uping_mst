@@ -27,15 +27,15 @@ class AuthController extends Controller
 
     public function validatePasswordRequest(Request $request)
     {
-        Log::debug($request->email);
+        Log::debug((array)$request->email);
         $user = DB::table('users')->where('email', '=', $request->email)
             ->first();
-        Log::debug($user);
+        Log::debug((array)$user);
         //Check if the user exists
         if (empty($user) < 1) {
             return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
         }
-        Log::debug($user->email);
+        Log::debug((array)$user->email);
 
         //Create Password Reset Token
         DB::table('password_resets')->insert([
