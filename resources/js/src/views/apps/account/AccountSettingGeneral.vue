@@ -270,7 +270,7 @@
 
 
             return {
-                updateAccountForm,
+                updateAccountSettingsForm,
                 avatarText,
                 //  ? Demo - Update Image on click of update button
                 refInputEl,
