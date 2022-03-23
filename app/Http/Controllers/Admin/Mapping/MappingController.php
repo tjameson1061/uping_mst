@@ -90,7 +90,7 @@ class MappingController
         $mapping['buyer_setup'] = BuyerSetup::with('mappings')->where('id', $mapping['mapping']['buyer_setup_id'])->get();
 
 
-        $mapping['tier_ids'] = BuyerSetup::groupBy('id')->whereNotNull('id')->get(['id', 'buyername', '']);
+        $mapping['tier_ids'] = BuyerSetup::groupBy('id')->whereNotNull('id')->get(['id', 'buyername']);
         $mapping['partner_ids'] = Partner::groupBy('id')->whereNotNull('id')->get(['id', 'vendor_id']);
         $mapping['mappings_count'] = Mapping::where('partner_id', $mapping['partner'][0]['id'])->where('status', 1)->count();
 

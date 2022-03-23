@@ -54,7 +54,7 @@ export default {
       updateBuyerTierForm({commit}, tierData) {
         return new Promise((resolve, reject) => {
             axios
-                .patch(`/tiers/${tierData.id}`, tierData)
+                .patch(`/admin/tiers/${tierData.id}`, tierData)
                 .then(response => resolve(response))
                 .catch(error => reject(error))
         })
