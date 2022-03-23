@@ -31,7 +31,7 @@ class AuthController extends Controller
         $user = DB::table('users')->where('email', '=', $request->email)
             ->first();
 
-        Log::debug('USER', (array) $user);
+//        Log::debug('USER', (array) $user);
 
         //Check if the user exists
         if (count((array)$user) == 0) {
@@ -64,7 +64,7 @@ class AuthController extends Controller
 
     private function sendResetEmail($email, $token)
     {
-        Log::debug('email::', (array) $email);
+//        Log::debug('email::', (array) $email);
         //Retrieve the user from the database
         $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
         //Generate, the password reset link. The token generated is embedded in the link
@@ -118,19 +118,19 @@ class AuthController extends Controller
         $password = $request->password;
         // Validate the token
         $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
-        Log::debug('DEBUG::', (array)$tokenData);
+//        Log::debug('DEBUG::', (array)$tokenData);
         // Redirect the user back to the password reset request form if the token is invalid
         if (!$tokenData) return response()->json('Invalid Token');
 
         $user = User::where('email', $tokenData->email)->first();
-        Log::debug('DEBUG::', (array)$user);
+//        Log::debug('DEBUG::', (array)$user);
         // Redirect the user back if the email is invalid
         if (!$user) return response()->json(['email' => 'Email not found']);
 
         //Hash and update the new password
         $user->password = Hash::make($password);
         $res = $user->update(); //or $user->save();
-        Log::debug('DEBUG::', (array)$res);
+//        Log::debug('DEBUG::', (array)$res);
 
         //login the user immediately they change password successfully
 //        Auth::login($user);

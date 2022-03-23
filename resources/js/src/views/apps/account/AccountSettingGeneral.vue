@@ -217,7 +217,7 @@
             },
         },
 
-        setup() {
+        setup(props) {
             const refInputEl = ref(null)
             const previewEl = ref(null)
             const toast = useToast()
@@ -277,11 +277,11 @@
                 previewEl,
                 inputImageRenderer,
 
-                name,
-                file,
-                success,
-
-                userData,
+                // name,
+                // file,
+                // success,
+                //
+                // userData,
 
                 toast,
                 ToastificationContent
