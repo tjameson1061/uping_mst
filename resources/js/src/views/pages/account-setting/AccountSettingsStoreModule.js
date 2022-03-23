@@ -1,4 +1,6 @@
 import axios from '@axios'
+import {getUserData} from '@/auth/utils'
+const userData = getUserData()
 
 export default {
   namespaced: true,
@@ -18,6 +20,15 @@ export default {
 
   },
   actions: {
+      getUserData(ctx, { id }) {
+          return new Promise((resolve, reject) => {
+              axios
+                  .get(`/admin/getUserData/${id}`)
+                  .then(response => resolve(response))
+                  .catch(error => reject(error))
+          })
+      },
+
       updateAccountForm({commit}, userData) {
           return new Promise((resolve, reject) => {
             axios

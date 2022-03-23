@@ -76,6 +76,8 @@
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {getUserData} from "@/auth/utils";
     import axios from 'axios'
+    import {onUnmounted, ref} from "@vue/composition-api";
+    import ukLeadsStoreModule from "../../apps/partnerdashboard/uk-lead/LeadStoreModule";
 
     export default {
         components: {
@@ -87,19 +89,51 @@
             AccountSettingNotification,
             ToastificationContent,
         },
-        data() {
+        setup() {
+            // const ACCOUNT_SETTINGS = "admin-account-setting";
+            // const userData = ref({})
+            const userData = getUserData()
+            console.log(userData)
+            debugger
+
+
+            // // Register module
+            // if (!store.hasModule(ACCOUNT_SETTINGS))
+            //     store.registerModule(ACCOUNT_SETTINGS, AccountSettingsStoreModule);
+            //
+            // // UnRegister on leave
+            // onUnmounted(() => {
+            //     if (store.hasModule(ACCOUNT_SETTINGS)) store.unregisterModule(ACCOUNT_SETTINGS);
+            // });
+
+
+
+            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
+                userData.value = res.data
+            })
+            //
+            // store.dispatch(`admin-account-setting/getUserData/${userData.id}`)
+            //     .then(response => {
+            //         userData.value = response.data
+            //     })
+            //     .catch(error => {
+            //         if (error.response.status === 404) {
+            //             userData.value = undefined
+            //         }
+            //     })
+
+
+
             return {
-                // options: {},
-                userData: {},
+                userData,
 
 
             }
         },
-        beforeCreate() {
-            this.userData = getUserData()
-            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
-                this.userData = res.data
-            })
-        },
+        // created() {
+        //     const userData = getUserData()
+        //     this.userData = getUserData()
+        //
+        // },
     }
 </script>

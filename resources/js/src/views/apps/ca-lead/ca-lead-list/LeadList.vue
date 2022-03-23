@@ -312,14 +312,14 @@ export default {
     vSelect,
   },
   setup() {
-    const UKLEADS_APP_STORE_MODULE_NAME = 'app-uk-leads'
+    const UK_LEADS = 'app-uk-leads'
 
     // Register module
-    if (!store.hasModule(UKLEADS_APP_STORE_MODULE_NAME)) store.registerModule(UKLEADS_APP_STORE_MODULE_NAME, ukLeadsStoreModule)
+    if (!store.hasModule(UK_LEADS)) store.registerModule(UK_LEADS, ukLeadsStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(UKLEADS_APP_STORE_MODULE_NAME)) store.unregisterModule(UKLEADS_APP_STORE_MODULE_NAME)
+      if (store.hasModule(UK_LEADS)) store.unregisterModule(UK_LEADS)
     })
 
     const isAddNewUKLeadSidebarActive = ref(false)

@@ -33,6 +33,24 @@ export default [
     //
     // },
 
+    {
+        path: '/admin/account-setting',
+        name: 'admin-account-setting',
+        component: () => import('@/views/apps/account/AccountSetting.vue'),
+        meta: {
+            requiresAuth: false,
+            partnerAuth: true,
+            pageTitle: 'Account Settings',
+            breadcrumb: [
+                {
+                    text: 'Account Settings',
+                    active: true,
+                },
+            ],
+        },
+    },
+
+
 
     // *===============================================---*
     // *--------- OFFER  ---------------------------------------*
