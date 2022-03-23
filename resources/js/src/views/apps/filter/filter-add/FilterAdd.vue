@@ -21,6 +21,10 @@
             </div>
         </b-alert>
 
+        <pre>
+            {{filterData }}
+        </pre>
+
         <b-tabs
             pills
         >
@@ -43,7 +47,7 @@
             </b-tab>
 
             <!-- Numeric Filters-->
-            <b-tab v-if="filterData.filter_type === 'LoanAmount'">
+            <b-tab v-if="filterData.filter_type == 'LoanAmount'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -57,7 +61,7 @@
                     :filter-data="filterData"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'LoanTerms'">
+            <b-tab v-else-if="filterData.filter_type == 'LoanTerms'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -71,7 +75,7 @@
                     :filter-data="filterData"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'MonthlyCredit'">
+            <b-tab v-else-if="filterData.filter_type == 'MonthlyCredit'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -85,7 +89,7 @@
                     :filter-data="filterData"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'MonthlyIncome'">
+            <b-tab v-else-if="filterData.filter_type == 'MonthlyIncome'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -99,7 +103,7 @@
                     :filter-data="filterData"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'MonthlyRent'">
+            <b-tab v-else-if="filterData.filter_type == 'MonthlyRent'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -115,7 +119,7 @@
             </b-tab>
 
             <!--  Email Filter -->
-            <b-tab v-else-if="filterData.filter_type === 'Email'">
+            <b-tab v-else-if="filterData.filter_type == 'Email'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -133,7 +137,7 @@
 
 
             <!-- Multi Select Filters-->
-            <b-tab v-else-if="filterData.filter_type === 'EmploymentStatus'">
+            <b-tab v-else-if="filterData.filter_type == 'EmploymentStatus'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -149,7 +153,7 @@
                     title="Employment Status"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'IncomeCycle'">
+            <b-tab v-else-if="filterData.filter_type == 'IncomeCycle'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -164,7 +168,7 @@
                     :income-cycle-options="incomeCycleOptions"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'MaritalStatus'">
+            <b-tab v-else-if="filterData.filter_type == 'MaritalStatus'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -179,7 +183,7 @@
                     :marital-status-options="maritalStatusOptions"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'ResidentialStatus'">
+            <b-tab v-else-if="filterData.filter_type == 'ResidentialStatus'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -194,7 +198,7 @@
                     :residential-status-options="residentialStatusOptions"
                 />
             </b-tab>
-            <b-tab v-else-if="filterData.filter_type === 'MonthsAtAddress'">
+            <b-tab v-else-if="filterData.filter_type == 'MonthsAtAddress'">
                 <template #title>
                     <feather-icon
                         icon="InfoIcon"
@@ -272,6 +276,7 @@
                 tier_id: '',
                 buyer_id: '',
                 conversion_type: '',
+                object: {},
                 conditions: {
                     shouldBeAnyOf: [],
                     shouldBeGreaterThan: [],
@@ -283,7 +288,6 @@
                     shouldContain: '',
                     shouldEndWith: '',
                     shouldNotContain: '',
-                    shouldNotEndWith: '',
                     shouldNotEndWith: '',
                     shouldBe: '',
                 },

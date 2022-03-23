@@ -61,10 +61,10 @@ export default function useInvoicesList() {
             .then(response => {
                 // console.log(response.data.invoices[0].invoices)
                 // debugger
-                const { invoices, total } = response.data.invoices[0].invoices
+                const { invoices } = response.data.invoices[0].invoices
 
-                callback(invoices)
-                totalInvoices.value = total
+                callback(invoices.data)
+                totalInvoices.value = invoices.total
             })
             .catch(() => {
                 toast({

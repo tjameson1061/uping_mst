@@ -158,21 +158,21 @@
             ToastificationContent,
         },
         props: {
-            // filterData: {
-            //     type: Object,
-            //     required: true,
-            // },
+            filterData: {
+                type: Object,
+                required: true,
+            },
         },
         setup(props) {
-            const blankFilterData = {
-                tier_id: '',
-                filter_type: '',
-                should_be: '',
-                should_contain: '',
-            }
-
-
-            const filterData = ref(JSON.parse(JSON.stringify(blankFilterData)))
+            // const blankFilterData = {
+            //     tier_id: '',
+            //     filter_type: '',
+            //     should_be: '',
+            //     should_contain: '',
+            // }
+            //
+            //
+            // const filterData = ref(JSON.parse(JSON.stringify(blankFilterData)))
             const FILTERS = 'app-filters'
             const loading = ref(false);
             const errors = ref({});
@@ -252,7 +252,7 @@
 
                 toast,
                 filterTypeOptions,
-                filterData,
+                // filterData,
                 conversionTypeOptions,
                 selectOptions,
                 goBack,
