@@ -120,7 +120,7 @@ export default {
               variant: 'success',
             },
           })
-            axios.post("/forgot-password", {email: this.user.email}).then(result => {
+            axios.post("https://portal.uping.co.uk/api/forgot-password", {email: this.user.email}).then(result => {
                 this.response = result.data;
               this.$toast({
                 component: ToastificationContent,
