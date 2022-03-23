@@ -21,9 +21,6 @@
             </div>
         </b-alert>
 
-        <pre>
-            {{filterData }}
-        </pre>
 
         <b-tabs
             pills
