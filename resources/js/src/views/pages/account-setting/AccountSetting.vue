@@ -105,10 +105,5 @@
 
             }
         },
-        // created() {
-        //     const userData = getUserData()
-        //     this.userData = getUserData()
-        //
-        // },
     }
 </script>
