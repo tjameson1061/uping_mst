@@ -74,7 +74,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'password' => 'required|confirmed',
-            'token' => 'required' ]);
+            'token' => 'required']);
 
         //check if payload is valid before moving on
         if ($validator->fails()) {
@@ -83,24 +83,25 @@ class AuthController extends Controller
 
         $password = $request->password;
         // Validate the token
-        $tokenData = DB::table('password_resets')
-            ->where('token', $request->token)->first();
-            // Redirect the user back to the password reset request form if the token is invalid
-        if (!$tokenData) return view('auth.passwords.email');
+        $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
+
+        // Redirect the user back to the password reset request form if the token is invalid
+        if (!$tokenData) return response()->json('Invalid Token');
 
         $user = User::where('email', $tokenData->email)->first();
+
         // Redirect the user back if the email is invalid
-        if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);
+        if (!$user) return response()->json(['email' => 'Email not found']);
+
         //Hash and update the new password
         $user->password = Hash::make($password);
         $user->update(); //or $user->save();
 
         //login the user immediately they change password successfully
-        Auth::login($user);
+//        Auth::login($user);
 
         //Delete the token
-        DB::table('password_resets')->where('email', $user->email)
-            ->delete();
+        DB::table('password_resets')->where('email', $user->email)->delete();
 
         //Send Email Reset Success Email
         if ($this->sendSuccessEmail($tokenData->email)) {
@@ -120,8 +121,6 @@ class AuthController extends Controller
     }
 
 
-    }
-
 
 
 
@@ -130,7 +129,8 @@ class AuthController extends Controller
 
 
     //register api
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
