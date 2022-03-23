@@ -210,53 +210,13 @@
             goBack() {
                 history.back();
             },
-            updateAccountSettingsForm(ev) {
-                    ev.preventDefault();
-                    console.log(ev)
-                    // debugger
-
-                    // loading.value = true;
-
-                    // console.log(props.userData.user)
-                    // debugger
-                    this.$http.patch('/partner/updateAccountInfo/1', this.userData)
-                        .then((res) => {
-                            console.log(res)
-                            // debugger
-                            this.$toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'Notification',
-                                    text: 'Account Details updated successfully',
-                                    variant: 'success',
-                                    icon: 'CheckIcon'
-                                },
-                            })
-                        })
-                        .catch((error) => {
-                            // loading.value = false;
-                            this.$toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'Notification',
-                                    text: 'Error updating account details',
-                                    variant: 'danger',
-                                    icon: 'ZapIcon'
-                                },
-                            })
-
-                            if (error.response.status === 404) {
-                                errors.value = error.response.data.errors;
-                            }
-                        });
-            },
             onFileChange(e) {
                 console.log(e.target.files[0]);
                 this.file = e.target.files[0];
             },
         },
 
-        setup() {
+        setup(props) {
             const refInputEl = ref(null)
             const previewEl = ref(null)
             const toast = useToast()
@@ -265,6 +225,47 @@
                 // eslint-disable-next-line no-param-reassign
                 props.userData.user.avatar = base64
             })
+
+            function  updateAccountSettingsForm(ev) {
+                ev.preventDefault();
+                console.log(ev)
+                // debugger
+
+                // loading.value = true;
+
+                // console.log(props.userData.user)
+                // debugger
+                this.$http.patch(`/partner/updateAccountInfo/${props.userData.user.id}`, this.userData)
+                    .then((res) => {
+                        console.log(res)
+                        // debugger
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Notification',
+                                text: 'Account Details updated successfully',
+                                variant: 'success',
+                                icon: 'CheckIcon'
+                            },
+                        })
+                    })
+                    .catch((error) => {
+                        // loading.value = false;
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Notification',
+                                text: 'Error updating account details',
+                                variant: 'danger',
+                                icon: 'ZapIcon'
+                            },
+                        })
+
+                        if (error.response.status === 404) {
+                            errors.value = error.response.data.errors;
+                        }
+                    });
+            },
 
 
             return {
