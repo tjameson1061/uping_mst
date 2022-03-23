@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <!-- form -->
-    <b-form>
+    <b-form @submit.prevent="UpdateAccountPassword">
       <b-row>
         <!-- old password -->
         <b-col md="6">
@@ -88,6 +88,7 @@
             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
             variant="primary"
             class="mt-1 mr-1"
+            type="submit"
           >
             Save changes
           </b-button>
@@ -96,8 +97,9 @@
             type="reset"
             variant="outline-secondary"
             class="mt-1"
+            @click="goBack"
           >
-            Reset
+            Back
           </b-button>
         </b-col>
         <!--/ buttons -->
@@ -111,6 +113,8 @@ import {
   BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BCard, BInputGroup, BInputGroupAppend,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
+import { useToast } from 'vue-toastification/composition'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -137,6 +141,11 @@ export default {
       passwordFieldTypeRetype: 'password',
     }
   },
+    props: {
+        userData: {
+            type: Object,
+        }
+    },
   computed: {
     passwordToggleIconOld() {
       return this.passwordFieldTypeOld === 'password' ? 'EyeIcon' : 'EyeOffIcon'
@@ -158,6 +167,51 @@ export default {
     togglePasswordRetype() {
       this.passwordFieldTypeRetype = this.passwordFieldTypeRetype === 'password' ? 'text' : 'password'
     },
+    goBack() {
+        history.back();
+    },
+    UpdateAccountPassword(ev) {
+          ev.preventDefault();
+          console.log(ev)
+
+          // loading.value = true;
+
+          // console.log(props.userData.user)
+          // debugger
+          this.$http.patch('/partner/updateAccountPassword/1', this.userData.newPasswordValue)
+              .then((res) => {
+                  console.log(res)
+                  // debugger
+                  toast({
+                      component: ToastificationContent,
+                      props: {
+                          title: 'Account Info updated successfully',
+                          icon: 'CheckCircleIcon',
+                          variant: 'success',
+                      },
+                  })
+                  // loading.value = false;
+                  // router.push({
+                  //     name: "Dashboard",
+                  // });
+              })
+              .catch((error) => {
+                  // loading.value = false;
+                  toast({
+                      component: ToastificationContent,
+                      props: {
+                          title: 'Error fetching Account Info',
+                          icon: 'AlertTriangleIcon',
+                          variant: 'danger',
+                      },
+                  })
+
+                  if (error.response.status === 404) {
+                      errors.value = error.response.data.errors;
+                  }
+              });
+  }
+
   },
 }
 </script>

@@ -136,14 +136,14 @@ export default {
     Ripple,
   },
   props: {
-    notificationData: {
+    userData: {
       type: Object,
       default: () => {},
     },
   },
   data() {
     return {
-      localOptions: JSON.parse(JSON.stringify(this.notificationData)),
+      // localOptions: JSON.parse(JSON.stringify(this.notificationData)),
     }
   },
 }

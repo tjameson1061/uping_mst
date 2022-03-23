@@ -1,165 +1,330 @@
 <template>
-  <b-card>
-    <!-- form -->
-    <b-form>
-      <b-row>
-        <!-- bio -->
-        <b-col cols="12">
-          <b-form-group
-            label="Bio"
-            label-for="bio-area"
-          >
-            <b-form-textarea
-              id="bio-area"
-              v-model="localOptions.bio"
-              rows="4"
-              placeholder="Your bio data here..."
-            />
-          </b-form-group>
-        </b-col>
-        <!--/ bio -->
+    <b-card>
+        <b-form class="mt-1"
+                @submit.prevent="updateCompanyInfo"
+        >
+            <!-- Header: Company Info -->
+            <div class="d-flex mt-2">
+                <feather-icon
+                    icon="MapPinIcon"
+                    size="19"
+                />
+                <h4 class="mb-1 ml-50">
+                    Company Details
+                </h4>
+            </div>
 
-        <!-- birth date -->
-        <b-col md="6">
-          <b-form-group
-            label-for="example-datepicker"
-            label="Birth date"
-          >
-            <flat-pickr
-              v-model="localOptions.dob"
-              class="form-control"
-              name="date"
-              placeholder="Birth date"
-            />
-          </b-form-group>
-        </b-col>
-        <!--/ birth date -->
+            <b-row>
 
-        <!-- Country -->
-        <b-col md="6">
-          <b-form-group
-            label-for="countryList"
-            label="Country"
-          >
-            <v-select
-              id="countryList"
-              v-model="localOptions.country"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-              label="title"
-              :options="countryOption"
-            />
-          </b-form-group>
-        </b-col>
-        <!--/ Country -->
+                <!-- Field: Join Date -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Join Date"
+                        label-for="birth-date"
+                    >
+                        <flat-pickr
+                            v-model="userData.user.company.created_at"
+                            class="form-control"
+                            :config="{ dateFormat: 'd-m-Y'}"
+                            placeholder="DD-MM-YYYY"
+                            disabled
+                        />
+                    </b-form-group>
+                </b-col>
 
-        <!-- website -->
-        <b-col md="6">
-          <b-form-group
-            label-for="website"
-            label="Website"
-          >
-            <b-form-input
-              id="website"
-              v-model="localOptions.website"
-              placeholder="Website address"
-            />
-          </b-form-group>
-        </b-col>
-        <!--/ website -->
+                <!-- Field: Mobile -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Phone"
+                        label-for="phone"
+                    >
+                        <b-form-input
+                            id="phone"
+                            v-model="userData.user.company.phone"
+                        />
+                    </b-form-group>
+                </b-col>
 
-        <!-- phone -->
-        <b-col md="6">
-          <b-form-group
-            label-for="phone"
-            label="Phone"
-          >
-            <cleave
-              id="phone"
-              v-model="localOptions.phone"
-              class="form-control"
-              :raw="false"
-              :options="clevePhone"
-              placeholder="Phone number"
-            />
-          </b-form-group>
-        </b-col>
-        <!-- phone -->
+                <!-- Field: Website -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Website"
+                        label-for="website"
+                    >
+                        <b-form-input
+                            id="website"
+                            v-model="userData.user.company.website"
+                        />
+                    </b-form-group>
+                </b-col>
 
-        <b-col cols="12">
-          <b-button
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            variant="primary"
-            class="mt-1 mr-1"
-          >
-            Save changes
-          </b-button>
-          <b-button
-            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-            type="reset"
-            class="mt-1"
-            variant="outline-secondary"
-            @click.prevent="resetForm"
-          >
-            Reset
-          </b-button>
-        </b-col>
-      </b-row>
-    </b-form>
-  </b-card>
+                <!-- Field: Language -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="IM/Skype"
+                        label-for="skype"
+                    >
+                        <b-form-input
+                            id="skype"
+                            v-model="userData.user.company.skype"
+                        />
+                    </b-form-group>
+                </b-col>
+
+
+            </b-row>
+
+            <!-- Header: Company Info -->
+            <div class="d-flex mt-2">
+                <feather-icon
+                    icon="MapPinIcon"
+                    size="19"
+                />
+                <h4 class="mb-0 ml-50">
+                    Address
+                </h4>
+            </div>
+
+            <!-- Form: Company Info Form -->
+            <b-row class="mt-1">
+
+                <!-- Field: Address Line 1 -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Address Line 1"
+                        label-for="address1"
+                    >
+                        <b-form-input
+                            id="address1"
+                            v-model="userData.user.company.address1"
+                        />
+                    </b-form-group>
+                </b-col>
+
+                <!-- Field: Address Line 2 -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Address Line 2"
+                        label-for="address2"
+                    >
+                        <b-form-input
+                            id="address2"
+                            v-model="userData.user.company.address2"
+                            placeholder="Los Santos"
+                        />
+                    </b-form-group>
+                </b-col>
+
+                <!-- Field: Postcode -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Postcode"
+                        label-for="postcode"
+                    >
+                        <b-form-input
+                            id="postcode"
+                            v-model="userData.user.company.postcode"
+                            placeholder="597626"
+                        />
+                    </b-form-group>
+                </b-col>
+
+                <!-- Field: City -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="City"
+                        label-for="city"
+                    >
+                        <b-form-input
+                            id="city"
+                            v-model="userData.user.company.city"
+                        />
+                    </b-form-group>
+                </b-col>
+
+                <!-- Field: State -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="State"
+                        label-for="state"
+                    >
+                        <b-form-input
+                            id="state"
+                            v-model="userData.user.company.state"
+                            placeholder="Manhattan"
+                        />
+                    </b-form-group>
+                </b-col>
+
+                <!-- Field: Country -->
+                <b-col
+                    cols="12"
+                    md="6"
+                    lg="4"
+                >
+                    <b-form-group
+                        label="Country"
+                        label-for="country"
+                    >
+                        <b-form-input
+                            id="country"
+                            v-model="userData.user.company.country"
+                            placeholder="United States"
+                        />
+                    </b-form-group>
+                </b-col>
+            </b-row>
+
+            <b-row class="mt-2">
+                <b-col>
+                    <b-button
+                        variant="primary"
+                        class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                        type="submit"
+                        :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                    >
+                        Save Changes
+                    </b-button>
+                    <b-button
+                        variant="outline-primary"
+                        :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+                        @click="goBack"
+                    >
+                        Back
+                    </b-button>
+                </b-col>
+            </b-row>
+        </b-form>
+
+    </b-card>
 </template>
 
 <script>
-import { BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BCard, BFormTextarea } from 'bootstrap-vue'
-import vSelect from 'vue-select'
-import flatPickr from 'vue-flatpickr-component'
-import Ripple from 'vue-ripple-directive'
-import Cleave from 'vue-cleave-component'
+    import {BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BCard, BFormTextarea} from 'bootstrap-vue'
+    import vSelect from 'vue-select'
+    import flatPickr from 'vue-flatpickr-component'
+    import Ripple from 'vue-ripple-directive'
+    import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import 'cleave.js/dist/addons/cleave-phone.us'
+    // eslint-disable-next-line import/no-extraneous-dependencies
+    import 'cleave.js/dist/addons/cleave-phone.us'
+    import {ref} from "@vue/composition-api";
 
-export default {
-  components: {
-    BButton,
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BRow,
-    BCol,
-    BCard,
-    BFormTextarea,
-    vSelect,
-    flatPickr,
-    Cleave,
-  },
-  directives: {
-    Ripple,
-  },
-  props: {
-    informationData: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  data() {
-    return {
-      countryOption: ['USA', 'India', 'Canada'],
-      localOptions: JSON.parse(JSON.stringify(this.informationData)),
-      clevePhone: {
-        phone: true,
-        phoneRegionCode: 'US',
-      },
+    export default {
+        components: {
+            BButton,
+            BForm,
+            BFormGroup,
+            BFormInput,
+            BRow,
+            BCol,
+            BCard,
+            BFormTextarea,
+            vSelect,
+            flatPickr,
+            ToastificationContent,
+        },
+        directives: {
+            Ripple,
+        },
+        props: {
+            userData: {
+                type: Object,
+                default: () => {
+                },
+            },
+        },
+        data() {
+            return {
+                countryOption: ['UK', 'USA', 'India', 'Canada'],
+
+            }
+        },
+        methods: {
+            goBack() {
+                history.back();
+            },
+            updateCompanyInfo(ev) {
+                ev.preventDefault();
+
+                // loading.value = true;
+
+                // console.log(this.userData.user.company)
+                // debugger
+                this.$http.patch('/partner/updateCompany/1', this.userData.user.company)
+                    .then((res) => {
+                        // console.log(res)
+                        // debugger
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Notification',
+                                text: 'Successfully updated company details',
+                                variant: 'success'
+                            },
+                        })
+                        // loading.value = false;
+                        // router.push({
+                        //     name: "Dashboard",
+                        // });
+                    })
+                    .catch((error) => {
+                        // loading.value = false;
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Notification',
+                                text: 'Error updating company details',
+                                variant: 'danger'
+                            },
+                        })
+
+                        if (error.response.status === 404) {
+                            errors.value = error.response.data.errors;
+                        }
+                    });
+            }
+        },
     }
-  },
-  methods: {
-    resetForm() {
-      this.localOptions = JSON.parse(JSON.stringify(this.informationData))
-    },
-  },
-}
 </script>
 
 <style lang="scss">
-@import '~@core/scss/vue/libs/vue-select.scss';
-@import '~@core/scss/vue/libs/vue-flatpicker.scss';
+    @import '~@core/scss/vue/libs/vue-select.scss';
+    @import '~@core/scss/vue/libs/vue-flatpicker.scss';
 </style>
