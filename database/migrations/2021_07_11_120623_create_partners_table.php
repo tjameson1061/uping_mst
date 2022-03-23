@@ -17,7 +17,7 @@ class CreatePartnersTable extends Migration
             $table->id();
             $table->integer('lead_type');
             $table->string('vendor_id');
-            $table->unsignedBigInteger('user_id');
+            $table->integer('user_id');
             $table->unsignedBigInteger('company_id');
             $table->tinyInteger('status');
             $table->char('icoLicense', 255)->nullable();
@@ -25,7 +25,7 @@ class CreatePartnersTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+//            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('company_id')->references('id')->on('companies');
 
         });

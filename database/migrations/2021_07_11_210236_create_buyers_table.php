@@ -15,8 +15,8 @@ class CreateBuyersTable extends Migration
     {
         Schema::create('buyers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default(1);
-            $table->unsignedBigInteger('company_id')->nullable();
+            $table->integer('user_id')->default(1);
+            $table->integer('company_id')->nullable();
             $table->char('name')->unique();
             $table->char('account_contact1', 255)->nullable();
             $table->string('avatar')->default('default.jpg');
@@ -27,8 +27,8 @@ class CreateBuyersTable extends Migration
             $table->integer('status')->default(1);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+//            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+//            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
         });
     }
