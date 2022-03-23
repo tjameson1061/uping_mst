@@ -108,7 +108,7 @@
 
 
 
-            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
+            axios.get(`/api/admin/getUserData/${userData.id}`).then(res => {
                 userData.value = res.data
             })
             //
