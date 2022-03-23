@@ -196,38 +196,21 @@
             },
 
         },
-        data() {
-            return {
-                name: '',
-                file: '',
-                success: ''
-            }
-        },
-        methods: {
-            resetForm() {
-                this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
-            },
-            goBack() {
-                history.back();
-            },
-
-            onFileChange(e) {
-                console.log(e.target.files[0]);
-                this.file = e.target.files[0];
-            },
-        },
 
         setup(props) {
             const refInputEl = ref(null)
             const previewEl = ref(null)
             const toast = useToast()
+            const name = ref()
+            const file = ref()
+            const success = ref()
 
             const {inputImageRenderer} = useInputImageRenderer(refInputEl, base64 => {
                 // eslint-disable-next-line no-param-reassign
                 props.userData.user.avatar = base64
             })
 
-            function   updateAccountSettingsForm(ev) {
+            function updateAccountSettingsForm(ev) {
                 ev.preventDefault();
                 console.log(ev)
                 // debugger
@@ -266,21 +249,34 @@
                             errors.value = error.response.data.errors;
                         }
                     });
-            },
-
+            }
+            function resetForm() {
+                this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
+            }
+            function goBack() {
+                history.back();
+            }
+            function onFileChange(e) {
+                console.log(e.target.files[0]);
+                this.file = e.target.files[0];
+            }
 
             return {
                 updateAccountSettingsForm,
+                onFileChange,
+                resetForm,
+                goBack,
+
                 avatarText,
                 //  ? Demo - Update Image on click of update button
                 refInputEl,
                 previewEl,
                 inputImageRenderer,
 
-                // name,
-                // file,
-                // success,
-                //
+                name,
+                file,
+                success,
+
                 // userData,
 
                 toast,
