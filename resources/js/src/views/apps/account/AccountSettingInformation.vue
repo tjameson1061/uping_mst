@@ -282,7 +282,7 @@
 
                 // console.log(this.userData.user.company)
                 // debugger
-                this.$http.patch(`/admin/updateCompany/${props.userData.id}`, this.userData.user.company)
+                this.$http.patch(`/admin/updateCompany/${props.userData.user.id}`, this.userData.user.company)
                     .then((res) => {
                         // console.log(res)
                         // debugger

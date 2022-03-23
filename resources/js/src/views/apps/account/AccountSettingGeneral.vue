@@ -219,7 +219,7 @@
 
                 // console.log(props.userData.user)
                 // debugger
-                this.$http.patch(`/admin/updateAccountInfo/${props.userdata.id}`, props.userData)
+                this.$http.patch(`/admin/updateAccountInfo/${props.userData.user.id}`, props.userData)
                     .then((res) => {
                         console.log(res)
                         // debugger
