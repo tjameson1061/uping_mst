@@ -75,7 +75,7 @@
     import {useToast} from 'vue-toastification/composition'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {getUserData} from "@/auth/utils";
-    import axios from 'axios'
+    import axios from '@/libs/axios'
     import {onUnmounted, ref} from "@vue/composition-api";
     import ukLeadsStoreModule from "../../apps/partnerdashboard/uk-lead/LeadStoreModule";
 
@@ -94,7 +94,6 @@
             // const userData = ref({})
             const userData = getUserData()
             console.log(userData.id)
-            debugger
 
 
             // // Register module
@@ -108,7 +107,7 @@
 
 
 
-            axios.get(`/api/admin/getUserData/${userData.id}`).then(res => {
+            axios.get(`/admin/getUserData/${userData.id}`).then(res => {
                 userData.value = res.data
             })
             //
