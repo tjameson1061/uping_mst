@@ -30,10 +30,10 @@ class AuthController extends Controller
 //        Log::debug('HERE::111');
 //        Log::debug((string)$request->email);
         $user = DB::table('users')->where('email', '=', $request->email)
-            ->first();
+            ->first()->toArray();
 
         //Check if the user exists
-        if (empty($user) < 1) {
+        if (count($user) < 1) {
             Log::debug('HERE', (array) $user);
             return response()->json(['email' => trans('User does not exist')]);
         }
