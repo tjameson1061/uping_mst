@@ -39,7 +39,10 @@ class AuthController extends Controller
         Log::debug("Email::", (array)$request->email);
 
         //Create Password Reset Token
-        $res = DB::table('password_resets')->insert([
+        $query = DB::table('password_resets');
+        Log::debug("Q::", (array)$request->$query);
+
+            $res = $query->insert([
             'email' => $request->email,
             'token' => Str::random(60),
             'created_at' => Carbon::now()
