@@ -49,7 +49,7 @@ class AuthController extends Controller
 
             $res = $query->insert([
             'email' => $request->email,
-            'token' => Str::random(1),
+            'token' => Str::uuid(),
             'created_at' => Carbon::now()
         ]);
         Log::debug("TokenData::", (array)$res);
