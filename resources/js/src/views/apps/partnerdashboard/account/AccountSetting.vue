@@ -87,19 +87,19 @@
             AccountSettingNotification,
             ToastificationContent,
         },
-        data() {
-            return {
-                // options: {},
-                userData: {},
 
+        setup() {
+            const user = getUserData()
 
-            }
-        },
-        beforeCreate() {
-            this.userData = getUserData()
-            axios.get(`/partner/getUserData/${userData.id}`).then(res => {
-                this.userData = res.data
+            const userData = ref({})
+
+            axios.get(`/partner/getUserData/${user.id}`).then(res => {
+                userData.value = res.data
             })
+
+            return {
+                userData
+            }
         },
     }
 </script>
