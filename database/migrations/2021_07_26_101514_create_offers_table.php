@@ -31,7 +31,7 @@ class CreateOffersTable extends Migration
             $table->char('expiresDate')->nullable();
             $table->char('status')->nullable();
 
-            $table->char('logo')->default('images/avatar/default.png')->nullable();
+            $table->longText('logo')->nullable();
             $table->char('privacy_level')->nullable();
             $table->char('top_offer')->nullable();
             $table->char('restrictions')->nullable();
