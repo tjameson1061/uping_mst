@@ -22,7 +22,7 @@ class PasswordReset extends Notification
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param $token
      */
     public function __construct($token)
     {
@@ -53,7 +53,7 @@ class PasswordReset extends Notification
                 'email' => $notifiable->getEmailForPasswordReset(),
             ], false));
 
-        return (new ResetPassword)->view('emails.user.reset', ['url' => $url]);
+        return (new ResetPassword)->view('password.reset', ['url' => $url]);
     }
 
 }

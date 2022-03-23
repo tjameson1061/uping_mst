@@ -6,6 +6,7 @@ use App\Models\Partner\Partner;
 use App\Models\User\Company;
 use App\Models\User\Payment;
 use App\Notifications\PasswordReset;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

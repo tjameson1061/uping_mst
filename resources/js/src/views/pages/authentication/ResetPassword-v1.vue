@@ -196,7 +196,14 @@ export default {
         function validationForm() {
             this.$refs.simpleRules.validate().then(success => {
                 if (success) {
-
+                  this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: 'Password Reset',
+                      icon: 'EditIcon',
+                      variant: 'success',
+                    },
+                  })
                     console.log(resetData.value)
                     debugger
                     axios.post('http://127.0.0.1:8000/api/reset-password', resetData.value )
@@ -204,14 +211,7 @@ export default {
                             console.log(response)
                             debugger
 
-                            this.$toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'Password Reset',
-                                    icon: 'EditIcon',
-                                    variant: 'success',
-                                },
-                            })
+
 
                             window.location.href = 'http://127.0.0.1:8000/login'
                         })

@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPassword;
+use App\Mail\Welcome;
 use App\Models\User;
 use App\Models\User\Company;
 use App\Models\User\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
@@ -17,12 +22,104 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
-  public $successStatus = 200;
+    public $successStatus = 200;
 
 
+    public function validatePasswordRequest(Request $request)
+    {
+        $user = DB::table('users')->where('email', '=', $request->email)
+            ->first();
+        //Check if the user exists
+//        if (count($user) < 1) {
+//            return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
+//        }
+
+        //Create Password Reset Token
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => Str::random(60),
+            'created_at' => Carbon::now()
+        ]);
+        //Get the token just created above
+        $tokenData = DB::table('password_resets')
+            ->where('email', $request->email)->first();
+
+        if ($this->sendResetEmail($request->email, $tokenData->token)) {
+            return response()->json('status', trans('A reset link has been sent to your email address.'));
+        } else {
+            return response()->json(['error' => trans('A Network Error occurred. Please try again.')]);
+        }
+
+    }
+
+    private function sendResetEmail($email, $token)
+    {
+        //Retrieve the user from the database
+        $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
+        //Generate, the password reset link. The token generated is embedded in the link
+        $link = config('base_url') . '/reset-password/' . $token . '/' . urlencode($user->email);
+
+        try {
+            //Here send the link with CURL with an external email API
+            Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+            return response()->json('status', trans('A reset link has been sent to your email address.'));
+        } catch (\Exception $e) {
+            return response()->json(['error' => trans('A Network Error occurred. Please try again.')]);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        //Validate input
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|confirmed',
+            'token' => 'required' ]);
+
+        //check if payload is valid before moving on
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['email' => 'Please complete the form']);
+        }
+
+        $password = $request->password;
+// Validate the token
+        $tokenData = DB::table('password_resets')
+            ->where('token', $request->token)->first();
+// Redirect the user back to the password reset request form if the token is invalid
+        if (!$tokenData) return view('auth.passwords.email');
+
+        $user = User::where('email', $tokenData->email)->first();
+// Redirect the user back if the email is invalid
+        if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);
+//Hash and update the new password
+        $user->password = Hash::make($password);
+        $user->update(); //or $user->save();
+
+        //login the user immediately they change password successfully
+        Auth::login($user);
+
+        //Delete the token
+        DB::table('password_resets')->where('email', $user->email)
+            ->delete();
+
+        //Send Email Reset Success Email
+        if ($this->sendSuccessEmail($tokenData->email)) {
+            return response()->json('Successfully changed password', 200);
+        }
+
+        /**
+         * Send the password reset notification.
+         *
+         * @param  string  $token
+         * @return void
+         */
+        public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordReset($token));
+    }
 
 
-
+    }
 
 
 
@@ -42,14 +139,11 @@ class AuthController extends Controller
             'confirmation_password' => 'required|same:password',
         ]);
 
+
         if($validator->fails()){
-          return response()->json(['error'=>$validator->errors()],401);
+            return response()->json(['error'=>$validator->errors()],401);
         }
 
-        $input = $request->all();
-//        dd($input);
-//        $input['referrer_id'] = (string) $request->query('ref') ?? '';
-//        Log::debug('HERE', (array)$input);
         $user = new User();
         $user->name = $request['name'];
         $user->username = $request['username'];
@@ -60,6 +154,7 @@ class AuthController extends Controller
         $user->role = 3;
         $user->save();
 
+
         $company = new Company();
         $company->user_id = $user->id;
         $company->save();
@@ -67,6 +162,9 @@ class AuthController extends Controller
         $payment = new Payment();
         $payment->user_id = $user->id;
         $payment->save();
+
+        Mail::to($user->email)->send(new Welcome($user));
+
 
         return response()->json([
             'message'=> ' User Successfully registered',
