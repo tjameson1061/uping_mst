@@ -21,7 +21,7 @@ export default {
       updateAccountForm({commit}, userData) {
           return new Promise((resolve, reject) => {
             axios
-              .patch(`/partner/updateAccountInfo/${userData.id}`, userData)
+              .patch(`/admin/updateAccountInfo/${userData.id}`, userData)
               .then(response => resolve(response))
               .catch(error => reject(error))
           })
@@ -29,7 +29,7 @@ export default {
       updateCompanyInfo({commit}, userData) {
           return new Promise((resolve, reject) => {
           axios
-              .patch(`/partner/updateCompanyInfo/${userData.id}`, userData)
+              .patch(`/admin/updateCompanyInfo/${userData.id}`, userData)
               .then(response => resolve(response))
               .catch(error => reject(error))
       })
@@ -37,7 +37,7 @@ export default {
       updateUserPaymentInfo({commit}, userData) {
           return new Promise((resolve, reject) => {
           axios
-              .patch(`/partner/updatePaymentInfo/${userData.id}`, userData)
+              .patch(`/admin/updatePaymentInfo/${userData.id}`, userData)
               .then(response => resolve(response))
               .catch(error => reject(error))
       })
