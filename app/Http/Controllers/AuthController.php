@@ -69,16 +69,21 @@ class AuthController extends Controller
         //Generate, the password reset link. The token generated is embedded in the link
         $link = 'https://portal.uping.co.uk' . '/reset-password/' . $token . '/' . urlencode($user->email);
 
-        try {
+        Log::debug('here::', (array) $email);
 
-            //Here send the link with CURL with an external email API
-             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+        Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
 
-             return true;
-        } catch (\Exception $e) {
-            Log::debug('EXCEPT::', (array) $e);
-            return false;
-        }
+//
+//        try {
+//
+//            //Here send the link with CURL with an external email API
+//             Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
+//
+//             return true;
+//        } catch (\Exception $e) {
+//            Log::debug('EXCEPT::', (array) $e);
+//            return false;
+//        }
     }
 
     public function resetPassword(Request $request)
