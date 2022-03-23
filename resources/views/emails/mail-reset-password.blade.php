@@ -40,7 +40,7 @@
             <tr>
   <td class="sm-py-32 sm-px-24" style="mso-line-height-rule: exactly; padding: 48px; text-align: center; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
     <a href="https://portal.uping.co.uk" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly;">
-      <img src="images/logo.png" width="155" alt="UPING " style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;">
+      <img src="./img/logo.png" width="155" alt="UPING " style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;">
     </a>
   </td>
 </tr>
@@ -57,11 +57,11 @@
                           <a href="mailto:suuport@uping.co.uk" class="hover-underline" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">{{ $user->email }}</a>.
                         </p>
                         <p style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin: 0; margin-bottom: 24px;">Use this link to reset your password and login.</p>
-                        <a href="https://portal.uping.co.uk{{ $url }}" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin-bottom: 24px; display: block; font-size: 16px; line-height: 100%; color: #7367f0; text-decoration: none;"> {{ $url }}</a>
+                        <a href="{{ $url }}" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin-bottom: 24px; display: block; font-size: 16px; line-height: 100%; color: #7367f0; text-decoration: none;"> {{ $url }}</a>
                         <table cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td style="mso-line-height-rule: exactly; mso-padding-alt: 16px 24px; border-radius: 4px; background-color: #7367f0; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
-                              <a href="https://portal.uping.co.uk{{$url}}" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #ffffff; text-decoration: none;">Reset Password &rarr;</a>
+                              <a href="{{$url}}" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #ffffff; text-decoration: none;">Reset Password &rarr;</a>
                             </td>
                           </tr>
                         </table>
@@ -94,11 +94,11 @@
 <tr>
   <td style="mso-line-height-rule: exactly; padding-left: 48px; padding-right: 48px; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; color: #eceff1;">
     <p align="center" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin-bottom: 16px; cursor: default;">
-      <a href="https://www.facebook.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="images/facebook.png" width="17" alt="Facebook" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
+      <a href="https://www.facebook.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="./img/facebook.png" width="17" alt="Facebook" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
       &bull;
-      <a href="https://twitter.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="images/twitter.png" width="17" alt="Twitter" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
+      <a href="https://twitter.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="./img/twitter.png" width="17" alt="Twitter" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
       &bull;
-      <a href="https://www.instagram.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="images/instagram.png" width="17" alt="Instagram" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
+      <a href="https://www.instagram.com/upingofficial" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img src="./img/instagram.png" width="17" alt="Instagram" style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;"></a>
     </p>
     <p style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238;">
       Use of our service and website is subject to our
