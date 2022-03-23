@@ -212,7 +212,7 @@ export default {
                             debugger
 
 
-                            window.location.href = 'https://portal.uping.co.uk/login'
+                         this.$router.push('/login')
                         })
                         .catch((err) => {
                             console.log(err)
