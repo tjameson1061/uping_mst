@@ -268,7 +268,7 @@
                 goBack,
 
                 avatarText,
-                //  ? Demo - Update Image on click of update button
+
                 refInputEl,
                 previewEl,
                 inputImageRenderer,

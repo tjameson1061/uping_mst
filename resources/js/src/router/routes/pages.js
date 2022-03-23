@@ -88,11 +88,13 @@ export default [
   //   },
   // },
   {
-    path: '/account-setting',
-    name: 'account-setting',
+    path: '/admin/account-setting',
+    name: 'admin-account-setting',
     component: () => import('@/views/pages/account-setting/AccountSetting.vue'),
     meta: {
-           requiresAuth: false,
+      requiresAuth: true,
+      adminAuth: true,
+
       pageTitle: 'Account Settings',
       breadcrumb: [
         {
@@ -102,4 +104,5 @@ export default [
       ],
     },
   },
+
 ]
