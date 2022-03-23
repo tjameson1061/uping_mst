@@ -83,6 +83,7 @@ class PartnerController extends Controller
 
     public function store(Request $request)
     {
+//        dd($request->input());
         $partner = new Partner();
         $partner->user_id = $request['partner']['user_id'];
         $partner->lead_type = $request['partner']['lead_type'];
@@ -93,22 +94,22 @@ class PartnerController extends Controller
         $partner->status =1;
         $partner->save();
 
-        $lead_type = $request['partner']['lead_type'];
+        $lead_type = $partner->lead_type;
 
 
-            $partnerLeadType = PartnerLeadType::where('vendor_id', $partner->vendor_id)->where('lead_type', $lead_type)->first();
-            if ($partnerLeadType == null) {
-                $partnerLeadType = new PartnerLeadType();
-                $partnerLeadType->vendor_id = $partner->vendor_id;
-                $partnerLeadType->lead_type = $lead_type;
-                $partnerLeadType->status = 1;
-                $partnerLeadType->margin = 30;
-                if ($lead_type == 1) {
-                    $partnerLeadType->currency = 'GBP';
-                } else {
-                    $partnerLeadType->currency = 'USD';
-                }
-                $partnerLeadType->save();
+        $partnerLeadType = PartnerLeadType::where('vendor_id', $partner->vendor_id)->where('lead_type', $lead_type)->first();
+        if ($partnerLeadType == null) {
+            $partnerLeadType = new PartnerLeadType();
+            $partnerLeadType->vendor_id = $partner->vendor_id;
+            $partnerLeadType->lead_type = $lead_type;
+            $partnerLeadType->status = 1;
+            $partnerLeadType->margin = 30;
+            if ($lead_type == 1) {
+                $partnerLeadType->currencyType = 'GBP';
+            } else {
+                $partnerLeadType->currencyType = 'USD';
+            }
+            $partnerLeadType->save();
         }
 
 
@@ -118,16 +119,18 @@ class PartnerController extends Controller
 
         foreach ($default_tiers as $tier) {
 //            dd($tier['buyer_id']);
-                $mapping = new Mapping();
-                $mapping->partner_id = $partner->id;
-                $mapping->buyer_id = $tier['buyer_id'];
-                $mapping->buyer_setup_id = $tier->id;
-                $mapping->leadtype = $lead_type;
-                $mapping->status = 1;
-                $mapping->save();
+            $mapping = new Mapping();
+            $mapping->partner_id = $partner->id;
+            $mapping->buyer_id = $tier['buyer_id'];
+            $mapping->buyer_setup_id = $tier->id;
+            $mapping->leadtype = $lead_type;
+            $mapping->status = 1;
+            $mapping->save();
         }
         return Response::json('Partner & Mappings created successfully', 200);
     }
+
+
     public function update(Request $request, $id)
     {
 //        dd($id);
