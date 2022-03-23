@@ -212,7 +212,6 @@ export default {
                             debugger
 
 
-
                             window.location.href = 'https://portal.uping.co.uk/login'
                         })
                         .catch((err) => {
