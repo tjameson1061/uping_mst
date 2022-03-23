@@ -27,8 +27,6 @@ class AuthController extends Controller
 
     public function validatePasswordRequest(Request $request)
     {
-//        Log::debug('HERE::111');
-//        Log::debug((string)$request->email);
         $user = DB::table('users')->where('email', '=', $request->email)
             ->first();
 
@@ -36,35 +34,28 @@ class AuthController extends Controller
 
         //Check if the user exists
         if (count((array)$user) == 0) {
-            Log::debug('HERE', (array) $user);
             return response()->json(['email' => trans('User does not exist')]);
         }
 
 //        Log::debug("HERE::", (array)$user->email);
-        Log::debug("Email 123::", (array)$request->email);
 
         //Create Password Reset Token
         $query = DB::table('password_resets');
-        Log::debug("Q111::", (array)$request->email);
 
             $res = $query->insert([
             'email' => $request->email,
             'token' => Str::uuid(),
             'created_at' => Carbon::now()
         ]);
-        Log::debug("TokenData::", (array)$res);
 
 
         //Get the token just created above
         $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
-        Log::debug("TokenData::", (array)$tokenData);
 
 
         if ($this->sendResetEmail($request->email, $tokenData->token)) {
-            Log::debug('here');
             return response()->json( 'A reset link has been sent to your email address.');
         } else {
-            Log::debug('her2e');
             return response()->json(['error' => 'A Network Error occurred. Please try again.']);
         }
 
@@ -77,15 +68,7 @@ class AuthController extends Controller
         $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
         //Generate, the password reset link. The token generated is embedded in the link
         $link = 'https://portal.uping.co.uk' . '/reset-password/' . $token . '/' . $user->email;
-        Log::debug('LINK::', (array) $link);
 
-        Log::debug('here::', (array) $email);
-
-//        Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
-
-//        return true;
-
-//
         try {
 
             //Here send the link with CURL with an external email API
@@ -93,13 +76,13 @@ class AuthController extends Controller
 
              return true;
         } catch (\Exception $e) {
-            Log::debug('EXCEPT::', (array) $e);
             return false;
         }
     }
 
     public function resetPassword(Request $request)
     {
+        Log::debug('REQ::', (array)$request->input());
         //Validate input
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
@@ -108,24 +91,28 @@ class AuthController extends Controller
 
         //check if payload is valid before moving on
         if ($validator->fails()) {
+            Log::debug('here');
+
             return redirect()->back()->withErrors(['email' => 'Please complete the form']);
         }
+        Log::debug('DEBUG::', (array)$request->password);
 
         $password = $request->password;
         // Validate the token
         $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
-
+        Log::debug('DEBUG::', (array)$tokenData);
         // Redirect the user back to the password reset request form if the token is invalid
         if (!$tokenData) return response()->json('Invalid Token');
 
         $user = User::where('email', $tokenData->email)->first();
-
+        Log::debug('DEBUG::', (array)$user);
         // Redirect the user back if the email is invalid
         if (!$user) return response()->json(['email' => 'Email not found']);
 
         //Hash and update the new password
         $user->password = Hash::make($password);
-        $user->update(); //or $user->save();
+        $res = $user->update(); //or $user->save();
+        Log::debug('DEBUG::', (array)$res);
 
         //login the user immediately they change password successfully
 //        Auth::login($user);
