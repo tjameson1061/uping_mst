@@ -213,7 +213,7 @@ export default {
 
 
 
-                            window.location.href = 'http://127.0.0.1:8000/login'
+                            window.location.href = 'https://portal.uping.co.uk/login'
                         })
                         .catch((err) => {
                             console.log(err)
