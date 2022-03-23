@@ -97,6 +97,7 @@
         },
         beforeCreate() {
             this.userData = getUserData()
+            console.log(userData)
             axios.get(`/partner/getUserData/${userData.id}`).then(res => {
                 this.userData = res.data
             })
