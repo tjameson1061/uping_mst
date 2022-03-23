@@ -55,7 +55,7 @@ class PartController extends Controller
 
     public function getUserData($id)
     {
-        $user = User::with('company')->where('id', $id)->first();
+        $user = User::find($id)->first();
 
 
         return Response::json(['user' => $user], 200);
