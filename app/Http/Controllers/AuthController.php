@@ -62,10 +62,10 @@ class AuthController extends Controller
 
         if ($this->sendResetEmail($request->email, $tokenData->token)) {
             Log::debug('here');
-            return response()->json('status', trans('A reset link has been sent to your email address.'));
+            return response()->json( 'A reset link has been sent to your email address.');
         } else {
             Log::debug('her2e');
-            return response()->json(['error' => trans('A Network Error occurred. Please try again.')]);
+            return response()->json(['error' => 'A Network Error occurred. Please try again.']);
         }
 
     }
