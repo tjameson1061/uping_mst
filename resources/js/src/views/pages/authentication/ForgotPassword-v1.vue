@@ -122,7 +122,14 @@ export default {
           })
             this.$http.post("/forgot-password", {email: this.user.email}).then(result => {
                 this.response = result.data;
-
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: 'Reset Password Request Submitted',
+                  icon: 'EditIcon',
+                  variant: 'success',
+                },
+              })
 
                 console.log(result);
             }, error => {

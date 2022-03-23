@@ -82,16 +82,16 @@ class AuthController extends Controller
         }
 
         $password = $request->password;
-// Validate the token
+        // Validate the token
         $tokenData = DB::table('password_resets')
             ->where('token', $request->token)->first();
-// Redirect the user back to the password reset request form if the token is invalid
+            // Redirect the user back to the password reset request form if the token is invalid
         if (!$tokenData) return view('auth.passwords.email');
 
         $user = User::where('email', $tokenData->email)->first();
-// Redirect the user back if the email is invalid
+        // Redirect the user back if the email is invalid
         if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);
-//Hash and update the new password
+        //Hash and update the new password
         $user->password = Hash::make($password);
         $user->update(); //or $user->save();
 
@@ -103,7 +103,8 @@ class AuthController extends Controller
             ->delete();
 
         //Send Email Reset Success Email
-        if ($this->sendSuccessEmail($tokenData->email)) {
+        if ($this->sendSuccessEmail($tokenData->email))
+        {
             return response()->json('Successfully changed password', 200);
         }
 
