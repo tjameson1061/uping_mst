@@ -36,11 +36,12 @@ class AuthController extends Controller
             return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
         }
 
-        Log::debug("Email::", (array)$request->email);
+        Log::debug("HERE::", (string)$user->email);
+        Log::debug("Email::", (string)$request->email);
 
         //Create Password Reset Token
         $query = DB::table('password_resets');
-        Log::debug("Q::", (array)$request->$query);
+        Log::debug("Q::", (array)$request->email);
 
             $res = $query->insert([
             'email' => $request->email,
@@ -51,8 +52,7 @@ class AuthController extends Controller
 
 
         //Get the token just created above
-        $tokenData = DB::table('password_resets')
-            ->where('email', $request->email)->first();
+        $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
         Log::debug("TokenData::", (array)$tokenData);
 
 
