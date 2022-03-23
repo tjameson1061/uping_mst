@@ -93,7 +93,7 @@
             // const ACCOUNT_SETTINGS = "admin-account-setting";
             // const userData = ref({})
             const userData = getUserData()
-            console.log(userData)
+            console.log(userData.id)
             debugger
 
 
