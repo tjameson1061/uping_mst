@@ -13,24 +13,26 @@ class CreateBuyersTable extends Migration
      */
     public function up()
     {
-        Schema::create('buyers', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->default(1);
-            $table->integer('company_id')->nullable();
-            $table->char('name')->unique();
-            $table->char('account_contact1', 255)->nullable();
-            $table->longText('avatar')->nullable();
-            $table->char('account_contact2', 255)->nullable();
-            $table->char('buyer_type', 255)->nullable();
-            $table->char('fcaLicense', 255)->nullable();
-            $table->char('icoLicense', 255)->nullable();
-            $table->integer('status')->default(1);
-            $table->timestamps();
+        if (!Schema::hasTable('buyers')) {
+            Schema::create('buyers', function (Blueprint $table) {
+                $table->id();
+                $table->integer('user_id')->default(1);
+                $table->integer('company_id')->nullable();
+                $table->char('name')->unique();
+                $table->char('account_contact1', 255)->nullable();
+                $table->longText('avatar')->nullable();
+                $table->char('account_contact2', 255)->nullable();
+                $table->char('buyer_type', 255)->nullable();
+                $table->char('fcaLicense', 255)->nullable();
+                $table->char('icoLicense', 255)->nullable();
+                $table->integer('status')->default(1);
+                $table->timestamps();
 
 //            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 //            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
-        });
+            });
+        }
     }
 
     /**

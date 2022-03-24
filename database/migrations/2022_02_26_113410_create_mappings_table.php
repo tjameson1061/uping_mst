@@ -13,21 +13,23 @@ class CreateMappingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mappings', function (Blueprint $table) {
-            $table->id();
-            $table->char('leadtype');
-            $table->unsignedBigInteger('partner_id');
-            $table->unsignedBigInteger('buyer_id');
-            $table->unsignedBigInteger('buyer_setup_id');
-            $table->tinyInteger('status');
+        if (!Schema::hasTable('mappings')) {
+            Schema::create('mappings', function (Blueprint $table) {
+                $table->id();
+                $table->char('leadtype');
+                $table->unsignedBigInteger('partner_id');
+                $table->unsignedBigInteger('buyer_id');
+                $table->unsignedBigInteger('buyer_setup_id');
+                $table->tinyInteger('status');
 
-            $table->foreign('partner_id')->references('id')->on('partners');
-            $table->foreign('buyer_id')->references('id')->on('buyers');
-            $table->foreign('buyer_setup_id')->references('id')->on('buyer_setups');
+                $table->foreign('partner_id')->references('id')->on('partners');
+                $table->foreign('buyer_id')->references('id')->on('buyers');
+                $table->foreign('buyer_setup_id')->references('id')->on('buyer_setups');
 
-            $table->timestamps();
+                $table->timestamps();
 
-        });
+            });
+        }
     }
 
     /**
