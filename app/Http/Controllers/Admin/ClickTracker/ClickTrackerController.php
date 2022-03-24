@@ -98,6 +98,11 @@ class ClickTrackerController extends Controller
         }
     }
 
+    /*
+     * http://127.0.0.1:8000/click/tracker?offer_id=1&aff_id=2
+     * https://portal.uping.co.uk/api/click/tracker?offer_id=1&aff_id=1
+     */
+
     /**
      * @param Request $request
      * @return ClickTracker

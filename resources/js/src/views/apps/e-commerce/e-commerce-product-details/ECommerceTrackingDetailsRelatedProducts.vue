@@ -5,7 +5,7 @@
 
           <b-badge class="badge-light-primary">
 
-              https://google.com/aff_sub={{trackingLink.aff_sub}}&aff_sub2={{trackingLink.aff_sub2}}&aff_sub3={{trackingLink.aff_sub3}}&
+              https://portal.uping.co.uk/click/tracker?aff_sub={{trackingLink.aff_sub}}&aff_sub2={{trackingLink.aff_sub2}}&aff_sub3={{trackingLink.aff_sub3}}&
               aff_sub4={{trackingLink.aff_sub4}}&
               aff_sub5={{trackingLink.aff_sub5}}&
           </b-badge>

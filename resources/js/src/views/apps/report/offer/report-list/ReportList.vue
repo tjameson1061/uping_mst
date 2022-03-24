@@ -112,6 +112,14 @@
           </div>
         </template>
 
+        <template #cell(ip)="data">
+          <div class="text-nowrap">
+         <small>
+           {{ data.item.ip }}
+         </small>
+          </div>
+        </template>
+
         <!-- Column: Status -->
         <template #cell(status)="data">
           <b-badge
