@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
-class PartDashboardController extends Controller
+class PartDashboardUSController extends Controller
 {
 
     public function getDashboardLeadDataPartnerUS($id)
