@@ -294,7 +294,6 @@ class PartDashboardOfferController extends Controller
 //        dd($offer_ids);
         return $offer_ids;
     }
-    //Leads
 
 
 
@@ -350,17 +349,16 @@ class PartDashboardOfferController extends Controller
 
 
         $click_query =
-            ClickTracker::
-                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ClickTracker::where('aff_id', $partner_id)->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
             ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('aff_id', $partner_id)
+
                 ->get();
 
         $converison_query =
             DB::table('postback_logs')
                 ->where('partner_id', $partner_id)
-                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+                ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
                 ->get();
 
         $conversion_query_two = $converison_query;
@@ -380,16 +378,12 @@ class PartDashboardOfferController extends Controller
 
 
 
-    // TODO - loop
+
     public function clickSubList($partner_id)
     {
 
-//        $partner = Partner::where('user_id', $id)->first();
-//        dd($partner);
-
 
         $click_data = ClickTracker::where('aff_id', $partner_id)
-//            ->groupBy('aff_sub')
             ->select(
                 'aff_click_id',
                 'aff_sub',
@@ -410,13 +404,7 @@ class PartDashboardOfferController extends Controller
     }
     public function conversionSubList($partner_id)
     {
-//        $partner = Partner::where('user_id', $id)->first();
-
-
         $conversion_data = PostbackTracker::where('partner_id', $partner_id)->groupBy('offer_id')->get();
-
-//        foreach ()
-
 
         return $conversion_data;
     }
