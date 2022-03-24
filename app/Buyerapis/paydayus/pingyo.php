@@ -1,6 +1,5 @@
 <?php
 
-//sleep(10);
 use Illuminate\Support\Facades\Log;
 use PingYo\Status;
 use Illuminate\Support\Facades\Http;
@@ -8,14 +7,11 @@ use Illuminate\Support\Facades\Http;
 class pingyo
 {
     var $response = array();
-    //function __construct($client_detail, $post){
-    //parent::__construct();
 
     function __construct($client_detail, $post)
     {
         $this->manageDependencies();
         unset($root, $library, $path);
-//        $post = (object)$post;
 
         try {
             $today = new DateTime("now", new DateTimeZone("UTC"));
@@ -84,23 +80,22 @@ class pingyo
         $followingPayDateYear = $post->employer->followingPayDateYear;
         $fpd = new DateTime($followingPayDateYear . '/' . $followingPayDateMonth . '/' . $followingPayDateDay, new DateTimeZone("UTC"));
         $followingPayDate = '/Date(' . ($fpd->getTimestamp() * 1000) . ')/';
-//        $followingPayDate = $followingPayDateYear . '/' . $followingPayDateMonth . '/' . $followingPayDateDay;
 
-        $numberOfMonthsAtAddress = floor($post->applicant->monthsAtAddress);
+        $numberOfMonthsAtAddress = $post->applicant->monthsAtAddress;
         $date = date("c", strtotime('-' . $numberOfMonthsAtAddress . " months", strtotime($post->created_at)));
         $AddressMoveIn = date("c", strtotime($date));
         $ami = new DateTime($AddressMoveIn, new DateTimeZone("UTC"));
         $AddressMoveIn = '/Date(' . ($ami->getTimestamp() * 1000) . ')/';
 
         // Time in current employment status
-        $numberOfMonthsInCurrentEmploymentStatus = floor($post->employer->monthsAtEmployer);
+        $numberOfMonthsInCurrentEmploymentStatus = $post->employer->monthsAtEmployer;
         $date = date("c", strtotime('-' . $numberOfMonthsInCurrentEmploymentStatus . " months", strtotime($post->created_at)));
         $EmploymentStarted = date("c", strtotime($date));
         $es = new DateTime($EmploymentStarted, new DateTimeZone("UTC"));
         $EmploymentStarted = '/Date(' . ($es->getTimestamp() * 1000) . ')/';
 
         // Time at bank
-        $numberOfMonthsInBank = floor($post->bank->bankAccountLength);
+        $numberOfMonthsInBank = $post->bank->bankAccountLength;
         $date = date("c", strtotime('-' . $numberOfMonthsInBank . " months", strtotime($post->created_at)));
         $BankAccountOpened = date("c", strtotime($date));
         $bao = new DateTime($BankAccountOpened, new DateTimeZone("UTC"));
