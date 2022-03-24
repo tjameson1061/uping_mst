@@ -274,10 +274,10 @@ class PartDashboardOfferController extends Controller
             foreach ($offer as $k => $v) {
 
 
-                $revenue = PostbackTracker::where('offer_id', $offer['offer_id'])->where('vendor_id', $partner_id)->pluck('totalCost')->sum();
-                $cost = PostbackTracker::where('offer_id', $offer['offer_id'])->where('vendor_id', $partner_id)->pluck('totalRevenue')->sum();
-                $clicks = ClickTracker::where('offer_id', $offer['offer_id'])->where('vendor_id', $partner_id)->count();
-                $conversions = PostbackTracker::where('offer_id', $offer['offer_id'])->where('vendor_id', $partner_id)->count();
+                $revenue = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->pluck('totalCost')->sum();
+                $cost = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->pluck('totalRevenue')->sum();
+                $clicks = ClickTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->count();
+                $conversions = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->count();
 
                 $offer_obj = \App\Models\Offer\Offer::where('id', $offer->offer_id)->first();
 
