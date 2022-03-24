@@ -104,7 +104,12 @@ export default {
   },
   data() {
     return {
-        dashboardData: { dashboard_data : { todayMetrics : { header : [], original : { today_metrics : {}}}}},
+        dashboardData: { dashboard_data : {
+            todayMetrics : { header : [], original : { today_metrics : {}}},
+            weekMetrics : { header : [], original : { today_metrics : {}}},
+            monthMetrics : { header : [], original : { today_metrics : {}}},
+            monthMetrics : { header : [], original : { today_metrics : {}}}
+            },
         userData: {},
     }
   },
