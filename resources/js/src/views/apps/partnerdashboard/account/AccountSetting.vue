@@ -37,7 +37,7 @@
 <!--                    class="mr-50"-->
 <!--                />-->
 <!--                <span class="font-weight-bold">Change Password</span>-->
-<!--            </template>--> TODO
+<!--            </template>-->
 
 <!--            <account-setting-password-->
 <!--                :user-data="userData"/>-->

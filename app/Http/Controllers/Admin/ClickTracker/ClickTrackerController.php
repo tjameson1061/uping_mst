@@ -98,10 +98,7 @@ class ClickTrackerController extends Controller
         }
     }
 
-    /*
-     * http://127.0.0.1:8000/click/tracker?offer_id=1&aff_id=2
-     * https://portal.uping.co.uk/api/click/tracker?offer_id=1&aff_id=1
-     */
+//     * https://portal.uping.co.uk/api/click/tracker?offer_id=1&aff_id=1
 
     /**
      * @param Request $request
@@ -331,7 +328,7 @@ class ClickTrackerController extends Controller
 
 
         if (Str::contains($redirect_url, 'vid={aff_id}')) {
-            $partner = Partner::where('id', '=', $data->aff_id)->first();
+            $partner = Partner::where('vendor_id', '=', $data->aff_id)->first();
             $vendor_id = $partner->vendor_id;
             $lander_url = str_replace("{aff_id}", $vendor_id, $lander_url);
         }
