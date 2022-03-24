@@ -184,7 +184,7 @@ class DashboardController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            DB::table('postback_trackers')
+            DB::table('postback_logs')
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -210,7 +210,7 @@ class DashboardController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            DB::table('postback_trackers')
+            DB::table('postback_logs')
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -237,7 +237,7 @@ class DashboardController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            DB::table('postback_trackers')
+            DB::table('postback_logs')
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -267,7 +267,7 @@ class DashboardController extends Controller
 
 
                 $revenue = PostbackTracker::where('partner_id', $vendor['partner_id'])->pluck('totalCost')->sum();
-                $clicks = ClickTracker::where('partner_id', $vendor['partner_id'])->count();
+                $clicks = ClickTracker::where('aff_id', $vendor['partner_id'])->count();
                 $conversions = PostbackTracker::where('partner_id', $vendor['partner_id'])->count();
 
                 $cost = PostbackTracker::where('partner_id', $vendor['partner_id'])->pluck('totalRevenue')->sum();

@@ -206,7 +206,7 @@ Route::group([
             /* Admin Account Settings */
             Route::get('getDashboardDataUK', [DashboardController::class, 'getDashboardDataUK']);
             Route::get('getDashboardDataUS', [DashboardUSController::class, 'getDashboardDataUS']);
-            Route::get('getDashboardDataOffer', [DashboardController::class, 'getDashboardDataOffer']);
+            Route::get('getDashboardDataOffer', [DashboardOfferController::class, 'getDashboardDataOffer']);
 
             Route::apiResource('users', '\App\Http\Controllers\UsersController');
             Route::apiResource('company', '\App\Http\Controllers\Admin\User\CompanyController');
