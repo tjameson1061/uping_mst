@@ -26,7 +26,6 @@ class PartDashboardOfferController extends Controller
     public function  getDashboardDataOffer($id)
     {
         $partner = Partner::where('user_id', $id)->first();
-//        $vid = $partner->vendor_id;
         $partner_id = $partner->id;
         $vendor_id = $partner->vendor_id;
 
@@ -35,8 +34,8 @@ class PartDashboardOfferController extends Controller
         $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id, $vendor_id);
         $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id, $vendor_id);
         $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id, $vendor_id);
-        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id, $vendor_id);
-        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id, $vendor_id);
+        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
+        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
 
         return Response::json(['dashboard_data' => $dashboard_data], 200);
 
@@ -154,7 +153,8 @@ class PartDashboardOfferController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            PostbackTracker::where('partner_id', $vid)
+            DB::table('postback_logs')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -165,7 +165,7 @@ class PartDashboardOfferController extends Controller
         $today_metrics = [];
         $today_metrics['clicks'] = $click_query->count();
         $today_metrics['conversions'] = $conversion_query_two;
-        $today_metrics['revenue'] = $converison_query->sum('totalRevenue');
+        $today_metrics['revenue'] = $converison_query->sum('totalCost');
         try {
             $today_metrics['profit'] = $converison_query->count();
         } catch (\Exception $e){
@@ -182,7 +182,8 @@ class PartDashboardOfferController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            PostbackTracker::where('partner_id', $vid)
+            DB::table('postback_logs')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -209,7 +210,8 @@ class PartDashboardOfferController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
-            PostbackTracker::where('partner_id', $vid)
+            DB::table('postback_logs')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
