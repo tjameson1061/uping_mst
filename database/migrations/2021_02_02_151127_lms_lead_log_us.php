@@ -16,7 +16,7 @@ class LmsLeadLogUs extends Migration
         Schema::create('lms_lead_log_us', function (Blueprint $table) {
             $table->id();
             $table->uuid('lead_id')->nullable();
-            $table->integer('vendor_id')->nullable();
+            $table->string('vendor_id')->nullable();
             $table->json('post_data')->nullable();
             $table->text('post_response')->nullable();
             $table->float('post_time')->nullable();
