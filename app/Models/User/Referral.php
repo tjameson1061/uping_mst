@@ -11,6 +11,14 @@ class Referral extends Model
 {
     use HasFactory;
 
+    public static function add_commission( $referrer_data )
+    {
+        $query = DB::table('referrals')->insert($referrer_data);
+        Log::debug('REFERRER::', (array)$query);
+
+        return $query;
+    }
+
     public static function getReferrals($id)
     {
         $partner = DB::table('referrals')->where('user_id', '=', $id)->get()->toArray();

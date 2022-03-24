@@ -15,13 +15,7 @@ class ReferralController extends Controller
         return view('partner.referral.reports-referral');
     }
 
-    public static function add_commission( $referrer_data )
-    {
-        $query = DB::table('referrals')->insert($referrer_data);
-        Log::debug('REFERRER::', (array)$query);
 
-         return $query;
-    }
 
 
 

@@ -12,6 +12,7 @@ use App\Models\Buyer\BuyerFilter;
 use App\Models\Lead\USLead;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
+use App\Models\User\Referral;
 use Exception;
 
 use App\Models\Mapping;
@@ -314,7 +315,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                                     'geo' => '1',
                                 );
                                 Log::debug('REFERRER::', (array) $referrer_data);
-                                $ref_com_response = ReferralController::add_commission($referrer_data);
+                                $ref_com_response = Referral::add_commission($referrer_data);
                                 Log::debug('REFERRER STORE::', (array) $ref_com_response);
 
                             }
