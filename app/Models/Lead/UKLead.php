@@ -280,7 +280,7 @@ class UKLead extends Model
 
                 $tier_id = BuyerSetup::where('buyer_tier_id', $row->buyerTierID)->first()->id;
 
-                $query->where('leadid', $search['id'])
+                $query->where('lead_id', $search['id'])
                     ->where('buyer_setup_id', $tier_id);
 
                 $res = $query->update(['isredirected' => $data_log['isRedirected']]);
