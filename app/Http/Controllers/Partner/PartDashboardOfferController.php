@@ -31,8 +31,8 @@ class PartDashboardOfferController extends Controller
 
         $dashboard_data = [];
         $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id);
-        $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id);
-        $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id);
+//        $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id);
+//        $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id);
 //        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
 //        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
 
@@ -399,7 +399,7 @@ class PartDashboardOfferController extends Controller
                 'aff_sub2',
                 'aff_sub3',
                 'aff_sub4',
-                'aff_sub5',
+                'aff_sub5'
             )
             ->get()
             ->take(5);
