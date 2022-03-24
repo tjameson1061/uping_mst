@@ -52,11 +52,10 @@ class PartDashboardController extends Controller
 
     public function todayEarnings($vendor_id)
     {
-        $daily = UKLead::where('vid', $vendor_id)
+        $vid_lead_price_total = UKLead::where('vid', $vendor_id)
             ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53");
+            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")->select('vidLeadPrice')->sum();
 
-        $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['today_total'] = round($vid_lead_price_total, 2);
         $revenue['redirection'] = $this->redirectionToday($vendor_id);
 
