@@ -28,17 +28,14 @@ class AuthController extends Controller
 
     public function validatePasswordRequest(Request $request)
     {
-        $user = DB::table('users')->where('email', '=', $request->email)
-            ->first();
+        $user = DB::table('users')->where('email', '=', $request->email)->first();
 
-//        Log::debug('USER', (array) $user);
 
         //Check if the user exists
         if (count((array)$user) == 0) {
             return response()->json(['email' => trans('User does not exist')]);
         }
 
-//        Log::debug("HERE::", (array)$user->email);
 
         //Create Password Reset Token
         $query = DB::table('password_resets');
@@ -64,7 +61,6 @@ class AuthController extends Controller
 
     private function sendResetEmail($email, $token)
     {
-//        Log::debug('email::', (array) $email);
         //Retrieve the user from the database
         $user = DB::table('users')->where('email', $email)->select('name', 'email')->first();
         //Generate, the password reset link. The token generated is embedded in the link
@@ -72,6 +68,7 @@ class AuthController extends Controller
 
         try {
 
+            Log::debug('Mail::');
             //Here send the link with CURL with an external email API
              Mail::to($user->email)->send(new ResetPassword($token, $link, $user));
 
