@@ -421,15 +421,15 @@ class DashboardController extends Controller
     public function redirectionWeek()
     {
         $redirected_lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', Carbon::now())
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
             ->count();
         $non_redirected_lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', Carbon::now())
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 0)
             ->count();
         $lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', Carbon::now())
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 

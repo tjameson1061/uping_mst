@@ -26,17 +26,20 @@ class DashboardUSController extends Controller
     {
         $dashboard_data = [];
         $dashboard_data['todayEarnings'] = $this->todayEarnings();
+        $dashboard_data['redirectionToday'] = $this->redirectionToday();
+
         $dashboard_data['weekEarnings'] = $this->weekEarnings();
+        $dashboard_data['redirectionWeek'] = $this->redirectionWeek();
+
         $dashboard_data['monthEarnings'] = $this->monthEarnings();
-//        $dashboard_data['redirectionToday'] = $this->redirectionToday();
-//        $dashboard_data['redirectionWeek'] = $this->redirectionWeek();
-//        $dashboard_data['redirectionMonth'] = $this->redirectionMonth();
+        $dashboard_data['redirectionMonth'] = $this->redirectionMonth();
+
         $dashboard_data['profitEarnings'] = $this->profitEarnings();
 
         $dashboard_data['lead_count'] = $this->leadCounts();
         $dashboard_data['affiliate_table_data'] = $this->affiiliateLeadCounts();
         $dashboard_data['lender_table_data'] = $this->lenderLeadCounts();
-//        $dashboard_data['redirection_overview'] = $this->redirectionOverview();
+
         $dashboard_data['affiliate_redirection'] = $this->affiliateRedirectionRates();
         $dashboard_data['lender_redirection'] = $this->lenderRedirectionRates();
         $dashboard_data['top_referrers'] = $this->referrerMetrics();
