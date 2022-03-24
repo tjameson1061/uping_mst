@@ -71,9 +71,8 @@ class PartDashboardController extends Controller
         $daily = DB::table('uk_leads');
 
 
-        USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id);
+        UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . "23:53:53");
 //            ->count();
 
 
