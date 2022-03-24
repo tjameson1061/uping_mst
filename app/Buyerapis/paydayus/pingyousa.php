@@ -134,7 +134,6 @@ class pingyousa
             case 'Benefits':
                 $post->employer->incomeSource = 7;
         }
-
         switch ($post->employer->incomeCycle) {
             case 'Weekly':
                 $post->employer->incomeCycle = 1;
@@ -211,33 +210,32 @@ class pingyousa
             case 'Other':
                 $post->applicant->maritalStatus = 7;
         }
-        if ($post->consent->consentFinancial === '1' || 1) {
+        if ($post->consent->consentFinancial === '1') {
             $post->consent->consentFinancial = true;
         } else {
             $post->consent->consentFinancial = false;
         }
-        if ($post->consent->consentCreditSearch === '1' || 1) {
+        if ($post->consent->consentCreditSearch == '1') {
             $post->consent->consentCreditSearch = true;
         } else {
             $post->consent->consentCreditSearch = false;
         }
-        if ($post->consent->consentThirdPartyEmails === '1' || 1) {
+        if ($post->consent->consentThirdPartyEmails == '1') {
             $post->consent->consentThirdPartyEmails = true;
         } else {
             $post->consent->consentThirdPartyEmails = false;
         }
-        if ($post->consent->consentThirdPartySMS === '1' || 1) {
+        if ($post->consent->consentThirdPartySMS == '1') {
             $post->consent->consentThirdPartySMS = true;
         } else {
             $post->consent->consentThirdPartySMS = false;
         }
-        if ($post->consent->consentThirdPartyPhone === '1' || 1) {
+        if ($post->consent->consentThirdPartyPhone == '1') {
             $post->consent->consentThirdPartySMS = true;
         } else {
             $post->consent->consentThirdPartyPhone = false;
         }
-
-        if ($post->employer->jobTitle === '') {
+        if ($post->employer->jobTitle == '') {
             $post->employer->jobTitle = 'unknown';
         }
 
@@ -245,7 +243,7 @@ class pingyousa
         // POST DATA
         $json = array(
             "AffiliateId" => (string) "TOMJ-USA",
-            "Campaign" => (string) $post->partner_id ?? 'UPING',
+            "Campaign" => (string) $post->vid ?? 'UPING',
             "SubAffiliate" => (string) $post->aff_sub ?? '',
             "Timeout" => (int) $client_detail->timeout ?? '120',
             "TestOnly" => (boolean) true,
