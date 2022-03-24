@@ -93,20 +93,13 @@ class PartDashboardController extends Controller
     }
     public function redirectionToday($vendor_id)
     {
-        $redirected_lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = UKLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->where('isRedirected', 1)
-
             ->count();
-        $non_redirected_lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $non_redirected_lead_count = UKLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->where('isRedirected', 0)
             ->count();
-        $lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $lead_count = UKLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->count();
 
 
@@ -127,26 +120,23 @@ class PartDashboardController extends Controller
         $redirection_stats = [];
         $redirection_stats['redirected_leads'] = $redirected_lead_count;
         $redirection_stats['non_redirected_leads'] = $non_redirected_lead_count;
-        $redirection_stats['redirected_ratio'] = $redirected_ratio;
+        $redirection_stats['redirected_ratio'] = [$redirected_ratio];
 
 
         return $redirection_stats;
     }
     public function redirectionWeek($vendor_id)
     {
-        $redirected_lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
             ->count();
-        $non_redirected_lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $non_redirected_lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 0)
             ->count();
-        $lead_count = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
@@ -174,18 +164,16 @@ class PartDashboardController extends Controller
     }
     public function redirectionMonth($vendor_id)
     {
-        $redirected_lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
-            ->where('vid', $vendor_id)->count();
-        $non_redirected_lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('isRedirected', 0)
-            ->where('vid', $vendor_id)
             ->count();
-        $lead_count = UKLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $non_redirected_lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+            ->where('isRedirected', 0)
+            ->count();
+        $lead_count = UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
