@@ -55,8 +55,9 @@ class PartDashboardController extends Controller
         Log::debug('PARTNER::', (array)$vendor_id);
 
         $daily
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+//            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+//            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+                ->where('created_at', Carbon::today())
             ->where('vid', $vendor_id)
             ->count();
         Log::debug('PARTNER::', (array)$daily->get()->toArray());
