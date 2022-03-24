@@ -173,7 +173,7 @@ class UKLeadController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['lead_id'] = UKLead::latest()->first()->id;
         $partner_log = UKLead::add_log_partner($data);
-        $partnerlogid = $partner_log->id;
+        $partnerlogid = $partner_log['id'];
 
         // Get Generated Lead ID and log it to Telescope
         $post->lead_id = DB::table('uk_leads')->latest()->first()->id;
