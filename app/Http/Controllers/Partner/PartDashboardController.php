@@ -66,14 +66,14 @@ class PartDashboardController extends Controller
     {
 
 
-        $weekly = UKLead::where('vid', $vendor_id)
+        $week = UKLead::where('vid', $vendor_id)
             ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53");
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
 
-        $vid_lead_price_total = $weekly->pluck('vidLeadPrice')->sum();
+        $vid_lead_price_total = $week->pluck('vidLeadPrice')->sum();
         $revenue['week_total'] = round($vid_lead_price_total,2);
-        $revenue['redirection'] = $this->redirectionWeek($vendor_id);
+        $revenue['redirection'] = $this->redirectionMonth($vendor_id);
 
         return $revenue;
     }
