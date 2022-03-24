@@ -58,11 +58,11 @@ class DashboardOfferController extends Controller
     }
     public function clickMetricsForDate($date)
     {
-        $result = DB::select("select id,
+        $result = DB::select("select aff_id,
         substring(created_at,1,10) as date, count(*) as result_count
         from click_trackers
         where substring(created_at,1,10) = '$date'
-        group by 'id', substring(created_at,1,10)");
+        group by aff_id, substring(created_at,1,10)");
 
 
         if ($result == null) {
