@@ -51,9 +51,6 @@
       <b-col lg="12">
         <click-company-table :table-data="dashboardData" />
       </b-col>
-<!--        <b-col lg="6">-->
-<!--        <conversion-company-table :table-data="dashboardData" />-->
-<!--        </b-col>-->
 
 
     </b-row>
@@ -105,10 +102,7 @@ export default {
   data() {
     return {
         dashboardData: { dashboard_data : {
-            todayMetrics : { header : [], original : { today_metrics : {}}},
-            weekMetrics : { header : [], original : { today_metrics : {}}},
-            monthMetrics : { header : [], original : { today_metrics : {}}},
-            monthMetrics : { header : [], original : { today_metrics : {}}}
+            todayMetrics : { header : [], original : { today_metrics : {}}}}
             },
         userData: {},
     }

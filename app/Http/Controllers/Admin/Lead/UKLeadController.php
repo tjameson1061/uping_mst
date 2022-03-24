@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
@@ -137,7 +138,7 @@ class UKLeadController extends Controller
     public function post(LeadPostRequest $request)
     {
 
-
+//        return Http::spy('status === 202 && sniper.dsr');
 //        dd($request->input());
 //        $ip = $request->ip();
 //        $userAgent = $request->server('HTTP_USER_AGENT');

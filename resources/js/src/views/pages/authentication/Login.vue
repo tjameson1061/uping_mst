@@ -255,7 +255,9 @@ export default {
                         .catch(error => {
                             console.log(error)
                             debugger
-                            console.log(error.response.status === 401)
+                            // console.log(error.response.status === 401)
+                            // console.log(error.response.status ===  200)
+                            // console.log(error.response.status === 459)
 
                             if (error.response.data)
                             this.$toast({

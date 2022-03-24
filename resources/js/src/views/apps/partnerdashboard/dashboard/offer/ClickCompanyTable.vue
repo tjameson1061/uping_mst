@@ -32,45 +32,31 @@
           </div>
       </template>
 
-      <!-- category -->
-<!--      <template #cell(category)="data">-->
-<!--        <div class="d-flex align-items-center">-->
-<!--          <b-avatar-->
-<!--            class="mr-1"-->
-<!--            :variant="data.item.avatarColor"-->
-<!--          >-->
-<!--            <feather-icon-->
-<!--              size="18"-->
-<!--              :icon="data.item.avatarIcon"-->
-<!--            />-->
-<!--          </b-avatar>-->
-<!--          <span>{{ data.item.avatarTitle }}</span>-->
-<!--        </div>-->
-<!--      </template>-->
 
       <!-- views -->
-      <template #cell(aff_sub)="data">
+      <template #cell(ip)="data">
         <div class="d-flex flex-column">
-          <small class="font-weight-bolder mb-25">{{ data.item.aff_sub }}</small>
-<!--          <small class="font-small-2 text-muted text-nowrap">{{ data.item.viewsub }}</small>-->
+          <small class="font-weight-bolder mb-25">{{ data.item.ip }}</small>
         </div>
       </template>
+        <template #cell(aff_sub)="data">
+            <div class="d-flex flex-column">
+                <small class="font-weight-bolder mb-25">{{ data.item.aff_sub }}</small>
+            </div>
+        </template>
         <template #cell(aff_sub2)="data">
             <div class="d-flex flex-column">
                 <small class="font-weight-bolder mb-25">{{ data.item.aff_sub2 }}</small>
-                <!--          <small class="font-small-2 text-muted text-nowrap">{{ data.item.viewsub }}</small>-->
             </div>
         </template>
         <template #cell(aff_sub3)="data">
             <div class="d-flex flex-column">
                 <small class="font-weight-bolder mb-25">{{ data.item.aff_sub3 }}</small>
-                <!--          <small class="font-small-2 text-muted text-nowrap">{{ data.item.viewsub }}</small>-->
             </div>
         </template>
         <template #cell(aff_sub4)="data">
             <div class="d-flex flex-column">
                 <small class="font-weight-bolder mb-25">{{ data.item.aff_sub4 }}</small>
-                <!--          <small class="font-small-2 text-muted text-nowrap">{{ data.item.viewsub }}</small>-->
             </div>
         </template>
         <template #cell(aff_sub5)="data">
@@ -123,6 +109,7 @@ export default {
     return {
       fields: [
         { key: 'aff_click_id', label: 'Click ID' },
+        { key: 'ip', label: 'IP Address' },
         { key: 'aff_sub', label: 'aff_sub' },
         { key: 'aff_sub2', label: 'aff_sub2' },
         { key: 'aff_sub3', label: 'aff_sub3' },

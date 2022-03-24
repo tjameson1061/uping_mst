@@ -222,10 +222,6 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-
-//        dd($request->all());
-//        dd($validator);
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
