@@ -175,8 +175,8 @@ Route::group([
         Route::patch('/updateAccountPassword/{id}', [PartController::class, 'updateAccountPassword']);
         Route::patch('/updateCompany/{id}', [PartController::class, 'updateCompany']);
         /* Partner DATA Routes */
-        Route::get('getDashboardLeadDataPartner/uk/{id}', [PartDashboardController::class, 'getDashboardLeadDataPartner']);
-        Route::get('getDashboardLeadDataPartner/us/{id}', [PartDashboardUSController::class, 'getDashboardLeadDataPartner']);
+        Route::get('getDashboardLeadDataPartner/uk/{id}', [PartDashboardController::class, 'getDashboardLeadDataPartnerUK']);
+        Route::get('getDashboardLeadDataPartner/us/{id}', [PartDashboardUSController::class, 'getDashboardLeadDataPartnerUS']);
         Route::get('getDashboardOfferDataPartner/{id}', [PartDashboardOfferController::class, 'getDashboardDataOffer']);
         Route::get('getPartnerReports/{id}', [PartReportController::class, 'getPartnerReports']);
         Route::get('revenueChartData/{id}', [PartDashboardController::class, 'revenueChartData']);

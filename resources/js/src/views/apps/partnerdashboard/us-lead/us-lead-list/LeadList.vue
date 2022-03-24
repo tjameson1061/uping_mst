@@ -66,10 +66,20 @@
         :hover="true"
 
       >
+
+        <template #cell(created_at)="data">
+          <b-media vertical-align="center">
+
+            <small class="align-text-top text-capitalize">{{
+              data.item.created_at
+              }}</small>
+          </b-media>
+        </template>
+
         <template #cell(id)="data">
           <b-link
             :to="{
-              name: 'apps-US-lead-view',
+              name: 'apps-us-lead-view',
               params: { id: data.item.id },
             }"
             class="font-weight-bold"

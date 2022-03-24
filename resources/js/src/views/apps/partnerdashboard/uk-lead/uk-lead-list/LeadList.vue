@@ -141,6 +141,15 @@
               </b-media>
           </template>
 
+          <template #cell(created_at)="data">
+              <b-media vertical-align="center">
+
+                  <small class="align-text-top text-capitalize">{{
+                      data.item.created_at
+                      }}</small>
+              </b-media>
+          </template>
+
         <template #cell(buyerTierID)="data">
           <b-media vertical-align="center">
               <small  class="align-text-top text-capitalize" >

@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Response;
 class PartDashboardUSController extends Controller
 {
 
-    public function getDashboardLeadDataPartner($id)
+    public function getDashboardLeadDataPartnerUS($id)
     {
 
 

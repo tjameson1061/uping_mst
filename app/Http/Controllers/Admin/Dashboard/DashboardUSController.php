@@ -321,12 +321,12 @@ class DashboardUSController extends Controller
     //Leads
     public function todayEarnings()
     {
-        $daily = DB::table('us_leads');
+//        $daily = DB::table('us_leads');
 
-        $daily
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-            ->count();
+        $daily =
+            USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
+//            ->count();
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $buyer_lead_price_total = $daily->pluck('buyerLeadPrice')->sum();

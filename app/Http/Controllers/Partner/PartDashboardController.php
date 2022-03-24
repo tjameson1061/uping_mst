@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Partner;
 use App\Models\ClickTracker\ClickTracker;
 use App\Models\Invoice;
 use App\Models\Lead\UKLead;
+use App\Models\Lead\USLead;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
 use App\Models\PostbackTracker\PostbackTracker;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Response;
 class PartDashboardController extends Controller
 {
 
-    public function getDashboardLeadDataPartner($id)
+    public function getDashboardLeadDataPartnerUK($id)
     {
 
 
@@ -55,18 +56,13 @@ class PartDashboardController extends Controller
         Log::debug('PARTNER::', (array)$vendor_id);
 
         $daily
-//            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-//            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-                ->where('created_at', Carbon::today())
+            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
             ->where('vid', $vendor_id);
-//            ->count();
-        Log::debug('PARTNER::', (array)$daily->get()->toArray());
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['today_total'] = round($vid_lead_price_total, 2);
         $revenue['redirection'] = $this->redirectionToday($vendor_id);
-//        $revenue['series'] = [$revenue['today_profit'], $revenue['today_cost'], $revenue['today_revenue'] ];
-//        $revenue['series'] = [50, 50, 70];
 
         return $revenue;
     }
@@ -75,8 +71,7 @@ class PartDashboardController extends Controller
         $daily = DB::table('uk_leads');
 
 
-        $daily
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+        USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
             ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
             ->where('vid', $vendor_id);
 //            ->count();
@@ -85,8 +80,6 @@ class PartDashboardController extends Controller
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['week_total'] = round($vid_lead_price_total,2);
         $revenue['redirection'] = $this->redirectionWeek($vendor_id);
-//        $revenue['series'] = [$revenue['today_profit'], $revenue['today_cost'], $revenue['today_revenue'] ];
-//        $revenue['series'] = [50, 50, 70];
 
         return $revenue;
     }
