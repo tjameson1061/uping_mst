@@ -2,7 +2,7 @@
   <b-card no-body>
     <b-card-body class="d-flex justify-content-between align-items-center">
       <div class="truncate">
-        <h2 class="mb-25 font-weight-bolder">
+        <h2 class="mb-25 font-weight-bolder" v-if="statistic">
               £ {{ statistic }}
         </h2>
         <span>{{ statisticTitle }}</span>
@@ -34,10 +34,7 @@ export default {
       type: String,
       required: true,
     },
-    statistic: {
-      type: [Number, String],
-      required: true,
-    },
+    statistic: '',
     statisticTitle: {
       type: String,
       default: '',

@@ -7,7 +7,7 @@
         type="area"
         height="400"
         :options="chartOptions"
-        :series="series.series"
+        :series="series"
       />
       <!--        :series="lineAreaChartSpline.series"-->
     </b-card-body>
@@ -48,6 +48,7 @@ export default {
       clicks: [],
       conversions: [],
       revenue: [],
+      series : [],
         userData: {},
     };
   },
@@ -95,24 +96,6 @@ export default {
         },
       };
     },
-    series() {
-      return {
-        series: [
-          {
-            name: "Clicks",
-            data: this.chartData.clicks,
-          },
-          {
-            name: "Conversions",
-            data: this.chartData.conversions,
-          },
-          {
-            name: "Revenue",
-            data: this.chartData.revenue,
-          },
-        ],
-      };
-    },
   },
   created() {
     this.fetchChartData();
@@ -130,6 +113,22 @@ export default {
           this.clicks = response.data.clicks;
           this.conversions = response.data.conversions;
           this.revenue = response.data.revenue;
+
+          this.series =[
+          {
+            name: "Clicks",
+            data: this.chartData.clicks,
+          },
+          {
+            name: "Conversions",
+            data: this.chartData.conversions,
+          },
+          {
+            name: "Revenue",
+            data: this.chartData.revenue,
+          },
+        ];
+
         })
         .catch((error) => console.log(error));
     },
