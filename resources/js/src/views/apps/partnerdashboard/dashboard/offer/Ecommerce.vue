@@ -51,9 +51,6 @@
             <b-col lg="12">
                 <click-company-table :table-data="dashboardData" />
             </b-col>
-            <!--        <b-col lg="6">-->
-            <!--        <conversion-company-table :table-data="dashboardData" />-->
-            <!--        </b-col>-->
 
 
         </b-row>

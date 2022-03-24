@@ -33,8 +33,8 @@ class PartDashboardOfferController extends Controller
         $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id);
         $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id);
         $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id);
-        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
-        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
+//        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
+//        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
 
         return Response::json(['dashboard_data' => $dashboard_data], 200);
 
