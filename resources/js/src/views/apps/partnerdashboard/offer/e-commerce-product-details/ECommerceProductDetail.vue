@@ -175,6 +175,7 @@
 
             <b-tabs
                 pills
+                class="ml-2"
             >
 
                 <!-- Tab: Account -->

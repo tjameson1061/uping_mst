@@ -158,7 +158,7 @@
 
             <b-tabs
                 pills
-                class="align-items-center flex justify-content-center"
+                class="align-items-center flex justify-content-center ml-2"
             >
 
                 <!-- Tab: Tracking -->
