@@ -28,14 +28,15 @@ class PartDashboardOfferController extends Controller
         $partner = Partner::where('user_id', $id)->first();
 //        $vid = $partner->vendor_id;
         $partner_id = $partner->id;
+        $vendor_id = $partner->vendor_id;
 
 
         $dashboard_data = [];
-        $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id);
-        $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id);
-        $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id);
-        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
-        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
+        $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id, $vendor_id);
+        $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id, $vendor_id);
+        $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id, $vendor_id);
+        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id, $vendor_id);
+        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id, $vendor_id);
 
         return Response::json(['dashboard_data' => $dashboard_data], 200);
 
@@ -144,11 +145,11 @@ class PartDashboardOfferController extends Controller
     }
 
     //Offer
-    public function todayMetrics($vid)
+    public function todayMetrics($vid, $vendor_id)
     {
 
         $click_query =
-            ClickTracker::where('partner_id', $vid)
+            ClickTracker::where('aff_id', $vendor_id)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -173,10 +174,10 @@ class PartDashboardOfferController extends Controller
 
         return Response::json(['today_metrics' => $today_metrics], 200);
     }
-    private function weekMetrics($vid)
+    private function weekMetrics($vid, $vendor_id)
     {
         $click_query =
-            ClickTracker::where('partner_id', $vid)
+            ClickTracker::where('aff_id', $vendor_id)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -200,10 +201,10 @@ class PartDashboardOfferController extends Controller
         return Response::json(['week_metrics' => $week_metrics], 200);
 
     }
-    private function monthMetrics($vid)
+    private function monthMetrics($vid, $vendor_id)
     {
         $click_query =
-            ClickTracker::where('partner_id', $vid)
+            ClickTracker::where('aff_id', $vendor_id)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
@@ -236,15 +237,17 @@ class PartDashboardOfferController extends Controller
         foreach ($vendor_ids as $vendor) {
             foreach ($vendor as $k => $v) {
 
+                $vid = Partner::where('id', $partner_id)->first();
+                $vendor_id = $vid->vendor_id;
+
 
                 $revenue = PostbackTracker::where('partner_id', $vendor['partner_id'])->where('vendor_id', $partner_id)->pluck('totalCost')->sum();
-                $clicks = ClickTracker::where('partner_id', $vendor['partner_id'])->where('vendor_id', $partner_id)->count();
+                $clicks = ClickTracker::where('aff_id', $vendor_id)->where('vendor_id', $partner_id)->count();
                 $conversions = PostbackTracker::where('partner_id', $vendor['partner_id'])->where('vendor_id', $partner_id)->count();
 
                 $cost = PostbackTracker::where('partner_id', $vendor['partner_id'])->where('vendor_id', $partner_id)->pluck('totalRevenue')->sum();
                 $leads = PostbackTracker::where('partner_id', $vendor['partner_id'])->where('vendor_id', $partner_id)->count();
 
-                $vid = Partner::where('id', $partner_id)->first();
 
                 $vendor->vid = $vid->vendor_id;
                 $vendor->clicks = $clicks;
@@ -270,10 +273,12 @@ class PartDashboardOfferController extends Controller
         foreach ($offer_ids as $offer) {
             foreach ($offer as $k => $v) {
 
+                $vid = Partner::where('id', $partner_id)->first();
+                $vendor_id = $vid->vendor_id;
 
                 $revenue = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->pluck('totalCost')->sum();
                 $cost = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->pluck('totalRevenue')->sum();
-                $clicks = ClickTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->count();
+                $clicks = ClickTracker::where('offer_id', $offer['offer_id'])->where('aff_id', $vendor_id)->count();
                 $conversions = PostbackTracker::where('offer_id', $offer['offer_id'])->where('partner_id', $partner_id)->count();
 
                 $offer_obj = \App\Models\Offer\Offer::where('id', $offer->offer_id)->first();
