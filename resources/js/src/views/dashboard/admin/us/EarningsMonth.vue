@@ -28,7 +28,7 @@
       height="180"
       class="my-2"
       :options="goalOverviewRadialBar"
-      :series="[data.monthEarnings.redirection.redirected_ratio[0]]"
+      :series="[data.monthEarnings.redirection.redirected_ratio]"
 
     />
     <b-row class="text-center mx-0">

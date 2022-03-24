@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Advertiser\Advertiser;
 use App\Models\Buyer\BuyerSetup;
 use App\Models\ClickTracker\ClickTracker;
-use App\Models\Lead\UKLead;
 use App\Models\Lead\USLead;
 use App\Models\LMSApplication\Source;
 use App\Models\Offer\Offer;
