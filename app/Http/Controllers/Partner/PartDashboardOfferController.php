@@ -25,7 +25,7 @@ class PartDashboardOfferController extends Controller
     public function  getDashboardDataOffer($id)
     {
         $partner = Partner::where('user_id', $id)->first();
-        $vid = $partner->vendor_id;
+//        $vid = $partner->vendor_id;
         $partner_id = $partner->id;
 
 
