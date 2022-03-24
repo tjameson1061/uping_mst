@@ -158,7 +158,7 @@
                             </b-button>
                             <b-button
                                 variant="outline-secondary"
-                                class="btn-wishlist mr-0 mr-sm-1 mb-1 mb-sm-0"
+                                class="btn-wishlist mr-0 mr-sm-1 mb-1 mb-sm-0 ml-5"
                                 @click="toggleOfferInWishlist(offer)"
                             >
                                 <feather-icon

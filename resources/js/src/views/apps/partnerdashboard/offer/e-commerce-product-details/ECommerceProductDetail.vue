@@ -175,7 +175,7 @@
 
             <b-tabs
                 pills
-                class="ml-2"
+                class="ml-5"
             >
 
                 <!-- Tab: Account -->
@@ -197,7 +197,7 @@
                 </b-tab>
 
                 <!-- Tab: Information -->
-                <b-tab>
+                <b-tab class="ml-5">
                     <template #title>
                         <feather-icon
                             icon="InfoIcon"
@@ -213,7 +213,8 @@
                     <!--                    class="mt-2 pt-75"-->
                     <!--                />-->
                 </b-tab>
-                <b-tab>
+                <b-tab
+                class="ml-5">
                     <template #title>
                         <feather-icon
                             icon="InfoIcon"

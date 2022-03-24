@@ -123,15 +123,16 @@
                         <ul class="offer-features list-unstyled">
                             <b-card-text class="item-description">
                                 <b-badge variant="light-primary">
-                                    <!--                <feather-icon icon="StarIcon" />-->
-
-                                    CPL
+                                    {{offer.conversion_type}}
                                 </b-badge>
                                 <b-badge variant="light-primary">
                                     Finance
                                 </b-badge>
-                                <b-badge variant="light-primary">
+                                <b-badge variant="light-primary" v-if="offer.id == 1 || offer.id == 3 || offer.id == 4">
                                     UK
+                                </b-badge>
+                                <b-badge variant="light-primary" v-if="offer.id == 2 || offer.id == 5 || offer.id == 6">
+                                    USA
                                 </b-badge>
                             </b-card-text>
                         </ul>
@@ -141,7 +142,7 @@
                         <!-- Restrictions -->
                         <b-card-text> <h6>Restrictions: </h6>  <span>  {{ offer.description }}</span></b-card-text>
                         <!-- Allowed Sources -->
-                        <b-card-text> <h6>Allowed Sources: </h6>  <span>  {{ offer.description }}</span></b-card-text>
+                        <b-card-text> <h6>Allowed Sources: </h6>  <span>  {{ offer.restrictions }}</span></b-card-text>
                         <!-- Terms -->
                         <b-card-text> <h6>Terms: </h6>  <span>  {{ offer.terms }}</span></b-card-text>
 
