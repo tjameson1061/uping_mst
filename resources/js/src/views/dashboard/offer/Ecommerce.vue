@@ -29,7 +29,7 @@
               lg="3"
               sm="6"
           >
-              <statistic-card-horizontal
+              <profit-statistic-card-horizontal
                   icon="DollarSignIcon"
                   color="info"
                   :statistic="dashboardData.dashboard_data.todayMetrics.original.today_metrics.revenue"
@@ -40,7 +40,7 @@
               lg="3"
               sm="6"
           >
-              <statistic-card-horizontal
+              <profit-statistic-card-horizontal
                   icon="TrendingUpIcon"
                   color="success"
                   :statistic="dashboardData.dashboard_data.todayMetrics.original.today_metrics.profit"
@@ -89,6 +89,7 @@ import RedirectionTotalOverview from './RedirectionTotalOverview.vue'
 import EcommerceTransactions from './EcommerceTransactions.vue'
 import ApexLineAreaChart from "./ApexLineAreaChart";
 import StatisticCardHorizontal from '@core/components/statistics-cards/StatisticCardHorizontal.vue'
+import ProfitStatisticCardHorizontal from './ProfitStatisticCardHorizontal.vue'
 
 
 export default {
@@ -111,6 +112,7 @@ export default {
       RedirectionTotalOverview,
     EcommerceTransactions,
       StatisticCardHorizontal,
+      ProfitStatisticCardHorizontal,
 
 
   },
