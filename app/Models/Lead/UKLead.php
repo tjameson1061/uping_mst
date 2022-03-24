@@ -169,11 +169,13 @@ class UKLead extends Model
 
 
         if (isset($data['lead_id'])) {
-            $query->where('lead_id', $data['lead_id'])
+            $res = $query->where('lead_id', $data['lead_id'])
                 ->updateOrInsert($data);
+            Log::debug('INSERTED LOG::', (array)$res);
         }
 
         $result = $query->get()->first();
+        Log::debug('RESULT LOG::', (array)$result);
 
         return $result;
     }
