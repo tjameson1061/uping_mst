@@ -174,7 +174,7 @@ class UKLead extends Model
             Log::debug('INSERTED LOG::', (array)$res);
         }
 
-        $result = $query->get()->first();
+        $result = DB::table('lms_lead_log_uk')->latest()->first();
         Log::debug('RESULT LOG::', (array)$result);
 
         return $result;
