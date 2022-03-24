@@ -2,13 +2,13 @@
 
 namespace App\Models\Lead;
 
-use App\Buyer;
-use App\Buyersetup;
+use App\Models\Buyer;
 use App\CheckStatusLogger;
 use App\Http\Controllers\Admin\Lead\LeadTestController;
 use App\Lmsleadlog;
 use App\LmsPartnerLeadType;
 use App\Models\Buyer\BuyerFilter;
+use App\Models\Buyer\BuyerSetup;
 use App\Models\LeadLog\LeadLog;
 use App\Models\LMSApplication\Applicant;
 use App\Models\LMSApplication\Bank;
@@ -263,8 +263,11 @@ class USLead extends Model
                 $data_log['isRedirected'] = '1';
                 $query = DB::table('lmsleadlogsus');
 
+                $tier_id = BuyerSetup::where('buyer_tier_id', $row->buyerTierID)->first()->id;
+
+
                 $query->where('lead_id', $search['id'])
-                    ->where('buyer_setup_id', $row->buyerTierID);
+                    ->where('buyer_setup_id', $tier_id);
 
                 $res = $query->update(['isredirected' => $data_log['isRedirected']]);
                 return $row->redirectUrl;
