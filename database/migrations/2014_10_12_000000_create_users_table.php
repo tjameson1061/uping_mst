@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
                 $table->integer('is_admin');
                 $table->string('role');
                 $table->string('ability')->nullable();
+                $table->string('referrer_id')->nullable();
 
                 $table->timestamps();
             });
