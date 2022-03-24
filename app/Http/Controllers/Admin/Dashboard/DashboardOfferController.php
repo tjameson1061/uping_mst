@@ -9,6 +9,7 @@ use App\Models\ClickTracker\ClickTracker;
 use App\Models\Lead\UKLead;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
+use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -244,17 +245,16 @@ class DashboardOfferController extends Controller
     private function advertiserOfferCounts()
     {
 
-        $offer_ids = PostbackTracker::groupBy('offer_id')->whereNotNull('offer_id')->get(['offer_id'])->take(5);
-//        dd($offer_ids);
+        $offer_ids = PostbackLogs::groupBy('offer_id')->whereNotNull('offer_id')->get(['offer_id'])->take(5);
 
         foreach ($offer_ids as $offer) {
             foreach ($offer as $k => $v) {
 
 
-                $revenue = PostbackTracker::where('offer_id', $offer['offer_id'])->pluck('totalCost')->sum();
-                $cost = PostbackTracker::where('offer_id', $offer['offer_id'])->pluck('totalRevenue')->sum();
+                $revenue = PostbackLogs::where('offer_id', $offer['offer_id'])->pluck('totalCost')->sum();
+                $cost = PostbackLogs::where('offer_id', $offer['offer_id'])->pluck('totalRevenue')->sum();
                 $clicks = ClickTracker::where('offer_id', $offer['offer_id'])->count();
-                $conversions = PostbackTracker::where('offer_id', $offer['offer_id'])->count();
+                $conversions = PostbackLogs::where('offer_id', $offer['offer_id'])->count();
 
                 $offer_obj = Offer::where('id', $offer->offer_id)->first();
 
