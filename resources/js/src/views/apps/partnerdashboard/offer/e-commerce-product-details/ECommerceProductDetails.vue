@@ -38,10 +38,34 @@
                     >
                         <div class="d-flex align-items-center justify-content-center">
                             <b-img
-                                :src="require('@/assets/images/offer_logo/loanie-logo.png')"
-                                :alt="`Image of ${offer.name}`"
-                                class="offer-img"
-                                fluid
+                                    v-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'light'"
+                                    :alt="`${offer.name}-${offer.id}`"
+                                    fluid
+                                    class="card-img-top p-1"
+                                    :src="require('@/assets/images/offer_logo/loanie-logo.png')"
+                            />
+                            <b-img
+                                    v-else-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
+                                    :alt="`${offer.name}-${offer.id}`"
+                                    fluid
+                                    class="card-img-top p-1"
+                                    :src="require('@/assets/images/offer_logo/loanie-logo-white.png')"
+                            />
+                            <b-img
+                                    v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
+                                    :alt="`${offer.name}-${offer.id}`"
+                                    fluid
+                                    class="card-img-top p-3"
+                                    :src="require('@/assets/images/offer_logo/magic-lend.png')"
+
+                            />
+                            <b-img
+                                    v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
+                                    :alt="`${offer.name}-${offer.id}`"
+                                    fluid
+                                    class="card-img-top p-3"
+                                    :src="require('@/assets/images/offer_logo/magic-lend-logo-white.png')"
+
                             />
                         </div>
                     </b-col>
@@ -195,6 +219,7 @@
     import ECommerceTrackingDetailsRelatedProducts from './ECommerceTrackingDetailsRelatedProducts.vue'
     import { useEcommerceUi } from '../useEcommerce'
     import router from '@/router'
+    import useAppConfig from '@core/app-config/useAppConfig'
 
     export default {
         directives: {
@@ -226,7 +251,7 @@
             const { handleCartActionClick, toggleOfferInWishlist } = useEcommerceUi()
 
             const offer = ref(null)
-
+            const { skin } = useAppConfig()
             // Remote Data
             const fetchOffer = () => {
                 // Get offer  id from URL
@@ -255,7 +280,7 @@
 
                 // Fetched Offer
                 offer,
-
+                skin,
                 // UI
                 selectedColor,
                 handleCartActionClick,

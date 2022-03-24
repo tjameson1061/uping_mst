@@ -102,14 +102,14 @@
               :src="require('@/assets/images/offer_logo/loanie-logo.png')"
             />
             <b-img
-                    v-else-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'dark"
+                    v-else-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-1"
                     :src="require('@/assets/images/offer_logo/loanie-logo-white.png')"
             />
               <b-img
-                  v-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
+                  v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
                   :alt="`${offer.name}-${offer.id}`"
                   fluid
                   class="card-img-top p-3"
@@ -121,7 +121,7 @@
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-3"
-                    :src="require('@/assets/images/offer_logo/magic-lend.png')"
+                    :src="require('@/assets/images/offer_logo/magic-lend-logo-white.png')"
 
             />
           </b-link>
@@ -270,13 +270,13 @@ export default {
     } = useShopFiltersSortingAndPagination()
 
     const { handleCartActionClick, toggleProductInWishlist } = useEcommerceUi()
-
+    const { skin } = useAppConfig()
     const {
       itemView, itemViewOptions, totalProducts,
     } = useShopUi()
 
     const { offers, fetchProducts } = useShopRemoteData()
-    const { skin } = useAppConfig()
+
     const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
 
     // Wrapper Function for `fetchProducts` which can be triggered initially and upon changes of filters

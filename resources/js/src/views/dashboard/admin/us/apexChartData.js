@@ -30,10 +30,10 @@ const chartColors = {
   },
   donut: {
     series1: '#ffe700',
-    series2: '#2b9bf4',
+    series2: '#00d4bd',
     series3: '#826bf8',
-    series4: '#00d4bd',
-    series5: '#FFA1A1',
+    series5: '#2b9bf4',
+    series4: '#FFA1A1',
   },
   area: {
     series3: '#7e6df6',

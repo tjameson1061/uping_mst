@@ -413,13 +413,16 @@ class DashboardUSController extends Controller
     }
     public function redirectionWeek()
     {
-        $redirected_lead_count = USLead::whereDate('created_at', Carbon::today()->subWeek())
+        $redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
             ->count();
-        $non_redirected_lead_count = USLead::whereDate('created_at', Carbon::today()->subWeek())
+        $non_redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 0)
             ->count();
-        $lead_count = USLead::whereDate('created_at', Carbon::today()->subWeek())
+        $lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
@@ -447,13 +450,16 @@ class DashboardUSController extends Controller
     }
     public function redirectionMonth()
     {
-        $redirected_lead_count = USLead::whereDate('created_at', Carbon::today()->subMonth())
+        $redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
             ->count();
-        $non_redirected_lead_count = USLead::whereDate('created_at', Carbon::today()->subMonth())
+        $non_redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 0)
             ->count();
-        $lead_count = USLead::whereDate('created_at', Carbon::today()->subMonth())
+        $lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
