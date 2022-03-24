@@ -267,7 +267,7 @@ class PartDashboardOfferController extends Controller
     private function advertiserOfferCounts($partner_id)
     {
 
-        $offer_ids = PostbackTracker::groupBy('offer_id')->whereNotNull('offer_id')->where('vendor_id', $partner_id)->get(['offer_id'])->take(5);
+        $offer_ids = PostbackTracker::groupBy('offer_id')->whereNotNull('offer_id')->where('partner_id', $partner_id)->get(['offer_id'])->take(5);
 //        dd($offer_ids);
 
         foreach ($offer_ids as $offer) {
