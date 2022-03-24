@@ -148,15 +148,16 @@ class PartDashboardOfferController extends Controller
 
         $click_query =
             DB::table('click_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
             DB::table('postback_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
+
 
         $conversion_query_two = $converison_query->count();
 
@@ -177,14 +178,16 @@ class PartDashboardOfferController extends Controller
     {
         $click_query =
             DB::table('click_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
+
         $converison_query =
             DB::table('postback_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
+
         $conversion_query_two = $converison_query;
 
         $week_metrics = [];
@@ -204,15 +207,15 @@ class PartDashboardOfferController extends Controller
     {
         $click_query =
             DB::table('click_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $converison_query =
             DB::table('postback_trackers')
+                ->where('partner_id', $vid)
                 ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-                ->where('partner_id', $vid);
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $conversion_query_two = $converison_query;
 
@@ -268,7 +271,6 @@ class PartDashboardOfferController extends Controller
     {
 
         $offer_ids = PostbackTracker::groupBy('offer_id')->whereNotNull('offer_id')->where('partner_id', $partner_id)->get(['offer_id'])->take(5);
-//        dd($offer_ids);
 
         foreach ($offer_ids as $offer) {
             foreach ($offer as $k => $v) {
