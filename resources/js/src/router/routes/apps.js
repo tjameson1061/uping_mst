@@ -17,6 +17,7 @@ export default [
     // {
     //     path: '/apps/todo/:filter',
     //     name: 'apps-todo-filter',
+    //     name: 'apps-todo-filter',
     //     component: () => import('@/views/apps/todo/Todo.vue'),
     //     meta: {
     //         contentRenderer: 'sidebar-left',
@@ -836,7 +837,7 @@ export default [
 
     // TELESCOPE
     {
-        path: '/telescope/',
+        path: '/telescope',
         name: 'apps-telescope',
         meta: {
             requiresAuth: true,
@@ -844,14 +845,14 @@ export default [
         }
     },
     // HORIZON
-    {
-        path: '/horizon',
-        name: 'apps-horizon',
-        meta: {
-            requiresAuth: true,
-            adminAuth: true
-        }
-    },
+    // {
+    //     path: '/horizon',
+    //     name: 'apps-horizon',
+    //     meta: {
+    //         requiresAuth: true,
+    //         adminAuth: true
+    //     }
+    // },
 
     // Invoice
     {
