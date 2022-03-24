@@ -18,7 +18,6 @@ class CreateAdvertisersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->integer('offer_id')->nullable();
-            $table->integer('company_id')->nullable();
 
             $table->integer('status');
             $table->timestamps();
