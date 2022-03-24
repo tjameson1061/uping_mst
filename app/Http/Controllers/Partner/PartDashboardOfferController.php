@@ -35,7 +35,7 @@ class PartDashboardOfferController extends Controller
         $dashboard_data['todayMetrics'] = $this->todayMetrics($partner_id, $vendor_id);
         $dashboard_data['weekMetrics'] =  $this->weekMetrics($partner_id, $vendor_id);
         $dashboard_data['monthMetrics'] =  $this->monthMetrics($partner_id, $vendor_id);
-        $dashboard_data['click_table_data'] = ClickTracker::where('aff_id', $vendor_id)->get()->take(5);
+        $dashboard_data['click_table_data'] = ClickTracker::where('aff_id', $vendor_id)->orderBy('created_at', 'desc')->get()->take(5);
 //        $dashboard_data['affiliate_table_data'] = $this->affiiliateOfferCounts($partner_id);
 //        $dashboard_data['adv_table_data'] = $this->advertiserOfferCounts($partner_id);
 
