@@ -95,7 +95,7 @@ class pingyo
         $EmploymentStarted = '/Date(' . ($es->getTimestamp() * 1000) . ')/';
 
         // Time at bank
-        $numberOfMonthsInBank = $post->bank->bankAccountLength;
+        $numberOfMonthsInBank = $post->bank->monthsAtBank;
         $date = date("c", strtotime('-' . $numberOfMonthsInBank . " months", strtotime($post->created_at)));
         $BankAccountOpened = date("c", strtotime($date));
         $bao = new DateTime($BankAccountOpened, new DateTimeZone("UTC"));

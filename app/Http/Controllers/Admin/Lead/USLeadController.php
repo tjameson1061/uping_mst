@@ -356,7 +356,7 @@ class USLeadController extends Controller
         $data->Bank->bankAccountNumber = $this->toString($post->bank->bankAccountNumber ?? '');
         $data->Bank->bankRoutingNumber = $this->toString($post->bank->bankRoutingNumber ?? '');
         $data->Bank->bankPhone = $this->toString($post->bank->bankPhone ?? '');
-        $data->Bank->bankAccountLength = $this->toString($post->bank->bankAccountLength ?? '');
+        $data->Bank->monthsAtBank = $this->toString($post->bank->monthsAtBank ?? '');
         $data->Bank->bankAccountType = $this->toString($post->bank->bankAccountType ?? '');
         $data->Bank->onlineBanking = $this->toString($post->bank->onlineBanking ?? '');
         $data->Bank->save();
