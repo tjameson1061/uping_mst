@@ -219,7 +219,7 @@ class USLeadController extends Controller
         $post = $post->toArray();
         $inputs = $inputs->toArray();
         $partner_detail = $this->partner_detail;
-        $partnerlogid = $partnerlogid;
+//        $partnerlogid;
 //        $data = $data;
 //        $status_check = $status_check->toArray();
 

@@ -160,7 +160,7 @@ class USLead extends Model
 
         }
 
-        $result = DB::table('lms_lead_log_uk')->latest()->first();
+        $result = DB::table('lms_lead_log_us')->latest()->first();
         Log::debug('RESULT LOG::', (array)$result);
 
         return $result;
