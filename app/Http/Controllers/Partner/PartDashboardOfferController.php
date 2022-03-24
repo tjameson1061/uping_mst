@@ -158,11 +158,12 @@ class PartDashboardOfferController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
                 ->where('partner_id', $vid);
 
-        $conversion_query_two = $converison_query;
+        $conversion_query_two = $converison_query->count();
+
 
         $today_metrics = [];
         $today_metrics['clicks'] = $click_query->count();
-        $today_metrics['conversions'] = $conversion_query_two->count();
+        $today_metrics['conversions'] = $conversion_query_two;
         $today_metrics['revenue'] = $converison_query->sum('totalRevenue');
         try {
             $today_metrics['profit'] = $converison_query->count();
