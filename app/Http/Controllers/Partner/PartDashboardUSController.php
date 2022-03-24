@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Partner;
 use App\Models\ClickTracker\ClickTracker;
 use App\Models\Invoice;
 use App\Models\Lead\USLead;
-use App\Models\Lead\USLead;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
 use App\Models\PostbackTracker\PostbackTracker;
@@ -26,7 +25,7 @@ class PartDashboardController extends Controller
     {
 
 
-        $partner = Partner::where('user_id', '=', $id)->where('lead_type', 1)->first();
+        $partner = Partner::where('user_id', '=', $id)->where('lead_type', 2)->first();
         Log::debug('PARTNER::', (array)$partner->vendor_id);
         $vendor_id = $partner->vendor_id;
 
