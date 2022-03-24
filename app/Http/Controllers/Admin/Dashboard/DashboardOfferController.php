@@ -76,7 +76,7 @@ class DashboardOfferController extends Controller
         $result = DB::select("select totalRevenue, substring(created_at,1,10) as date, count(*) as result_count
         from postback_trackers
         where substring(created_at,1,10) = '$date'
-        group by 'id', substring(created_at,1,10)");
+        group by totalRevenue, substring(created_at,1,10)");
 
 
         if ($result == null) {
@@ -89,9 +89,9 @@ class DashboardOfferController extends Controller
     {
 //       ->where('conversion', 1)->count();
         $result = DB::select("select conversion, substring(created_at,1,10) as date, count(*) as result_count
-        from postback_trackers
+        from postback_logs
         where substring(created_at,1,10) = '$date'
-        group by 'id', substring(created_at,1,10)");
+        group by conversion, substring(created_at,1,10)");
 
 
         if ($result == null) {
