@@ -26,7 +26,7 @@ class PartDashboardController extends Controller
 
 
         $partner = Partner::where('user_id', '=', $id)->where('lead_type', 1)->first();
-
+        Log::debug('PARTNER::', (array)$partner->vendor_id);
         $vendor_id = $partner->vendor_id;
 
         // CARDS
@@ -52,7 +52,7 @@ class PartDashboardController extends Controller
     public function todayEarnings($vendor_id)
     {
         $daily = DB::table('uk_leads');
-
+        Log::debug('PARTNER::', (array)$vendor_id);
 
         $daily
             ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
