@@ -41,21 +41,21 @@
                                     v-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'light'"
                                     :alt="`${offer.name}-${offer.id}`"
                                     fluid
-                                    class="card-img-top p-1"
+                                    class="offer-img"
                                     :src="require('@/assets/images/offer_logo/loanie-logo.png')"
                             />
                             <b-img
-                                    v-else-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
+                                    v-else-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
                                     :alt="`${offer.name}-${offer.id}`"
                                     fluid
-                                    class="card-img-top p-1"
+                                    class="offer-img"
                                     :src="require('@/assets/images/offer_logo/loanie-logo-white.png')"
                             />
                             <b-img
                                     v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
                                     :alt="`${offer.name}-${offer.id}`"
                                     fluid
-                                    class="card-img-top p-3"
+                                    class="offer-img"
                                     :src="require('@/assets/images/offer_logo/magic-lend.png')"
 
                             />
@@ -63,7 +63,7 @@
                                     v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
                                     :alt="`${offer.name}-${offer.id}`"
                                     fluid
-                                    class="card-img-top p-3"
+                                    class="offer-img"
                                     :src="require('@/assets/images/offer_logo/magic-lend-logo-white.png')"
 
                             />
