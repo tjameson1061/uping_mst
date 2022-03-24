@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Partner;
 use App\Models\ClickTracker\ClickTracker;
 use App\Models\Invoice;
 use App\Models\Lead\USLead;
+use App\Models\Lead\USLead;
+use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
 use App\Models\PostbackTracker\PostbackTracker;
 use App\Models\User;
-use App\Models\Offer;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Exception;
@@ -18,17 +19,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
-class PartDashboardUSController extends Controller
+class PartDashboardController extends Controller
 {
 
     public function getDashboardLeadDataPartnerUS($id)
     {
 
 
-        $partner = Partner::where('user_id', '=', $id)->where('lead_type', 2)->first();
+        $partner = Partner::where('user_id', '=', $id)->where('lead_type', 1)->first();
+        Log::debug('PARTNER::', (array)$partner->vendor_id);
         $vendor_id = $partner->vendor_id;
 
-        $dashboard_data = [];
         // CARDS
         $dashboard_data = [];
         $dashboard_data['todayEarnings'] = $this->todayEarnings($vendor_id);
@@ -49,54 +50,39 @@ class PartDashboardUSController extends Controller
 
     }
 
-
     public function todayEarnings($vendor_id)
     {
-        $daily = DB::table('us_leads');
-
-
-        $daily
+        $daily = USLead::where('vid', $vendor_id)
             ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
-            ->count();
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['today_total'] = round($vid_lead_price_total, 2);
         $revenue['redirection'] = $this->redirectionToday($vendor_id);
-//        $revenue['series'] = [$revenue['today_profit'], $revenue['today_cost'], $revenue['today_revenue'] ];
-//        $revenue['series'] = [50, 50, 70];
 
         return $revenue;
     }
     public function weekEarnings($vendor_id)
     {
-        $daily = DB::table('us_leads');
 
 
-        $daily
+        $week = USLead::where('vid', $vendor_id)
             ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
-            ->count();
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
 
-        $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
+        $vid_lead_price_total = $week->pluck('vidLeadPrice')->sum();
         $revenue['week_total'] = round($vid_lead_price_total,2);
-        $revenue['redirection'] = $this->redirectionWeek($vendor_id);
-//        $revenue['series'] = [$revenue['today_profit'], $revenue['today_cost'], $revenue['today_revenue'] ];
-//        $revenue['series'] = [50, 50, 70];
+        $revenue['redirection'] = $this->redirectionMonth($vendor_id);
 
         return $revenue;
     }
     public function monthEarnings($vendor_id)
     {
-        $month = DB::table('us_leads');
 
-        $month
+        $month = USLead::where('vid', $vendor_id)
             ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-            ->where('vid', $vendor_id);
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
 
 
         $vid_lead_price_total = $month->pluck('vidLeadPrice')->sum();
@@ -107,19 +93,13 @@ class PartDashboardUSController extends Controller
     }
     public function redirectionToday($vendor_id)
     {
-        $redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = USLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->where('isRedirected', 1)
-            ->where('vid', $vendor_id)
             ->count();
-        $non_redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $non_redirected_lead_count = USLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->where('isRedirected', 0)
-            ->where('vid', $vendor_id)
             ->count();
-        $lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $lead_count = USLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())
             ->count();
 
 
@@ -140,26 +120,23 @@ class PartDashboardUSController extends Controller
         $redirection_stats = [];
         $redirection_stats['redirected_leads'] = $redirected_lead_count;
         $redirection_stats['non_redirected_leads'] = $non_redirected_lead_count;
-        $redirection_stats['redirected_ratio'] = $redirected_ratio;
+        $redirection_stats['redirected_ratio'] = [$redirected_ratio];
 
 
         return $redirection_stats;
     }
     public function redirectionWeek($vendor_id)
     {
-        $redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
-            ->where('vid', $vendor_id)
             ->count();
-        $non_redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $non_redirected_lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 0)
-            ->where('vid', $vendor_id)
             ->count();
-        $lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
@@ -187,18 +164,16 @@ class PartDashboardUSController extends Controller
     }
     public function redirectionMonth($vendor_id)
     {
-        $redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $redirected_lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->where('isRedirected', 1)
-            ->where('vid', $vendor_id)->count();
-        $non_redirected_lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('isRedirected', 0)
-            ->where('vid', $vendor_id)
             ->count();
-        $lead_count = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $non_redirected_lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+            ->where('isRedirected', 0)
+            ->count();
+        $lead_count = USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
 
@@ -227,24 +202,18 @@ class PartDashboardUSController extends Controller
     public function leadCounts($vendor_id)
     {
         $lead_counts = [];
-        $lead_counts['today'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $lead_counts['today'] =  USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
-        $lead_counts['week'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $lead_counts['week'] =  USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
-        $lead_counts['month'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
-            ->where('vid', $vendor_id)
+        $lead_counts['month'] =  USLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
         return $lead_counts;
     }
-
-
-
 
 
     /**
@@ -254,7 +223,7 @@ class PartDashboardUSController extends Controller
      */
     public function revenueChartData(Request $request, $id)
     {
-        $partner = Partner::where('user_id', $id)->where('lead_type', 2)->first();
+        $partner = Partner::where('user_id', $id)->where('lead_type', 1)->first();
         $vendor_id = $partner->vendor_id;
 
 //        dd($vendor_id);
@@ -331,7 +300,7 @@ class PartDashboardUSController extends Controller
     {
 
 
-        $result = DB::select("select leadStatus, substring(created_at,1,10) as date, count(*) as result_count from us_leads
+        $result = DB::select("select leadStatus, substring(created_at,1,10) as date, count(*) as result_count from uk_leads
         where substring(created_at,1,10) = '$date'
         and vid = '$vendor_id'
         and leadStatus = $leadStatus
@@ -344,7 +313,6 @@ class PartDashboardUSController extends Controller
             return $result[0]->result_count;
         }
     }
-
 
 
 
@@ -497,17 +465,17 @@ class PartDashboardUSController extends Controller
 //        $revenue = Metrics::partner_counts_uk();
 //        $revenue['redirection_rate'] = Metrics::redirection_rate_uk();
 //
-//        $revenue['conversion_rate'] = (new Metrics)->GetPartnerConversionRatioUK($id);
+//        $revenue['conversion_rate'] = (new Metrics)->GetPartnerConversionRatioUS($id);
 //        if ($revenue['conversion_rate'] === 0) {
 //            $revenue['epl'] = 0;
 //        } else {
-//            $revenue['epl'] = (new Metrics)->GetPartnerEPLUK($revenue['conversion_rate'], $id);
+//            $revenue['epl'] = (new Metrics)->GetPartnerEPLUS($revenue['conversion_rate'], $id);
 //        }
 //
 //        $offers = Offer::all();
 //
-//        $leads = LmsPaydayUK::where('vid', $id)->limit(25)->get();
-//        $subids = LmsPaydayUK::where('subid', $id)->groupBy('subid')->whereNotNull('subid')->get(['subid']);
+//        $leads = LmsPaydayUS::where('vid', $id)->limit(25)->get();
+//        $subids = LmsPaydayUS::where('subid', $id)->groupBy('subid')->whereNotNull('subid')->get(['subid']);
 //
 //        return view('partner.offer_dashboard.uk-dashboard',
 //            compact('leads', 'subids', 'revenue', 'offers'));
@@ -640,7 +608,7 @@ class PartDashboardUSController extends Controller
     /**
      * @param Request $request
      */
-    public function GetPartnerDataUK(Request $request)
+    public function GetPartnerDataUS(Request $request)
     {
         $subid = $request->input("subid");
         $source = $request->input("source");
@@ -678,7 +646,7 @@ class PartDashboardUSController extends Controller
         $partner = Partner::where('user_id', '=', $user_id)->first();
         $vendor_id = $partner->vendor_id;
 
-        $datas = LmsPaydayUK::where($wherelist)->with(['source'])
+        $datas = LmsPaydayUS::where($wherelist)->with(['source'])
             ->where('vid', '=', $vendor_id)
             ->orderBy('created_at', 'desc')
             ->get();
