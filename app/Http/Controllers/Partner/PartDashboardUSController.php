@@ -654,55 +654,7 @@ class PartDashboardController extends Controller
         echo json_encode(['data' => $datas]);
     }
 
-    /**
-     * @param Request $request
-     */
-    public function GetPartnerDataUS(Request $request)
-    {
-        $subid = $request->input("subid");
-        $source = $request->input("source");
-        $status = $request->input("status");
 
-        if ($request->input("start") != null) {
-            $start = Carbon::createFromFormat('d/m/Y', $request->input("start"));
-        } else {
-            $start = null;
-        }
-        if ($request->input("end") != null) {
-            $end = Carbon::createFromFormat('d/m/Y', $request->input("end"));
-        } else {
-            $end = null;
-        }
-
-        $wherelist = array();
-        if ($start != null) {
-            $wherelist[] = ['created_at', '>=', $start];
-        }
-        if ($end != null) {
-            $wherelist[] = ['created_at', '<=', $end];
-        }
-        if ($subid != null) {
-            $wherelist[] = ['subid', '=', $subid];
-        }
-        if ($source != null) {
-            $wherelist[] = ['creationUrl', '=', $source];
-        }
-        if ($status != null) {
-            $wherelist[] = ['status', '=', $status];
-        }
-
-        $user_id = Auth::id();
-        $partner = Partner::where('user_id', '=', $user_id)->first();
-        $vendor_id = $partner->vendor_id;
-
-
-        $datas = LmsPaydayUS::where($wherelist)->with(['source'])
-            ->where('vid', '=', $vendor_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        echo json_encode(['data' => $datas]);
-    }
 
     /**
      * @param Request $request
