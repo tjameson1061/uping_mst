@@ -214,20 +214,16 @@ class PartDashboardController extends Controller
     public function leadCounts($vendor_id)
     {
         $lead_counts = [];
-        $today = UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53");
-        $today->count()->sum();
-        $lead_counts['week'] =  UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $lead_counts['today'] =  UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
-        $lead_counts['month'] =  UKLead::where('vid', $vendor_id)
-            ->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+        $lead_counts['week'] =  UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+            ->count();
+        $lead_counts['month'] =  UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
-        $lead_counts['today'] = $today;
         return $lead_counts;
     }
 
