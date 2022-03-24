@@ -177,7 +177,7 @@ Route::group([
         /* Partner DATA Routes */
         Route::get('getDashboardLeadDataPartner/uk/{id}', [PartDashboardController::class, 'getDashboardLeadDataPartner']);
         Route::get('getDashboardLeadDataPartner/us/{id}', [PartDashboardUSController::class, 'getDashboardLeadDataPartner']);
-        Route::get('getDashboardOfferDataPartner/{id}', [PartDashboardOfferController::class, 'getDashboardOfferDataPartner']);
+        Route::get('getDashboardOfferDataPartner/{id}', [PartDashboardOfferController::class, 'getDashboardDataOffer']);
         Route::get('getPartnerReports/{id}', [PartReportController::class, 'getPartnerReports']);
         Route::get('revenueChartData/{id}', [PartDashboardController::class, 'revenueChartData']);
         Route::get('revenueChartUSData/{id}', [PartDashboardUSController::class, 'revenueChartData']);
