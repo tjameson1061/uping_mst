@@ -299,7 +299,7 @@ class PartDashboardUSController extends Controller
     {
 
 
-        $result = DB::select("select leadStatus, substring(created_at,1,10) as date, count(*) as result_count from uk_leads
+        $result = DB::select("select leadStatus, substring(created_at,1,10) as date, count(*) as result_count from us_leads
         where substring(created_at,1,10) = '$date'
         and vid = '$vendor_id'
         and leadStatus = $leadStatus
