@@ -297,7 +297,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
                         try {
                             $partner = Partner::where('vendor_id', '=', $post->vid)->first();
-                            $user = User::where('user_id', $partner->user_id)->first();
+                            $user = User::where('id', $partner->user_id)->first();
 
                             if (!empty($user->referrer_id)) {
 
