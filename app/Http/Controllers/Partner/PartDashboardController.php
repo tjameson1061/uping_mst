@@ -410,7 +410,7 @@ class PartDashboardController extends Controller
                 'aff_sub2',
                 'aff_sub3',
                 'aff_sub4',
-                'aff_sub5',
+                'aff_sub5'
             )
             ->get()
             ->take(5);
