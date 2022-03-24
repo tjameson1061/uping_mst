@@ -195,6 +195,7 @@
     import ECommerceTrackingDetailsRelatedProducts from './ECommerceTrackingDetailsRelatedProducts.vue'
     import { useEcommerceUi } from '../useEcommerce'
     import router from '@/router'
+    import useAppConfig from '@core/app-config/useAppConfig'
 
     export default {
         directives: {
@@ -226,7 +227,7 @@
             const { handleCartActionClick, toggleOfferInWishlist } = useEcommerceUi()
 
             const offer = ref(null)
-
+            const { skin } = useAppConfig()
             // Remote Data
             const fetchOffer = () => {
                 // Get offer  id from URL
@@ -255,7 +256,7 @@
 
                 // Fetched Offer
                 offer,
-
+                skin,
                 // UI
                 selectedColor,
                 handleCartActionClick,
