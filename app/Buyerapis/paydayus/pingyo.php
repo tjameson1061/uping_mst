@@ -2,12 +2,10 @@
 
 //sleep(10);
 use Illuminate\Support\Facades\Log;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use PingYo\Status;
 use Illuminate\Support\Facades\Http;
 
-class pingyousa
+class pingyo
 {
     var $response = array();
     //function __construct($client_detail, $post){
