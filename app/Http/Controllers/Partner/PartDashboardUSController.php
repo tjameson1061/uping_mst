@@ -222,7 +222,7 @@ class PartDashboardUSController extends Controller
      */
     public function revenueChartData(Request $request, $id)
     {
-        $partner = Partner::where('user_id', $id)->where('lead_type', 1)->first();
+        $partner = Partner::where('user_id', $id)->where('lead_type', 2)->first();
         $vendor_id = $partner->vendor_id;
 
 //        dd($vendor_id);
