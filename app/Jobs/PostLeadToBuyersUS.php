@@ -12,6 +12,7 @@ use App\Models\Buyer\BuyerFilter;
 use App\Models\Lead\USLead;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
+use App\Models\User;
 use App\Models\User\Referral;
 use Exception;
 
@@ -274,7 +275,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                     );
                     Log::debug('Log::', (array) $datalogo);
                     $res = USLead::AddLog($datalogo);
-
+                    Log::debug('Log::', (array) $res);
 
 
                     if (isset($lender_response['post_price']) && isset($lender_response['accept']) && $lender_response['accept'] == 'ACCEPTED') {
@@ -295,9 +296,10 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 
                         try {
-                            $partner = Partner::where('vendor_id', '=', $post->vid)->with('user')->first();
+                            $partner = Partner::where('vendor_id', '=', $post->vid)->first();
+                            $user = User::where('user_id', $partner->user_id)->first();
 
-                            if (!empty($partner->user->referrer_id)) {
+                            if (!empty($user->referrer_id)) {
 
                                 $referrer_commission =
                                     $lender_response['post_price'] - ($lender_response['post_price'] * (95 / 100));
@@ -305,7 +307,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                                 $price = $price - $referrer_commission;
 
                                 // Add referrer Commission to Partner ID
-                                $referrer_vid = $partner->user->referrer_id;
+                                $referrer_vid = $user->referrer_id;
                                 $referrer_partner = Partner::where('user_id', '=', $referrer_vid)->first();
 
                                 $referrer_data = array(
