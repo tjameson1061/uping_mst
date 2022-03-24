@@ -248,7 +248,7 @@ class pingyousa
             "Campaign" => (string) $post->partner_id ?? 'UPING',
             "SubAffiliate" => (string) $post->aff_sub ?? '',
             "Timeout" => (int) $client_detail->timeout ?? '120',
-            "TestOnly" => (boolean) false,
+            "TestOnly" => (boolean) true,
 
             "SourceDetails" => array(
                 "Address" => (string) $post->source->ipAddress,

@@ -39,26 +39,6 @@ class LeadPostRequestUS extends FormRequest
             'loan.loanTerms' => [
                 Rule::in(1, 3, 6, 12, 18, 24, 36, 48, 60),
             ],
-//            'loan.loanPurpose' => [
-//                Rule::in([
-//                        'DebtConsolidation',
-//                        'EmergencySituation',
-//                        'AutoRepair',
-//                        'AutoPurchase',
-//                        'Moving',
-//                        'HomeImprovement',
-//                        'Medical',
-//                        'Business',
-//                        'Vacation',
-//                        'Taxes',
-//                        'RentMortgage',
-//                        'Wedding',
-//                        'MajorPurchase',
-//                        'Education',
-//                        'Other'
-//                    ]
-//                ),
-//            ],
 
             'applicant.nameTitle' => [
                 'required',

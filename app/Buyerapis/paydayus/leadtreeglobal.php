@@ -11,7 +11,6 @@ class leadtreeglobal
     function __construct($client_detail, $post)
     {
 
-        dd('LTG API');
         $monthsAtAddress = floor($post->monthsAtAddress);
         $monthsAtEmployer = floor($post->monthsAtEmployer);
         $numberOfMonthsInBank = floor($post->bankAccountLength);

@@ -106,6 +106,26 @@
               </b-media>
           </template>
 
+          <template #cell(lead_type)="data">
+              <b-media vertical-align="center">
+                  <template #aside>
+                      <b-avatar v-if="data.item.lead_type === '1'"
+                                size="sm"
+                                :src="require('@/assets/images/avatars/flag-uk-icon.png')"
+                      />
+                      <b-avatar v-else-if="data.item.lead_type === '2'"
+                                size="sm"
+                                :src="require('@/assets/images/avatars/flag-us-icon.png')"
+                      />
+                  </template>
+                  <b-link
+                          :to="{ name: 'apps-mapping-view', params: { id: data.item.id } }"
+                          class="font-weight-bold d-block text-nowrap"
+                  >
+                  </b-link>
+              </b-media>
+          </template>
+
         <!-- Column: Role -->
         <template #cell(vendor_id)="data">
           <div class="text-nowrap">

@@ -14,6 +14,7 @@ export default function useMappingsList() {
   // Table Handlers
   const tableColumns = [
     { key: 'id', label: 'ID', sortable: true },
+    { key: 'lead_type', label: 'Lead Type', sortable: true },
     { key: 'vendor_id', label: 'Vendor ID', sortable: true },
     { key: 'company.name', label: 'Company', sortable: true },
     { key: 'tiers', label: 'Tiers', sortable: true },
