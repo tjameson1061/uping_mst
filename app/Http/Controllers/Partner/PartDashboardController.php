@@ -59,6 +59,7 @@ class PartDashboardController extends Controller
             ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
             ->where('vid', $vendor_id);
 //            ->count();
+        Log::debug('PARTNER::', (array)$daily->get());
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['today_total'] = round($vid_lead_price_total, 2);
