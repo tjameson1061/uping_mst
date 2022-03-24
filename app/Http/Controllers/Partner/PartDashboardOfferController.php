@@ -71,7 +71,7 @@ class PartDashboardOfferController extends Controller
         $result = DB::select("select partner_id, totalCost, substring(created_at,1,10) as date, sum(totalCost) as result_count
         from postback_logs
         where substring(created_at,1,10) = '$date' and partner_id = $partner_id
-        group by 'id', substring(created_at,1,10)");
+        group by totalCost, substring(created_at,1,10)");
 
 
         if ($result == null) {
@@ -86,7 +86,7 @@ class PartDashboardOfferController extends Controller
         substring(created_at,1,10) as date, count(*) as result_count
         from postback_logs
         where substring(created_at,1,10) = '$date' and conversion = 1 and partner_id = $partner_id
-        group by 'id', substring(created_at,1,10)");
+        group by conversion, substring(created_at,1,10)");
 
 
         if ($result == null) {
@@ -110,7 +110,7 @@ class PartDashboardOfferController extends Controller
         substring(created_at,1,10) as date, count(*) as result_count
         from click_trackers
         where substring(created_at,1,10) = '$date' and aff_id = $partner_id
-        group by 'id', substring(created_at,1,10)");
+        group by partner_id, substring(created_at,1,10)");
 
 
         if ($result == null) {
