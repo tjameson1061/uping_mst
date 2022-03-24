@@ -202,10 +202,10 @@
           <template #cell(vidLeadPrice)="data">
               <b-media vertical-align="center">
                   <small v-if="data.item.vidLeadPrice === null" class="text-capitalize text-danger"
-                  >£ -</small
+                  >$ -</small
                   >
                   <small v-else class="align-text-top text-capitalize  text-success"
-                  >£{{ data.item.vidLeadPrice }}</small
+                  >${{ data.item.vidLeadPrice }}</small
                   >
               </b-media>
           </template>
