@@ -24,7 +24,7 @@ class CreateBanksTable extends Migration
             $table->char('bankRoutingNumber')->nullable();
             $table->char('bankPhone')->nullable();
             $table->char('bankAccountLength')->nullable();
-            $table->char('bankAccountType')->nullable();
+            $table->char('monthsAtBank')->nullable();
             $table->char('onlineBanking')->nullable();
             $table->timestamps();
         });
