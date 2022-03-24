@@ -152,11 +152,11 @@ class PartDashboardOfferController extends Controller
                 ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
                 ->where('partner_id', $vid);
 
-        $converison_query = []
-//            DB::table('postback_trackers')
-//                ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-//                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-//                ->where('partner_id', $vid);
+        $converison_query =
+            DB::table('postback_trackers')
+                ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+                ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+                ->where('partner_id', $vid);
 
         $conversion_query_two = $converison_query;
 
