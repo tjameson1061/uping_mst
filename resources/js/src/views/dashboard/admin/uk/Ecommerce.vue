@@ -7,25 +7,25 @@
         xl="3"
         md="3"
       >
-          <earnings-today :data="data.dashboard_data" title="Today"/>
+          <earnings-today :data="data.dashboard_data" v-if="data.dashboard_data" title="Today"/>
       </b-col>
       <b-col
         xl="3"
         md="3"
       >
-          <earnings-week :data="data.dashboard_data" title="Week"/>
+          <earnings-week :data="data.dashboard_data" v-if="data.dashboard_data" title="Week"/>
       </b-col>
         <b-col
             xl="3"
             md="3"
         >
-            <earnings-month :data="data.dashboard_data" title="Month"/>
+            <earnings-month :data="data.dashboard_data" v-if="data.dashboard_data" title="Month"/>
         </b-col>
         <b-col
             xl="3"
             md="3"
         >
-            <earnings-profit :data="data.dashboard_data" title="Profit"/>
+            <earnings-profit :data="data.dashboard_data"  v-if="data.dashboard_data" title="Profit"/>
         </b-col>
     </b-row>
 
@@ -37,11 +37,12 @@
       <!-- Affiliate Overview-->
     <b-row class="match-height">
       <b-col lg="6">
-        <affiliate-company-table :table-data="data" title="Affiliate" />
+        <affiliate-company-table :table-data="data.dashboard_data.affiliate_table_data" v-if="data.dashboard_data.affiliate_table_data" title="Affiliate" />
+        
       </b-col>
         <!-- Lender Overview-->
         <b-col lg="6">
-        <lender-company-table :table-data="data" title="Lender" />
+        <lender-company-table :table-data="data" title="Lender" v-if="data" />
         </b-col>
 
 
@@ -52,24 +53,22 @@
         lg="4"
         md="4"
       >
-        <affiliate-redirect-rates :redirect-data="data.dashboard_data"/>
+        <affiliate-redirect-rates :redirect-data="data.dashboard_data" v-if="data.dashboard_data"/>
       </b-col>
 
         <b-col
             lg="4"
             md="4"
         >
-            <lender-redirect-rates :redirect-data="data.dashboard_data" />
+            <lender-redirect-rates :redirect-data="data.dashboard_data" v-if="data.dashboard_data" />
         </b-col>
       <!-- Redirection ALL -->
       <b-col
         lg="4"
         md="4"
       >
-          <ecommerce-browser-states :redirect-data="data.dashboard_data"/>
+          <ecommerce-browser-states :redirect-data="data.dashboard_data" v-if="data.dashboard_data"/>
       </b-col>
-
-
 
     </b-row>
   </section>
@@ -124,7 +123,19 @@ export default {
   },
   data() {
     return {
-      data: {},
+      data: {
+        dashboard_data : {affiliate_table_data : [],
+          todayEarnings : {redirection : { redirected_ratio : []},today_revenue : 0 },
+          weekEarnings :  {redirection : { redirected_ratio : []},week_revenue : 0 },
+          monthEarnings :  {redirection : { redirected_ratio : []},month_revenue : 0 },
+          profitEarnings :  {redirection : { redirected_ratio : []},profit : 0 },
+          lead_count : {today : 0, week :0 , month : 0},
+          top_referrers : { original : {referrers : []}}
+
+
+
+        }
+      },
     }
   },
 

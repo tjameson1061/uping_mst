@@ -13,7 +13,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -84,7 +84,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -156,7 +156,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -225,7 +225,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -293,7 +293,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -364,7 +364,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -436,7 +436,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -508,7 +508,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -581,7 +581,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
@@ -653,7 +653,7 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
                             <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>

@@ -82,10 +82,7 @@
             BBadge
         },
         props: {
-            tableData: {
-                type: Object,
-                default: () => [],
-            },
+            tableData: []
         },
 
         data() {

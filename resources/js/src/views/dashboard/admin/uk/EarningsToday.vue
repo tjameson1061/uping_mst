@@ -28,7 +28,7 @@
       height="180"
       class="my-2"
       :options="goalOverviewRadialBar"
-      :series="[data.todayEarnings.redirection.redirected_ratio[0]]"
+      :series="data.todayEarnings.redirection.redirected_ratio"
     />
     <b-row class="text-center mx-0">
       <b-col
@@ -83,10 +83,7 @@ export default {
         Ripple,
     },
   props: {
-    data: {
-      type: Object,
-      default: () => {},
-    },
+    data: [],
       title: {
         type: String,
         default: null,

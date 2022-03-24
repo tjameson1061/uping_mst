@@ -54,7 +54,7 @@
 
         </template>
 
-        <partner-invoice-list/>
+        <partner-invoice-list v-if="inv">
 
     </div>
 </template>

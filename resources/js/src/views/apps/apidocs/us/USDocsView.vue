@@ -13,10 +13,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -86,10 +86,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -158,10 +158,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -227,10 +227,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -295,10 +295,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -366,10 +366,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -438,10 +438,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -510,10 +510,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">
@@ -582,10 +582,10 @@
                         <b-media-body>
                             <small class="text-muted mr-50">by</small>
                             <small>
-                                <b-link class="text-body">{{ blogDetail.blog.userFullName }}</b-link>
+                                <b-link class="text-body">UPING</b-link>
                             </small>
                             <span class="text-muted ml-75 mr-50">|</span>
-                            <small class="text-muted">{{ blogDetail.blog.createdTime }}</small>
+                            <small class="text-muted">Mar 24, 2022</small>
                         </b-media-body>
                     </b-media>
                     <div class="my-1 py-25">

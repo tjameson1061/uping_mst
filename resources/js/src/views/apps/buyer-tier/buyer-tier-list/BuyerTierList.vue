@@ -3,6 +3,7 @@
     <div>
 
         <buyer-tier-list-add-new
+            v-if="filterTierData.filterTierData"
             :is-add-new-buyer-tier-sidebar-active.sync="isAddNewBuyerTierSidebarActive"
             :filter-tier-data="filterTierData"
             :lead-type-options="leadTypeOptions"

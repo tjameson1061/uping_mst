@@ -6,6 +6,7 @@
 
     <!-- Filters -->
     <reports-list-filters
+      v-if="filterData"
       :affiliate-filter.sync="affiliateFilter"
       :sub-id-filter.sync="subIdFilter"
       :tier-filter.sync="tierFilter"

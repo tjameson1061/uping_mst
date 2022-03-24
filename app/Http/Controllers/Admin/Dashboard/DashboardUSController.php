@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Advertiser\Advertiser;
 use App\Models\Buyer\BuyerSetup;
 use App\Models\ClickTracker\ClickTracker;
+use App\Models\Lead\UKLead;
 use App\Models\Lead\USLead;
 use App\Models\LMSApplication\Source;
 use App\Models\Offer\Offer;
@@ -321,15 +322,15 @@ class DashboardUSController extends Controller
         $daily = DB::table('us_leads');
 
         $daily
-            ->where('created_at', '>=', date('Y-m-d'))
-            ->where('created_at', '<=', date('Y-m-d') . "23:53:53")
+            ->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $buyer_lead_price_total = $daily->pluck('buyerLeadPrice')->sum();
         $revenue['today_revenue'] = $buyer_lead_price_total;
         $revenue['today_cost'] = $buyer_lead_price_total;
-        $revenue['today_profit'] = $buyer_lead_price_total - $vid_lead_price_total;
+        $revenue['today_profit'] =  $buyer_lead_price_total - $vid_lead_price_total;
         $revenue['redirection'] = $this->redirectionToday();
 //        $revenue['series'] = [$revenue['today_profit'], $revenue['today_cost'], $revenue['today_revenue'] ];
 //        $revenue['series'] = [50, 50, 70];
@@ -349,7 +350,7 @@ class DashboardUSController extends Controller
         $buyer_lead_price_total = $weekly->pluck('buyerLeadPrice')->sum();
         $revenue['week_revenue'] = $buyer_lead_price_total;
         $revenue['week_cost'] = $buyer_lead_price_total;
-        $revenue['week_profit'] = $buyer_lead_price_total - $vid_lead_price_total;
+        $revenue['week_profit'] = $vid_lead_price_total - $buyer_lead_price_total;
         $revenue['redirection'] = $this->redirectionWeek();
 
         return $revenue;
@@ -369,7 +370,7 @@ class DashboardUSController extends Controller
         $buyer_lead_price_total = $month->pluck('buyerLeadPrice')->sum();
         $revenue['month_revenue'] = $buyer_lead_price_total;
         $revenue['month_cost'] = $buyer_lead_price_total;
-        $revenue['month_profit'] = $buyer_lead_price_total - $vid_lead_price_total;
+        $revenue['month_profit'] = $vid_lead_price_total - $buyer_lead_price_total;
         $revenue['redirection'] = $this->redirectionMonth();
 
         return $revenue;
@@ -478,12 +479,14 @@ class DashboardUSController extends Controller
     }
     public function profitEarnings()
     {
-        $buyerLeadPrice = USLead::where('created_at', Carbon::today())->pluck('buyerLeadPrice')->sum();
-        $vidLeadPrice = USLead::where('created_at', Carbon::today())->pluck('vidLeadPrice')->sum();
+        $buyerLeadPrice = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")->pluck('buyerLeadPrice')->sum();
+        $vidLeadPrice = USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")->pluck('vidLeadPrice')->sum();
         $profit= [];
 
         try {
-            $profit['profit'] = $vidLeadPrice - $buyerLeadPrice;
+            $profit['profit'] =  $buyerLeadPrice - $vidLeadPrice;
         } catch (\Exception $e) {
             $profit['profit']  = 0;
         }
@@ -497,11 +500,14 @@ class DashboardUSController extends Controller
     public function leadCounts()
     {
         $lead_counts = [];
-        $lead_counts['today'] =  USLead::whereDate('created_at', Carbon::today())
+        $lead_counts['today'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
-        $lead_counts['week'] =  USLead::whereDate('created_at', Carbon::today()->subWeek(1))
+        $lead_counts['week'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
-        $lead_counts['month'] =  USLead::whereDate('created_at', Carbon::today()->subMonth(1))
+        $lead_counts['month'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
             ->count();
 
         return $lead_counts;
@@ -521,7 +527,7 @@ class DashboardUSController extends Controller
                 $leads_redirected_today = USLead::where('vid', $vendor['vid'])->where('isRedirected', 1)->count();
 
                 try {
-                    $profit_today = $revenue_today - $cost_today;
+                    $profit_today =  $cost_today - $revenue_today;
                 } catch (\Exception $e) {
                     $profit_today = 0;
                 }
@@ -552,13 +558,13 @@ class DashboardUSController extends Controller
 
 //                dd($tier);
 
-                $revenue_today = USLead::where('buyer_setup_id', $tier['buyer_setup_id'])->pluck('vidLeadPrice')->sum();
-                $cost_today = USLead::where('buyer_setup_id', $tier['buyer_setup_id'])->pluck('buyerLeadPrice')->sum();
-                $leads_today = USLead::where('buyer_setup_id', $tier['buyer_setup_id'])->count();
-                $leads_redirected_today = USLead::where('buyer_setup_id', $tier['buyer_setup_id'])->where('isRedirected', 1)->count();
+                $revenue_today = USLead::where('buyerTierID', $tier['buyerTierID'])->pluck('vidLeadPrice')->sum();
+                $cost_today = USLead::where('buyerTierID', $tier['buyerTierID'])->pluck('buyerLeadPrice')->sum();
+                $leads_today = USLead::where('buyerTierID', $tier['buyerTierID'])->count();
+                $leads_redirected_today = USLead::where('buyerTierID', $tier['buyerTierID'])->where('isRedirected', 1)->count();
 
                 try {
-                    $profit_today = $revenue_today - $cost_today;
+                    $profit_today =  $cost_today - $revenue_today;
                 } catch (\Exception $e) {
                     $profit_today = 0;
                 }

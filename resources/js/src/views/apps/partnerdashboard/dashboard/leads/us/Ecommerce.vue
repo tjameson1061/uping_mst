@@ -7,7 +7,7 @@
                 xl="4"
                 md="4"
             >
-                <earnings-today  :today-earnings="todayEarnings"
+                <earnings-today  v-if="userData" :today-earnings="todayEarnings"
                                  :lead-counts="leadCounts"
                                  :user-data="userData"
                                  title="Today"/>
@@ -42,8 +42,8 @@
         <!-- Affiliate Overview-->
         <b-row class="match-height">
             <b-col lg="12">
-<!--               <report-list />-->
-                <u-s-lead-list/>
+
+               <u-s-lead-list />
             </b-col>
 
 
@@ -72,16 +72,16 @@
     import EarningsWeek from "./EarningsWeek.vue";
     import EarningsMonth from "./EarningsMonth.vue";
     import EarningsProfit from "./EarningsProfit.vue";
-    // import ReportList from "../../../report/us/report-list/ReportList.vue";
+    import ReportList from "../../../report/us/report-list/ReportList.vue";
+    import USLeadList from '../../../us-lead/us-lead-list/LeadList.vue'
     import axios from 'axios'
-    import USLeadList from './../../../us-lead/us-lead-list/LeadList.vue'
 
 
 
 
     export default {
         components: {
-            // ReportList,
+            ReportList,
             USLeadList,
             ApexLineAreaChart,
             BRow,

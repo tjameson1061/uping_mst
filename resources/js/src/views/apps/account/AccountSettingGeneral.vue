@@ -6,10 +6,17 @@
         <b-media no-body>
             <b-media-aside>
                 <b-avatar
+                        v-if="userData.user.avatar"
                     ref="previewEl"
                     :src="userData.user.avatar"
                     size="90px"
                     rounded
+                />
+                <b-avatar
+                        v-else
+                        ref="previewEl"
+                        size="90px"
+                        rounded
                 />
                 <!--/ avatar -->
             </b-media-aside>

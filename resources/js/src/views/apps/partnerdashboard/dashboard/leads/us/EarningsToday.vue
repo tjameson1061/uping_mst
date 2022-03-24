@@ -11,12 +11,15 @@
                     icon="HelpCircleIcon"
                     size="21"
                     class="text-muted cursor-pointer"
-                />
+                    v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                    v-b-tooltip.hover.focus.v-primary
+                    title="Earnings For Today"
+                    variant="outline-primary" />
             </b-card-text>
         </b-card-header>
-
         <!-- apex chart -->
         <vue-apex-charts
+            v-if="todayRedirection"
             type="radialBar"
             height="200"
             class="my-2"
@@ -31,7 +34,7 @@
                 <b-card-text class="text-muted mb-0">
                    Leads
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0">
+                <h3 class="font-weight-bolder mb-0" v-if="leadCounts">
                     {{ leadCounts.today }}
                 </h3>
             </b-col>
@@ -43,7 +46,7 @@
                 <b-card-text class="text-muted mb-0">
                     Commission
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0">
+                <h3 class="font-weight-bolder mb-0" v-if="todayEarnings">
                     $ {{ todayEarnings.today_total }}
                 </h3>
             </b-col>
@@ -99,7 +102,9 @@
         },
         data() {
             return {
-                todayRedirection: [],
+                todayRedirection: {
+                    redirected_ratio : 0
+                },
 
                 series: [10],
                 goalOverviewRadialBar: {

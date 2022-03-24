@@ -4,12 +4,13 @@
     no-body
     class="card-company-table"
   >
-
       <b-table
-      :items="tableData.dashboard_data.affiliate_table_data"
+      :items="tableData"
       responsive
       :fields="fields"
       class="mb-0"
+      :sticky-header="true"
+      :noCollapse="true"
       :striped="true"
       :borderless="true"
 
@@ -83,9 +84,7 @@ export default {
     BBadge
   },
   props: {
-    tableData: {
-      type: Object,
-    },
+    tableData: []
   },
 
   data() {
@@ -100,8 +99,10 @@ export default {
     }
   },
     // setup(props) {
+    //   console.log('1-1--3-4004');
+    //   console.log(props.tableData.dashboard_data);
     //   const affiliateTableData = props.tableData.dashboard_data.affiliate_table_data;
-    //
+    
     //   return {
     //       affiliateTableData
     //   }

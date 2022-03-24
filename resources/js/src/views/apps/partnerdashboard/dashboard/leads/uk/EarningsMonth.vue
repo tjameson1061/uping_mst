@@ -11,7 +11,10 @@
                     icon="HelpCircleIcon"
                     size="21"
                     class="text-muted cursor-pointer"
-                />
+                    v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                    v-b-tooltip.hover.focus.v-primary
+                    title="Earnings For Month"
+                    variant="outline-primary"/>
             </b-card-text>
         </b-card-header>
 
@@ -99,7 +102,9 @@
         },
         data() {
             return {
-                monthRedirection: [],
+                monthRedirection: {
+                    redirected_ratio : [0]
+                },
 
                 series: [10],
                 goalOverviewRadialBar: {
@@ -174,7 +179,7 @@
                 axios
                     .get(`/api/partner/getDashboardLeadDataPartner/uk/${this.userData.id}`)
                     .then((response) => {
-                        this.monthRedirection = response.data.dashboard_data.redirectionMonth;
+                       this.monthRedirection = response.data.dashboard_data.redirectionMonth;
                     })
                     .catch((error) => console.log(error));
             },

@@ -133,7 +133,7 @@
                                 bottom: -15,
                             },
                         },
-                        colors: [$themeColors.primary],
+                        colors: [$themeColors.success],
                         plotOptions: {
                             radialBar: {
                                 hollow: {

@@ -76,7 +76,7 @@
       >
           <template #cell(id)="data">
               <b-link
-                  :to="{ name: 'apps-users-view', params: { id: data.item.id }}"
+                  :to="{ name: 'apps-mapping-view', params: { id: data.item.id }}"
                   class="font-weight-bold"
               >
                   #{{ data.item.id }}
@@ -90,7 +90,7 @@
           <template #cell(tier)="data">
               <b-media vertical-align="center">
                   <b-link
-                      :to="{ name: 'apps-mapping-view', params: { id: data.item.id } }"
+                      :to="{ name: 'apps-mapping-view', params: { slug: data.item.vendor_id } }"
                       class="font-weight-bold d-block text-nowrap"
                   >
                       <b-badge variant="light-primary" pill >
@@ -323,7 +323,6 @@ export default {
               buttonsStyling: false,
           }).then(result => {
               if (result.value) {
-                  // axios.delete(`http://127.0.0.1:8000/api/tiers/${id}`)
                   store.dispatch('app-mapping/deleteMapping', { id: id })
                   this.$swal({
                       icon: 'success',

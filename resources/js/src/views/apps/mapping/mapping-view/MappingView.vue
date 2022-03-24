@@ -88,9 +88,6 @@ export default {
       MappingTierList,
 
   },
-    data() {
-        mappingData
-    },
     beforeCreate() {
         const magazineSlug = this.$route.params.slug
 
@@ -100,7 +97,7 @@ export default {
     },
 
   setup() {
-    const mappingData = ref({})
+    const mappingData = ref()
     const MAPPING = 'app-mapping'
 
     // Register module

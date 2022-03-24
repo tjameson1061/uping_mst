@@ -270,24 +270,19 @@
                 },
             },
         },
-        data() {
-            return {
-                countryOption: ['UK', 'USA', 'India', 'Canada'],
+        setup(props) {
 
-            }
-        },
-        methods: {
-            goBack() {
+               function goBack() {
                 history.back();
-            },
-            updateCompanyInfo(ev) {
+            }
+            function updateCompanyInfo(ev) {
                 ev.preventDefault();
 
                 // loading.value = true;
 
                 // console.log(this.userData.user.company)
                 // debugger
-                this.$http.patch('/partner/updateCompany/1', this.userData.user.company)
+                this.$http.patch(`/partner/updateCompany/${props.userData.user.id}`, this.userData.user.company)
                     .then((res) => {
                         // console.log(res)
                         // debugger
@@ -319,6 +314,13 @@
                             errors.value = error.response.data.errors;
                         }
                     });
+            }
+
+
+
+            return {
+                updateCompanyInfo,
+                goBack,
             }
         },
     }

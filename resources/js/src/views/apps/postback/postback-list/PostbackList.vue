@@ -373,7 +373,7 @@ export default {
     return {
       // Sidebar
       isAddNewPostbackSidebarActive,
-
+      deletePostback,
       fetchPostbacks,
       tableColumns,
       perPage,

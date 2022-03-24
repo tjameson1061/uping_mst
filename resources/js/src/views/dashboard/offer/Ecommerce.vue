@@ -7,6 +7,7 @@
               sm="6"
           >
               <statistic-card-horizontal
+                  v-if="dashboardData.dashboard_data"
                   icon="NavigationIcon"
                   :statistic="dashboardData.dashboard_data.todayMetrics.original.today_metrics.clicks"
                   statistic-title="Clicks"
@@ -115,7 +116,7 @@ export default {
   },
   data() {
     return {
-        dashboardData: {},
+        dashboardData: { dashboard_data : { todayMetrics : { original : {today_metrics : {}}}} },
     }
   },
   created() {

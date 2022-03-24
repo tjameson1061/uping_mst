@@ -42,7 +42,6 @@
         <!-- Affiliate Overview-->
         <b-row class="match-height">
             <b-col lg="12">
-<!--               <report-list />-->
                <u-k-lead-list />
             </b-col>
 
@@ -73,7 +72,7 @@
     import EarningsMonth from "./EarningsMonth.vue";
     import EarningsProfit from "./EarningsProfit.vue";
     import ReportList from "../../../report/uk/report-list/ReportList.vue";
-    import UKLeadList from './../../../uk-lead/uk-lead-list/LeadList.vue'
+    import UKLeadList from '../../../uk-lead/uk-lead-list/LeadList.vue'
     import axios from 'axios'
 
 

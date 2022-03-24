@@ -196,37 +196,21 @@
             },
 
         },
-        data() {
-            return {
-                name: '',
-                file: '',
-                success: ''
-            }
-        },
-        methods: {
-            resetForm() {
-                this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
-            },
-            goBack() {
-                history.back();
-            },
-            onFileChange(e) {
-                console.log(e.target.files[0]);
-                this.file = e.target.files[0];
-            },
-        },
 
         setup(props) {
             const refInputEl = ref(null)
             const previewEl = ref(null)
             const toast = useToast()
+            const name = ref()
+            const file = ref()
+            const success = ref()
 
             const {inputImageRenderer} = useInputImageRenderer(refInputEl, base64 => {
                 // eslint-disable-next-line no-param-reassign
                 props.userData.user.avatar = base64
             })
 
-            function  updateAccountSettingsForm(ev) {
+            function updateAccountSettingsForm(ev) {
                 ev.preventDefault();
                 console.log(ev)
                 // debugger
@@ -235,14 +219,14 @@
 
                 // console.log(props.userData.user)
                 // debugger
-                this.$http.patch(`/partner/updateAccountInfo/${props.userData.user.id}`, this.userData)
+                this.$http.patch(`/admin/updateAccountInfo/${props.userData.user.id}`, props.userData)
                     .then((res) => {
                         console.log(res)
                         // debugger
                         this.$toast({
                             component: ToastificationContent,
                             props: {
-                                title: 'Notification',
+                                title: 'Account Details',
                                 text: 'Account Details updated successfully',
                                 variant: 'success',
                                 icon: 'CheckIcon'
@@ -254,7 +238,7 @@
                         this.$toast({
                             component: ToastificationContent,
                             props: {
-                                title: 'Notification',
+                                title: 'Account Details',
                                 text: 'Error updating account details',
                                 variant: 'danger',
                                 icon: 'ZapIcon'
@@ -266,12 +250,25 @@
                         }
                     });
             }
-
+            function resetForm() {
+                this.optionsLocal = JSON.parse(JSON.stringify(this.userData))
+            }
+            function goBack() {
+                history.back();
+            }
+            function onFileChange(e) {
+                console.log(e.target.files[0]);
+                this.file = e.target.files[0];
+            }
 
             return {
                 updateAccountSettingsForm,
+                onFileChange,
+                resetForm,
+                goBack,
+
                 avatarText,
-                //  ? Demo - Update Image on click of update button
+
                 refInputEl,
                 previewEl,
                 inputImageRenderer,
@@ -280,7 +277,7 @@
                 file,
                 success,
 
-                userData,
+                // userData,
 
                 toast,
                 ToastificationContent

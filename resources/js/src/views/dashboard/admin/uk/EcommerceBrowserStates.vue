@@ -98,9 +98,7 @@
             BBadge
         },
         props: {
-            redirectData: {
-                type: Object
-            }
+            redirectData: []
         },
         data() {
             return {

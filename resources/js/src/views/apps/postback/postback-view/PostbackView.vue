@@ -30,7 +30,7 @@
                     lg="12"
                     md="12"
                 >
-                    <postback-view-user-info-card :postback-data="postbackData" />
+                    <postback-view-user-info-card :postback-data="postbackData" v-if="postbackData" />
                 </b-col>
 
             </b-row>
@@ -50,7 +50,7 @@
 
         </template>
 
-        <postback-mapping-list :postback-data="postbackData" />
+        <postback-mapping-list :postback-data="postbackData" v-if="postbackData"/>
 
 
 

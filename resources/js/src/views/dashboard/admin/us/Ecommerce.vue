@@ -1,144 +1,153 @@
 <template>
   <section id="dashboard-ecommerce">
 
-     <!--Stat Cards-->
+    <!--Stat Cards-->
     <b-row class="match-height">
       <b-col
-        xl="3"
-        md="3"
+              xl="3"
+              md="3"
       >
-          <earnings-today :data="data.dashboard_data" title="Today"/>
+        <earnings-today :data="data.dashboard_data" v-if="data.dashboard_data" title="Today"/>
       </b-col>
       <b-col
-        xl="3"
-        md="3"
+              xl="3"
+              md="3"
       >
-          <earnings-week :data="data.dashboard_data" title="Week"/>
+        <earnings-week :data="data.dashboard_data" v-if="data.dashboard_data" title="Week"/>
       </b-col>
-        <b-col
-            xl="3"
-            md="3"
-        >
-            <earnings-month :data="data.dashboard_data" title="Month"/>
-        </b-col>
-        <b-col
-            xl="3"
-            md="3"
-        >
-            <earnings-profit :data="data.dashboard_data" title="Profit"/>
-        </b-col>
+      <b-col
+              xl="3"
+              md="3"
+      >
+        <earnings-month :data="data.dashboard_data" v-if="data.dashboard_data" title="Month"/>
+      </b-col>
+      <b-col
+              xl="3"
+              md="3"
+      >
+        <earnings-profit :data="data.dashboard_data"  v-if="data.dashboard_data" title="Profit"/>
+      </b-col>
     </b-row>
 
-      <!-- Revenue Report Card -->
-      <b-col lg="12">
-          <apex-line-area-chart />
-      </b-col>
+    <!-- Revenue Report Card -->
+    <b-col lg="12">
+      <apex-line-area-chart />
+    </b-col>
 
-      <!-- Affiliate Overview-->
+    <!-- Affiliate Overview-->
     <b-row class="match-height">
       <b-col lg="6">
-        <affiliate-company-table :table-data="data" title="Affiliate" />
+        <affiliate-company-table :table-data="data.dashboard_data.affiliate_table_data" v-if="data.dashboard_data.affiliate_table_data" title="Affiliate" />
+
       </b-col>
-        <!-- Lender Overview-->
-        <b-col lg="6">
-        <lender-company-table :table-data="data" title="Lender" />
-        </b-col>
+      <!-- Lender Overview-->
+      <b-col lg="6">
+        <lender-company-table :table-data="data" title="Lender" v-if="data" />
+      </b-col>
+
+
 
 
       <!-- Lender Redirection Overview -->
       <b-col
-        lg="4"
-        md="4"
+              lg="4"
+              md="4"
       >
-        <affiliate-redirect-rates :redirect-data="data.dashboard_data"/>
+        <affiliate-redirect-rates :redirect-data="data.dashboard_data" v-if="data.dashboard_data"/>
       </b-col>
 
-        <b-col
-            lg="4"
-            md="4"
-        >
-            <lender-redirect-rates :redirect-data="data.dashboard_data" />
-        </b-col>
+      <b-col
+              lg="4"
+              md="4"
+      >
+        <lender-redirect-rates :redirect-data="data.dashboard_data" v-if="data.dashboard_data" />
+      </b-col>
       <!-- Redirection ALL -->
-        <b-col
-            lg="4"
-            md="4"
-        >
-            <ecommerce-browser-states :redirect-data="data.dashboard_data"/>
-        </b-col>
-
-
+      <b-col
+              lg="4"
+              md="4"
+      >
+        <ecommerce-browser-states :redirect-data="data.dashboard_data" v-if="data.dashboard_data"/>
+      </b-col>
 
     </b-row>
   </section>
 </template>
 
 <script>
-import { BRow, BCol } from 'bootstrap-vue'
+  import { BRow, BCol } from 'bootstrap-vue'
 
-// import { getUserData } from '@/auth/utils'
-import EcommerceMedal from './EcommerceMedal.vue'
-import EcommerceStatistics from './EcommerceStatistics.vue'
-import EcommerceRevenueReport from './EcommerceRevenueReport.vue'
-import EcommerceOrderChart from './EcommerceOrderChart.vue'
-import EcommerceProfitChart from './EcommerceProfitChart.vue'
-import EcommerceEarningsChart from './EcommerceEarningsChart.vue'
-import AffiliateCompanyTable from './AffiliateCompanyTable.vue'
-import CompanyTable from './CompanyTable.vue'
-import LenderCompanyTable from './LenderCompanyTable.vue'
-import EcommerceMeetup from './EcommerceMeetup.vue'
-import AffiliateRedirectRates from './AffiliateRedirectRates.vue'
-import LenderRedirectRates from './LenderRedirectRates.vue'
-import EarningsToday from './EarningsToday.vue'
-import EarningsWeek from './EarningsWeek.vue'
-import EarningsMonth from './EarningsMonth.vue'
-import EarningsProfit from './EarningsProfit.vue'
-import EcommerceTransactions from './EcommerceTransactions.vue'
-import ApexLineAreaChart from "./ApexLineAreaChart.vue";
-import EcommerceBrowserStates from "./EcommerceBrowserStates";
+  // import { getUserData } from '@/auth/utils'
+  import EcommerceMedal from './EcommerceMedal.vue'
+  import EcommerceStatistics from './EcommerceStatistics.vue'
+  import EcommerceRevenueReport from './EcommerceRevenueReport.vue'
+  import EcommerceOrderChart from './EcommerceOrderChart.vue'
+  import EcommerceProfitChart from './EcommerceProfitChart.vue'
+  import EcommerceEarningsChart from './EcommerceEarningsChart.vue'
+  import EcommerceBrowserStates from './EcommerceBrowserStates.vue'
+  import AffiliateCompanyTable from './AffiliateCompanyTable.vue'
+  import CompanyTable from './CompanyTable.vue'
+  import LenderCompanyTable from './LenderCompanyTable.vue'
+  import EcommerceMeetup from './EcommerceMeetup.vue'
+  import AffiliateRedirectRates from './AffiliateRedirectRates.vue'
+  import LenderRedirectRates from './LenderRedirectRates.vue'
+  import EarningsToday from './EarningsToday.vue'
+  import EarningsWeek from './EarningsWeek.vue'
+  import EarningsMonth from './EarningsMonth.vue'
+  import EarningsProfit from './EarningsProfit.vue'
+  import ApexLineAreaChart from "./ApexLineAreaChart.vue";
 
-export default {
-  components: {
-      EcommerceBrowserStates,
+  export default {
+    components: {
       ApexLineAreaChart,
-    BRow,
-    BCol,
+      BRow,
+      BCol,
 
-    EcommerceMedal,
-    EcommerceStatistics,
-    EcommerceRevenueReport,
-    EcommerceOrderChart,
-    EcommerceProfitChart,
-    EcommerceEarningsChart,
-    AffiliateCompanyTable,
-    LenderCompanyTable,
-    CompanyTable,
-    EcommerceMeetup,
-    AffiliateRedirectRates,
-    LenderRedirectRates,
+      EcommerceMedal,
+      EcommerceStatistics,
+      EcommerceRevenueReport,
+      EcommerceOrderChart,
+      EcommerceProfitChart,
+      EcommerceEarningsChart,
+      EcommerceBrowserStates,
+      AffiliateCompanyTable,
+      LenderCompanyTable,
+      CompanyTable,
+      EcommerceMeetup,
+      AffiliateRedirectRates,
+      LenderRedirectRates,
       EarningsToday,
       EarningsWeek,
       EarningsMonth,
       EarningsProfit,
-    EcommerceTransactions,
-  },
-  data() {
-    return {
-      data: {},
-      affiliate_table_data: {},
-    }
-  },
+    },
+    data() {
+      return {
+        data: {
+          dashboard_data : {affiliate_table_data : [],
+            todayEarnings : {redirection : { redirected_ratio : []},today_revenue : 0 },
+            weekEarnings :  {redirection : { redirected_ratio : []},week_revenue : 0 },
+            monthEarnings :  {redirection : { redirected_ratio : []},month_revenue : 0 },
+            profitEarnings :  {redirection : { redirected_ratio : []},profit : 0 },
+            lead_count : {today : 0, week :0 , month : 0},
+            top_referrers : { original : {referrers : []}}
 
-  created() {
-        this.$http.get('/admin/getDashboardDataUS').then(response => {
-            this.data = response.data
-            this.affiliate_table_data = response.data.affiliate_table_data
-    })
-  },
-}
+
+
+          }
+        },
+      }
+    },
+
+    created() {
+      this.$http.get('/admin/getDashboardDataUS').then(response => {
+        this.data = response.data
+      })
+    },
+  }
 </script>
 
 <style lang="scss">
-@import '~@core/scss/vue/pages/dashboard-ecommerce.scss';
-@import '~@core/scss/vue/libs/chart-apex.scss';
+  @import '~@core/scss/vue/pages/dashboard-ecommerce.scss';
+  @import '~@core/scss/vue/libs/chart-apex.scss';
 </style>

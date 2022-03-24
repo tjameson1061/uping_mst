@@ -26,22 +26,22 @@
         </b-tab>
         <!--/ general tab -->
 
-        <!-- change password tab -->
-        <b-tab>
+<!--        &lt;!&ndash; change password tab &ndash;&gt;-->
+<!--        <b-tab>-->
 
-            <!-- title -->
-            <template #title>
-                <feather-icon
-                    icon="LockIcon"
-                    size="18"
-                    class="mr-50"
-                />
-                <span class="font-weight-bold">Change Password</span>
-            </template>
+<!--            &lt;!&ndash; title &ndash;&gt;-->
+<!--            <template #title>-->
+<!--                <feather-icon-->
+<!--                    icon="LockIcon"-->
+<!--                    size="18"-->
+<!--                    class="mr-50"-->
+<!--                />-->
+<!--                <span class="font-weight-bold">Change Password</span>-->
+<!--            </template>--> TODO
 
-            <account-setting-password
-                :user-data="userData"/>
-        </b-tab>
+<!--            <account-setting-password-->
+<!--                :user-data="userData"/>-->
+<!--        </b-tab>-->
         <!--/ change password tab -->
 
         <!-- info -->
@@ -76,6 +76,7 @@
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import {getUserData} from "@/auth/utils";
     import axios from 'axios'
+    import {ref} from '@vue/composition-api'
 
     export default {
         components: {
@@ -90,10 +91,10 @@
 
         setup() {
             const user = getUserData()
-
             const userData = ref({})
-
-            axios.get(`/partner/getUserData/${user.id}`).then(res => {
+            // this.userData =
+            // this.userData = getUserData()
+            axios.get(`/api/partner/getUserData/${user.id}`).then(res => {
                 userData.value = res.data
             })
 

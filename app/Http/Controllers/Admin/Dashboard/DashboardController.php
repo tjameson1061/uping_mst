@@ -542,7 +542,7 @@ class DashboardController extends Controller
                 $leads_redirected_today = UKLead::where('vid', $vendor['vid'])->where('isRedirected', 1)->count();
 
                 try {
-                    $profit_today = $revenue_today - $cost_today;
+                    $profit_today = $cost_today - $revenue_today;
                 } catch (\Exception $e) {
                     $profit_today = 0;
                 }
@@ -573,13 +573,13 @@ class DashboardController extends Controller
 
 //                dd($tier);
 
-                $revenue_today = UKLead::where('buyer_setup_id', $tier['buyer_setup_id'])->pluck('vidLeadPrice')->sum();
-                $cost_today = UKLead::where('buyer_setup_id', $tier['buyer_setup_id'])->pluck('buyerLeadPrice')->sum();
-                $leads_today = UKLead::where('buyer_setup_id', $tier['buyer_setup_id'])->count();
-                $leads_redirected_today = UKLead::where('buyer_setup_id', $tier['buyer_setup_id'])->where('isRedirected', 1)->count();
+                $revenue_today = UKLead::where('buyerTierID', $tier['buyerTierID'])->pluck('vidLeadPrice')->sum();
+                $cost_today = UKLead::where('buyerTierID', $tier['buyerTierID'])->pluck('buyerLeadPrice')->sum();
+                $leads_today = UKLead::where('buyerTierID', $tier['buyerTierID'])->count();
+                $leads_redirected_today = UKLead::where('buyerTierID', $tier['buyerTierID'])->where('isRedirected', 1)->count();
 
                 try {
-                    $profit_today = $revenue_today - $cost_today;
+                    $profit_today = $cost_today - $revenue_today;
                 } catch (\Exception $e) {
                     $profit_today = 0;
                 }
@@ -598,7 +598,8 @@ class DashboardController extends Controller
 
                 $tier_id = BuyerSetup::where('buyer_tier_id', $tier->buyerTierID)->first();
 
-                $tier->tier_name = $tier_id->buyername;
+
+                $tier->tier_name = $tier_id->buyer_tier_id;
                 $tier->leads_today = $leads_today;
                 $tier->revenue_today =  $revenue_today;
                 $tier->profit_today = $profit_today;

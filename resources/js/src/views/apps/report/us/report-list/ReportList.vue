@@ -5,6 +5,7 @@
 
     <!-- Filters -->
     <reports-list-filters
+      v-if="filterData"
       :aff-id-filter.sync="affIdFilter"
       :sub-id-filter.sync="subIdFilter"
       :tier-filter.sync="tierFilter"

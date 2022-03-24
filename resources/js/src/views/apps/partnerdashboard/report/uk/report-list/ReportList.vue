@@ -5,6 +5,7 @@
 
     <!-- Filters -->
     <reports-list-filters
+      v-if="filterData.filterData"
       :sub-id-filter.sync="subIdFilter"
       :tier-filter.sync="tierFilter"
       :vid-lead-price-filter.sync="vidLeadPriceFilter"

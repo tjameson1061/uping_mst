@@ -4,6 +4,7 @@
 
     <!-- Filters -->
     <reports-list-filters
+      v-if="filterData"
       :aff-id-filter.sync="affIdFilter"
       :conversion-filter.sync="conversionFilter"
       :status-filter.sync="statusFilter"

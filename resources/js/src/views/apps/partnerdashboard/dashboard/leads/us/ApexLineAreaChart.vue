@@ -31,7 +31,7 @@
                 type="area"
                 height="400"
                 :options="chartOptions"
-                :series="series.series"
+                :series="series"
             />
             <!--        :series="lineAreaChartSpline.series"-->
         </b-card-body>
@@ -74,6 +74,7 @@
                 pending: [],
                 rejected: [],
                 userData: {},
+                series : [],
             };
         },
         computed: {
@@ -120,24 +121,6 @@
                     },
                 };
             },
-            series() {
-                return {
-                    series: [
-                        {
-                            name: "Accept",
-                            data: this.chartData.accepted,
-                        },
-                        {
-                            name: "Pending",
-                            data: this.chartData.pending,
-                        },
-                        {
-                            name: "Reject",
-                            data: this.chartData.rejected,
-                        },
-                    ],
-                };
-            },
         },
         created() {
             this.fetchChartData();
@@ -153,6 +136,20 @@
                         this.accepted = response.data.accepted;
                         this.pending = response.data.pending;
                         this.rejected = response.data.rejected;
+                        this.series= [
+                        {
+                            name: "Accept",
+                            data: this.chartData.accepted,
+                        },
+                        {
+                            name: "Pending",
+                            data: this.chartData.pending,
+                        },
+                        {
+                            name: "Reject",
+                            data: this.chartData.rejected,
+                        },
+                    ];
                     })
                     .catch((error) => console.log(error));
             },

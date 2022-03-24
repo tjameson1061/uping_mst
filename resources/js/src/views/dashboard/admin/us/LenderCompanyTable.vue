@@ -8,6 +8,7 @@
         <!--      {{tableData.dashboard_data.lender_table_data }}-->
 
         <b-table
+        v-if="tableData.dashboard_data"
             :items="tableData.dashboard_data.lender_table_data"
             responsive
             :fields="fields"
@@ -80,10 +81,8 @@
             BBadge
         },
         props: {
-            tableData: {
-                type: Object,
-                default: () => [],
-            },
+                tableData: {dashboard_data : {lender_table_data : []}},
+
         },
 
         data() {

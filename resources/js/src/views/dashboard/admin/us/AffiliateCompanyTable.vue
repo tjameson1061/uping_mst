@@ -8,6 +8,7 @@
 <!--      {{tableData.dashboard_data.affiliate_table_data }}-->
 
       <b-table
+      v-if="tableData.dashboard_data"
       :items="tableData.dashboard_data.affiliate_table_data"
       responsive
       :fields="fields"
@@ -85,10 +86,7 @@ export default {
     BBadge
   },
   props: {
-    tableData: {
-      type: Object,
-      default: () => [],
-    },
+    tableData: {dashboard_data : {affiliate_table_data : []}},
   },
 
   data() {
