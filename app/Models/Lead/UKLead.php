@@ -4,6 +4,7 @@ namespace App\Models\Lead;
 
 use App\Http\Controllers\Admin\Lead\LeadTestController;
 //use App\LmsPartnerLeadType;
+use App\Models\Buyer\BuyerSetup;
 use App\Models\LeadLog\LeadLog;
 use App\Models\LMSApplication\Applicant;
 use App\Models\LMSApplication\Bank;
@@ -277,8 +278,10 @@ class UKLead extends Model
                 $data_log['isRedirected'] = '1';
                 $query = DB::table('lmsleadlogs');
 
+                $tier_id = BuyerSetup::where('buyer_tier_id', $row->buyerTierID)->first()->id;
+
                 $query->where('leadid', $search['id'])
-                    ->where('buyer_setup_id', $row->buyerTierID);
+                    ->where('buyer_setup_id', $tier_id);
 
                 $res = $query->update(['isredirected' => $data_log['isRedirected']]);
                 return $row->redirectUrl;
