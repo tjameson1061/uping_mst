@@ -261,7 +261,7 @@ class USLead extends Model
                 $res = $query->update(['id' => $data['id'], 'isRedirected' => $data['isRedirected']]);
 
                 $data_log['isRedirected'] = '1';
-                $query = DB::table('lmsleadlogs');
+                $query = DB::table('lmsleadlogsus');
 
                 $query->where('leadid', $search['id'])
                     ->where('buyer_setup_id', $row->buyerTierID);
