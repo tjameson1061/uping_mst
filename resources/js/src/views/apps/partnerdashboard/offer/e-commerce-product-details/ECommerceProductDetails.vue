@@ -65,8 +65,14 @@
 
                         <!-- Price And Ratings -->
                         <div class="ecommerce-details-price d-flex flex-wrap mt-1">
-                            <h4 class="item-price mr-1">
-                                £{{ offer.payout.payoutAmount }}
+                            <h4 class="item-price mr-1" v-if="offer.payout.payoutType == 'CPS'">
+                                {{ offer.payout.payoutAmount }} %
+                            </h4>
+                            <h4 class="item-price mr-1" v-else-if="offer.payout.currency == 'GBP'">
+                                £ {{ offer.payout.payoutAmount }}
+                            </h4>
+                            <h4 class="item-price mr-1" v-else-if="offer.payout.currency == 'USD'">
+                                $ {{ offer.payout.payoutAmount }}
                             </h4>
                             <ul class="unstyled-list list-inline pl-1 border-left">
 <!--                                <li-->
