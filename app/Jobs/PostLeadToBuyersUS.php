@@ -215,6 +215,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 
         $post = BuyerFilterUS::allBuyerFilters($post);
+        Log::debug('BUYER LIST2::', (array)$post);
 
 
         $post->subid = $post->subid ?? 'DIRECT';
@@ -342,7 +343,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         );
                         $resp = (new USLead)->add($data);
                         Log::debug('LEAD::', (array) $resp);
-                        Log::debug('LEAD ID::', (array) $post->lead_id,);
+                        Log::debug('LEAD ID::', (array) $post->lead_id);
 
 
                         $data = array(

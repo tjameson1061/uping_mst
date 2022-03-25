@@ -144,7 +144,7 @@ class BuyerFilterUS extends Model
             'residence',
             'bank',
             'consent',
-            'expense',
+            'expense'
         )
             ->first();
 
