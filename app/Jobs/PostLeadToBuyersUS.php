@@ -611,7 +611,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             }
             $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
             $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
-            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
+            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['lead_id'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
             $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) . '</RedirectURL>' : '';
             $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
@@ -635,7 +635,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
                 'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '0.00',
                 'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) : '',
-                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
+                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['lead_id'] : '',
             );
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
                 $response[0] = array_merge($response[0], ['ModelType' => 'CPS']);
