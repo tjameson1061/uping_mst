@@ -83,6 +83,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         Log::info('Posting lead to buyer');
         $res = $this->BuyerPost($post);
+        dd($res);
         Log::debug('DEBUG RESP::', (array) $res);
 
 //        dd($res);
@@ -96,7 +97,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $res = array(
                     'status' => 1,
                     'price' => $res['price'],
-                    'leadid' => $res['id'],
+                    'leadid' => $res['lead_id'],
                     'ModelType' => $res['ModelType'],
 //                    'Threshold' =>
                 );
@@ -104,7 +105,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $res = array(
                     'status' => 3,
                     'price' => $res['price'],
-                    'leadid' => $res['id'],
+                    'leadid' => $res['lead_id'],
                     'ModelType' => $res['ModelType'],
                 );
             }
@@ -154,7 +155,7 @@ class PostLeadToBuyersUS implements ShouldQueue
         } else {
             $res = array(
                 'status' => 2,
-                'leadid' => $res['id'],
+                'leadid' => $res['lead_id'],
                 'ModelType' => $res['model_type'],
                 'price' => '0.00'
             );
@@ -162,11 +163,11 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         Log::debug('Response array: ' . json_encode($res));
 
-        $logs = USLead::getlog($res['leadid']);
+        $logs = USLead::getlog($res['lead_id']);
 
         if (count($logs) > 0) {
             $log = $logs[0];
-            if ($log->buyer_id === "1") {
+            if ($log->buyer_id == "1") {
                 $res["check_status"] = true;
             } else {
                 $res['check_status'] = false;
@@ -183,7 +184,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         $data = array(
             'id' => $partnerlogid,
-            'lead_id' => $res['leadid'],
+            'lead_id' => $res['lead_id'],
             'post_response' => $post_response,
             'post_status' => $res['status'],
             'post_time' => $post_time

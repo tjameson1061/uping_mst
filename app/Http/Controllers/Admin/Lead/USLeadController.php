@@ -438,7 +438,6 @@ class USLeadController extends Controller
      */
     function curl_response_status($check_status, $response_type = 'json')
     {
-//        dd($check_status);
         $url = route('api-check-status-us', $check_status['correlationId']);
         $response_type = 'json';
 
@@ -870,7 +869,7 @@ class USLeadController extends Controller
                 $response['postback_method'] = $postback_method;
                 $response['iframe_url'] = $iframe_url;
 
-                $post_response = $this->curl_response_post($response);
+                $post_response = $this->curl_response_post($response, $response_type = 'json' );
 
 
                 $data_pub = array(
@@ -904,7 +903,7 @@ class USLeadController extends Controller
                 $response['check_status_id'] = $CheckStatusLogger->add();
 
 
-                $post_response = $this->curl_response_post($response);
+                $post_response = $this->curl_response_post($response,  $response_type = 'json');
 
                 Log::debug('DEBUG: CHECK STATUS LEAD ID ' . $leadid . ': Final response: ' . print_r($post_response, true));
 
