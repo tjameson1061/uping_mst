@@ -225,7 +225,6 @@ class PostLeadToBuyersUS implements ShouldQueue
 //                $post->buyer_list = $buyer_list['row'];
 //            }
 //        }
-        dd($post);
 
 
 
@@ -350,7 +349,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'price' => $price,
                             'leadStatus' => '1',
                             'id' => $post->id,
-                            'lead_id' => $post->lead_id,
+                            'lead_id' => $data['lead_id'],
                             'ModelType' => $row->model_type
                         );
 
@@ -375,7 +374,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'price' => '0.00',
                             'leadStatus' => '3',
                             'id' => $post->id,
-                            'lead_id' => $post->lead_id,
+                            'lead_id' =>  $data['lead_id'],
                             'ModelType' => $row->model_type
 
                         );
@@ -389,7 +388,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'leadStatus' => '2',
                             'id' => $post->id,
                             'model_type' => $row->model_type,
-                            'lead_id' => $post->lead_id,
+                            'lead_id' =>  $data['lead_id'],
                             'reason' => $lender_response['reason'] ?? 'No Reason Provided'
                         );
 
