@@ -225,6 +225,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 //                $post->buyer_list = $buyer_list['row'];
 //            }
 //        }
+        dd($post);
 
 
 
