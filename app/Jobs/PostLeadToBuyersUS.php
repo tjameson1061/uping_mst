@@ -343,9 +343,10 @@ class PostLeadToBuyersUS implements ShouldQueue
                         );
                         $resp = (new USLead)->add($data);
                         Log::debug('LEAD::', (array) $resp);
-                        Log::debug('LEAD ID::', (array) $data['lead_id']);
 
                         $lead_id = USLead::where('id', $post->id )->first()->uuid;
+                        // TODO CLEAN
+                        Log::debug('LEAD ID::', (array) $lead_id);
 
 
 
