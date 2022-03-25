@@ -449,6 +449,7 @@ class USLeadController extends Controller
             $res .= '<PercentageComplete>' . $check_status['percentage'] . '</PercentageComplete>';
             $res .= '<CheckStatusID>' . $check_status['correlationId'] . '</CheckStatusID>';
             $res .= '<CheckStatus>' . $check_status['status'] . '</CheckStatus>';
+            $res .= '<Leadid>' . $check_status['leadid'] . '</Leadid>';
             $res .= '<CheckStatusURL>' . $url . '</CheckStatusURL>';
             $res .= '</PostResponse>';
 
@@ -460,6 +461,7 @@ class USLeadController extends Controller
                 'PercentageComplete' => $check_status['percentage'],
                 'CheckStatusID' => $check_status['correlationId'],
                 'CheckStatus' => $check_status['status'],
+                'Leadid' => $check_status['leadid'],
                 'CheckStatusURL' => $url,
             );
             return json_encode($response);
