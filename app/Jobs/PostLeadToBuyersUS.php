@@ -162,7 +162,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         Log::debug('Response array: ' . json_encode($res));
 
-        $logs = USLead::getlog($res['lead_id']);
+        $logs = USLead::getlog($res['leadid']);
 
         if (count($logs) > 0) {
             $log = $logs[0];
@@ -183,7 +183,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         $data = array(
             'id' => $partnerlogid,
-            'lead_id' => $res['lead_id'],
+            'lead_id' => $res['leadid'],
             'post_response' => $post_response,
             'post_status' => $res['status'],
             'post_time' => $post_time
