@@ -94,22 +94,6 @@ class ConversionTracker extends Model
             return $postback_log;
         }
 
-        if ($offer->conversion_type == 'Revshare') {
-
-            try {
-                $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
-                $data_update->totalCost = $price;
-                $data_update->totalRevenue = $data->amount;
-
-                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
-
-                return $postback_log;
-            } catch (\Exception $e) {
-                Log::debug($e);
-                echo 'No {amount} Variable Provided';
-                die();
-            }
-        }
 
 
     }
