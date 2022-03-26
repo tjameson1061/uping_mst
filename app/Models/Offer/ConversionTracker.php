@@ -37,15 +37,18 @@ class ConversionTracker extends Model
         $totals->revenue = $offer->payout->revenueAmount;
 
         $data_update = (object)[];
-        $rev_share_offers = (array) [1,2];
-
         $new_data = (object)[];
 
         $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
         $data_update->totalCost = $price;
+
         $data_update->totalRevenue = $totals->revenue;
 
         if ($offer->conversion_type == 'Revshare' ) {
+
+            $totalRevenue = $data->amount + $data->amount * ($partner_detail->margin / 100);
+            $data_update->totalCost = $price;
+            $data_update->totalRevenue = $totalRevenue;
             try {
 
                 $postback_log = PostbackLogs::update_postback_log($new_data, $data_update);
