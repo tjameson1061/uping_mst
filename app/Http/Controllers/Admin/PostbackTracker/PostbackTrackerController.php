@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin\PostbackTracker;
 
-use App\Exports\admin\exportPostbackTracker;
 use App\Helpers\CurlHelper;
-use App\Lmscallcenter;
-use App\LmsPartnerLeadType;
 use App\Models\ClickTracker;
-use App\Models\ConversionTracker;
 use App\Models\IPQS;
-use App\Models\PostbackLog;
+use App\Models\Postback;
 use App\Models\PostbackTracker\PostbackTracker;
-use App\Offer;
-use App\Partner;
+use App\Models\Offer;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
 use Mockery\Exception;
 
 class PostbackTrackerController extends Controller

@@ -113,7 +113,10 @@ class UKLeadController extends Controller
             'bank',
             'consent'])->where('id', $id)->first();
 
-        $recentApplications = Applicant::with('uk_lead', 'source')->select('id', 'nameTitle', 'firstName', 'lastName', 'email')->where('email', $lead->applicant->email)->paginate(10);
+        $recentApplications = Applicant::with('uk_lead', 'source')
+            ->select('id', 'nameTitle', 'firstName', 'lastName', 'email')
+            ->where('email', $lead->applicant->email)
+            ->paginate(10);
 
 
         return Response::json(['lead' => $lead, 'recentApplications' => $recentApplications]);
