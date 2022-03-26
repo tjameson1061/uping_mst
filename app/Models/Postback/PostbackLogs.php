@@ -2,8 +2,10 @@
 
 namespace App\Models\Postback;
 
+use App\Models\Partner\Partner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class PostbackLogs extends Model
 {
@@ -21,7 +23,7 @@ class PostbackLogs extends Model
      */
     public function store($request, $transaction_id, $offer)
     {
-        $postback_log = new PostbackLog();
+        $postback_log = new PostbackLogs();
         $postback_log->lead_id = $request->lead_id ?? '';
 
         if ($offer->internal === "1") {
