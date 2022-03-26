@@ -2,14 +2,10 @@
 
 namespace App\Models\Postback;
 
-use App\Models\ClickTracker;
 use App\Models\ClickTracker\ClickTracker;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
-use App\Models\PostbackLog;
-use App\Models\PostbackTracker;
 use App\Models\PostbackTracker\PostbackTracker;
-use App\Offer;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
