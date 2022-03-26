@@ -355,6 +355,8 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'ModelType' => $row->model_type
                         );
 
+
+
                         return $data;
 
                     } elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'CONDITIONAL') {
