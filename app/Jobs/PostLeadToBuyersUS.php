@@ -352,7 +352,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'price' => $price,
                             'leadStatus' => '1',
-                            'id' => $lead->id,
+                            'id' => $lead->uuid,
                             'ModelType' => $row->model_type
                         );
 
@@ -377,7 +377,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'price' => '0.00',
                             'leadStatus' => '3',
                             'leadid' => $lead->uuid,
-                            'id' => $lead->id,
+//                            'id' => $lead->id,
                             'ModelType' => $row->model_type
 
                         );
@@ -389,8 +389,8 @@ class PostLeadToBuyersUS implements ShouldQueue
 
                         $data = array(
                             'leadStatus' => '2',
-                            'id' => $post->lead_id,
-                            'leadid' => $post->lead_id,
+                            'id' => $lead->id,
+                            'leadid' => $lead->uuid,
                             'model_type' => $row->model_type,
                             'reason' => $lender_response['reason'] ?? 'No Reason Provided'
                         );
