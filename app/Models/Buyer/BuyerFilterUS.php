@@ -196,8 +196,8 @@ class BuyerFilterUS extends Model
     static function getAllFailedFiltersByIds(
         $buyerTierID,
         string $condition,
-        bool $value = false,
-        bool $operator = false)
+        bool $value = null,
+        bool $operator = null)
     {
         $failed_filters = BuyerFilterUS::where('buyer_setup_id', '=', $buyerTierID)
             ->get()

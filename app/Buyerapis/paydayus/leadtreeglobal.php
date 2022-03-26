@@ -2,6 +2,7 @@
 
 
 use App\Helpers\CurlHelper;
+use Illuminate\Support\Facades\Http;
 
 class leadtreeglobal
 
@@ -11,109 +12,115 @@ class leadtreeglobal
     function __construct($client_detail, $post)
     {
 
-        $monthsAtAddress = floor($post->monthsAtAddress);
-        $monthsAtEmployer = floor($post->monthsAtEmployer);
-        $numberOfMonthsInBank = floor($post->bankAccountLength);
+        $monthsAtAddress = floor($post->Residence->monthsAtAddress);
+        $monthsAtEmployer = floor($post->Employer->monthsAtEmployer);
+        $numberOfMonthsInBank = floor($post->Bank->monthsAtBank);
 
         // Time at bank
-        $numberOfMonthsInBank = floor($post->bank->bankAccountLength);
-        $date = date("c", strtotime('-' . $numberOfMonthsInBank . " months", strtotime($post->created_at)));
-        $BankAccountOpened = date("c", strtotime($date));
-        $bao = new DateTime($BankAccountOpened, new DateTimeZone("UTC"));
-        $BankAccountOpened = '/Date(' . ($bao->getTimestamp() * 1000) . ')/';
+//        $numberOfMonthsInBank = floor($post->bank->bankAccountLength);
+//        $date = date("c", strtotime('-' . $numberOfMonthsInBank . " months", strtotime($post->created_at)));
+//        $BankAccountOpened = date("c", strtotime($date));
+//        $bao = new DateTime($BankAccountOpened, new DateTimeZone("UTC"));
+//        $BankAccountOpened = '/Date(' . ($bao->getTimestamp() * 1000) . ')/';
 
 
-        if ($post->consentFinancial === '1' || 1) {
-            $post->consentFinancial = true;
+        if ($post->Consent->consentFinancial == '1' ) {
+            $post->Consent->consentFinancial = true;
         } else {
-            $post->consentFinancial = false;
+            $post->Consent->consentFinancial = false;
         }
-        if ($post->consentThirdPartyEmails === '1' || 1) {
-            $post->consentThirdPartyEmails = true;
+        if ($post->Consent->consentThirdPartyEmails == '1' ) {
+            $post->Consent->consentThirdPartyEmails = true;
         } else {
-            $post->consentThirdPartyEmails = false;
+            $post->Consent->consentThirdPartyEmails = false;
         }
 
 
-        $json = array(
+        $lead = array(
             "AffiliateAPIKey" => "4dd3204d-a01d-452d-ae48-8d8c86343000",
-            "affiliateReference" => "test",
-            "affiliateSubReference" => "",
+            "affiliateReference" => (string) $post->vid ?? 'AFF_UP150',
+            "affiliateSubReference" => (string) $post->subid ?? 'AFF_UP150',
             "affiliateCampaign" => "10",
 
-            "referringUrl" => (string)$post->source->referringUrl,
-            "userAgent" => (string)$post->source->userAgent,
-            "ipAddress" => (string)$post->source->ipAddress,
+            "referringUrl" => (string)$post->Source->referringUrl,
+            "userAgent" => (string)$post->Source->userAgent,
+            "ipAddress" => (string)$post->Source->ipAddress,
 
-            "salutation" => (int) $post->applicant->nameTitle ?? 1,
-            "firstName" => (string)$post->applicant->firstName,
-            "surname" => (string)$post->applicant->lastName,
-            "emailAddress" => (string)$post->applicant->email,
-            "dateOfBirthDay" => (string)$post->applicant->dateOfBirthDay,
-            "dateOfBirthMonth" => (string)$post->applicant->dateOfBirthMonth,
-            "dateOfBirthYear" => (string)$post->applicant->dateOfBirthYear,
-            "maritalStatus" => (string)$post->applicant->maritalStatus,
-            "cellPhoneNumber" => (string)$post->applicant->mobilePhoneNumber,
-            "homePhoneNumber" => (string)$post->applicant->homePhoneNumber,
-            "workPhoneNumber" => (string)$post->applicant->homePhoneNumber,
-            "residentialStatus" => (int)$post->residence->residentialStatus,
+            "salutation" => (int) $post->Applicant->nameTitle ?? 1,
+            "firstName" => (string)$post->Applicant->firstName,
+            "surname" => (string)$post->Applicant->lastName,
+            "emailAddress" => (string)$post->Applicant->email,
+            "dateOfBirthDay" => (string)$post->Applicant->dateOfBirthDay,
+            "dateOfBirthMonth" => (string)$post->Applicant->dateOfBirthMonth,
+            "dateOfBirthYear" => (string)$post->Applicant->dateOfBirthYear,
+            "maritalStatus" => (string)$post->Applicant->maritalStatus,
+            "cellPhoneNumber" => (string)$post->Applicant->mobilePhoneNumber,
+            "homePhoneNumber" => (string)$post->Applicant->homePhoneNumber,
+            "workPhoneNumber" => (string)$post->Applicant->homePhoneNumber,
+            "residentialStatus" => (int)$post->Residence->residentialStatus,
 
-            "consentToCreditSearch" => (bool)$post->consent->consentCreditSearch,
-            "consentToMarketingEmails" => (bool)$post->consent->consentToMarketingEmails,
-            "consentToMarketingSMS" => (bool)$post->consent->consentToMarketingSMS,
+            "consentToCreditSearch" => (bool)$post->Consent->consentCreditSearch,
+            "consentToMarketingEmails" => (bool)$post->Consent->consentToMarketingEmails,
+            "consentToMarketingSMS" => (bool)$post->Consent->consentToMarketingSMS,
 
-            "abaRoutingTransitNumber" => (string)$post->bank->bankRoutingNumber,
-            "bankAccountNumber" => (string)$post->bank->bankAccountNumber,
+            "abaRoutingTransitNumber" => (string)$post->Bank->bankRoutingNumber,
+            "bankAccountNumber" => (string)$post->Bank->bankAccountNumber,
 //            "bankCardType" => (string)$post->bank->bankAccountNumber,
 
-            "houseNumber" => (string)$post->residence->houseNumber,
-            "street1" =>  (string)$post->residence->addressStreet1,
-            "townCity" =>  (string)$post->residence->city,
-            "state" =>  (string)$post->residence->state,
-            "zipCode" =>  (string)$post->residence->zip,
-            "monthsAtAddress" =>  (string)$post->residence->monthsAtAddress,
+            "houseNumber" => (string)$post->Residence->houseNumber,
+            "street1" =>  (string)$post->Residence->addressStreet1,
+            "townCity" =>  (string)$post->Residence->city,
+            "state" =>  (string)$post->Residence->state,
+            "zipCode" =>  (string)$post->Residence->zip,
+            "monthsAtAddress" =>  (string)$post->Residence->monthsAtAddress,
 
-            "loanAmount" => (int)$post->loan->loanAmount,
-            "employmentStatus" => (int)$post->employer->employmentStatus,
-            "employerName" => (int)$post->employer->employerName,
-            "income" => (int)$post->employer->monthlyIncome,
-            "incomeFrequency" => (int)$post->employer->incomeCycle,
-            "nextPayDateDay" => (int)$post->employer->nextPayDateDay,
-            "nextPayDateMonth" => (int)$post->employer->nextPayDateMonth,
-            "nextPayDateYear" => (int)$post->employer->nextPayDateYear,
-            "followingPayDateDay" => (int)$post->employer->nextPayDateYear,
-            "followingPayDateMonth" => (int)$post->employer->followingPayDateMonth,
-            "followingPayDateYear" => (int)$post->employer->followingPayDateYear,
+            "loanAmount" => (int)$post->Loan->loanAmount,
+            "employmentStatus" => (int)$post->Employer->employmentStatus,
+            "employerName" => (int)$post->Employer->employerName,
+            "income" => (int)$post->Employer->monthlyIncome,
+            "incomeFrequency" => (int)$post->Employer->incomeCycle,
+            "nextPayDateDay" => (int)$post->Employer->nextPayDateDay,
+            "nextPayDateMonth" => (int)$post->Employer->nextPayDateMonth,
+            "nextPayDateYear" => (int)$post->Employer->nextPayDateYear,
+            "followingPayDateDay" => (int)$post->Employer->nextPayDateYear,
+            "followingPayDateMonth" => (int)$post->Employer->followingPayDateMonth,
+            "followingPayDateYear" => (int)$post->Employer->followingPayDateYear,
 
 //            "MonthsWithEmployer" => (int)$post->employer->incomeSource,
 
-            "drivingLicenseIssuingState" => (string) $post->applicant->drivingLicenseState,
-            "drivingLicenseNumber" => (string) $post->applicant->drivingLicenseNumber,
-            "socialSecurityNumber" => (int) $post->applicant->ssn,
+            "drivingLicenseIssuingState" => (string) $post->Applicant->drivingLicenseState,
+            "drivingLicenseNumber" => (string) $post->Applicant->drivingLicenseNumber,
+            "socialSecurityNumber" => (int) $post->Applicant->ssn,
 
-            "bankName" => (int) $post->bank->bankName,
-            "bankAccountType" => (int) $post->bank->bankAccountType,
-            "monthsWithBank" =>  (string) $BankAccountOpened,
-            "jobTitle" => (int)$post->employer->incomeSource,
-            "consentToTerms" => (boolean) $post->consent->consentFinancial
+            "bankName" => (int) $post->Bank->bankName,
+            "bankAccountType" => (int) $post->Bank->bankAccountType,
+            "monthsWithBank" =>  (string) $post->Bank->monthsAtBank,
+            "jobTitle" => (int)$post->Employer->incomeSource,
+            "consentToTerms" => (boolean) $post->Consent->consentFinancial
         );
 
 
-//        dd($application);
 
 		if($client_detail->mode == 1) {
-			$mode = "false";
+			$mode = (boolean) false;
 			$TestResponseType = '';
 		}else{
-			$mode = "true";
+			$mode = (boolean) true;
 			$TestResponseType = 'AcceptedByLenderWithCommission';
 		}
 
+
 		$this->response['post_url'] = ($client_detail->mode == '2') ? $client_detail->post_url_test : $client_detail->post_url_live;
-		$this->response['post_url'] = $this->response['post_url'].$client_detail->parameter1;
-		$this->response['post_data'] = json_encode($json);
+		$this->response['post_url'] = $this->response['post_url'] . $client_detail->parameter1;
+		$this->response['post_data'] = $lead;
 		$this->response['timeout'] = $client_detail->timeout;
 		$this->response['header'] = 'Content-Type: application/json';
+
+
+//		dd($this->response['post_url']);
+        $resp = Http::post( $this->response['post_url'], $this->response['post_data'] );
+
+        dd($resp);
     }
 
     public function returnresponse()

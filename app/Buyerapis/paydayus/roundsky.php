@@ -1,6 +1,8 @@
 <?php
 
 use App\Helpers\CurlHelper;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -15,199 +17,194 @@ class roundsky
     {
 
 
-        $dob_day = $post->applicant->dateOfBirthDay;
-        $dob_month = $post->applicant->dateOfBirthMonth;
-        $dob_year = $post->applicant->dateOfBirthYear;
+        $dob_day = $post->Applicant->dateOfBirthDay;
+        $dob_month = $post->Applicant->dateOfBirthMonth;
+        $dob_year = $post->Applicant->dateOfBirthYear;
         $dateOfBirth = $dob_year . '-' . $dob_month . '-' . $dob_day;
 
-        $next_pay_date_day = $post->employer->nextPayDateDay;
-        $next_pay_date_month = $post->employer->nextPayDateMonth;
-        $next_pay_date_year = $post->employer->nextPayDateYear;
+        $next_pay_date_day = $post->Employer->nextPayDateDay;
+        $next_pay_date_month = $post->Employer->nextPayDateMonth;
+        $next_pay_date_year = $post->Employer->nextPayDateYear;
         $nextPayDate = $next_pay_date_year . '-' . $next_pay_date_month . '-' . $next_pay_date_day;
 
-        $followingPayDateDay = $post->employer->followingPayDateDay;
-        $followingPayDateMonth = $post->employer->followingPayDateMonth;
-        $followingPayDateYear = $post->employer->followingPayDateYear;
+        $followingPayDateDay = $post->Employer->followingPayDateDay;
+        $followingPayDateMonth = $post->Employer->followingPayDateMonth;
+        $followingPayDateYear = $post->Employer->followingPayDateYear;
         $followingPayDate = $followingPayDateYear . '-' . $followingPayDateMonth . '-' . $followingPayDateDay;
 
-        $AddressMoveIn = floor($post->residence->stayYear * 12 + $post->residence->monthsAtAddress);
+        $AddressMoveIn = floor($post->Residence->stayYear * 12 + $post->Residence->monthsAtAddress);
 
         // Time in current employment status
-        $EmploymentStarted = floor($post->employer->monthsAtEmployer);
+        $EmploymentStarted = floor($post->Employer->monthsAtEmployer);
 
-        $monthsAtBank = floor($post->bank->bankAccountLength);
+        $monthsAtBank = floor($post->Bank->bankAccountLength);
 
 
-        switch ($post->applicant->nameTitle) {
+        switch ($post->Applicant->nameTitle) {
             case 'Mr':
-                $post->applicant->nameTitle = 1;
+                $post->Applicant->nameTitle = 1;
             case 'Mrs':
-                $post->applicant->nameTitle = 2;
+                $post->Applicant->nameTitle = 2;
             case 'Ms':
-                $post->applicant->nameTitle = 3;
+                $post->Applicant->nameTitle = 3;
             case 'Miss':
-                $post->applicant->nameTitle = 4;
+                $post->Applicant->nameTitle = 4;
         }
-        switch ($post->employer->incomeSource) {
+        switch ($post->Employer->incomeSource) {
             case 'SelfEmployed':
-                $post->employer->incomeSource = 'self_employed';
+                $post->Employer->incomeSource = 'self_employed';
             case 'EmployedFullTime':
-                $post->employer->incomeSource = 'employment';
+                $post->Employer->incomeSource = 'employment';
             case 'EmployedPartTime':
-                $post->employer->incomeSource = 'employment';
+                $post->Employer->incomeSource = 'employment';
             case 'EmployedTemporary':
-                $post->employer->incomeSource = 'employment';
+                $post->Employer->incomeSource = 'employment';
             case 'Pension':
-                $post->employer->incomeSource = 'employment';
+                $post->Employer->incomeSource = 'employment';
             case 'DisabilityBenefits':
-                $post->employer->incomeSource = 'benefits';
+                $post->Employer->incomeSource = 'benefits';
             case 'Benefits':
-                $post->employer->incomeSource = 'benefits';
+                $post->Employer->incomeSource = 'benefits';
         }
-        switch ($post->employer->incomeCycle) {
+        switch ($post->Employer->incomeCycle) {
             case 'Weekly':
-                $post->employer->incomeCycle = 'weekly';
+                $post->Employer->incomeCycle = 'weekly';
             case 'BiWeekly':
-                $post->employer->incomeCycle = 'bi_weekly';
+                $post->Employer->incomeCycle = 'bi_weekly';
             case 'TwiceMonthly':
-                $post->employer->incomeCycle = 'twice_monthly';
+                $post->Employer->incomeCycle = 'twice_monthly';
             case 'FourWeekly':
-                $post->employer->incomeCycle = 'monthly';
+                $post->Employer->incomeCycle = 'monthly';
             case 'Monthly':
-                $post->employer->incomeCycle = 'monthly';
+                $post->Employer->incomeCycle = 'monthly';
         }
-        switch ($post->employer->incomePaymentType) {
+        switch ($post->Employer->incomePaymentType) {
             case 'Cash':
-                $post->employer->incomePaymentType = false;
+                $post->Employer->incomePaymentType = false;
             case 'Cheque':
-                $post->employer->incomePaymentType = false;
+                $post->Employer->incomePaymentType = false;
             case 'RegionalDirectDeposit':
-                $post->employer->incomePaymentType = true;
+                $post->Employer->incomePaymentType = true;
         }
-        switch ($post->applicant->inMilitary) {
+        switch ($post->Applicant->inMilitary) {
             case 'None':
-                $post->applicant->inMilitary = 0;
+                $post->Applicant->inMilitary = 0;
             case 'Veteran':
-                $post->applicant->inMilitary = 1;
+                $post->Applicant->inMilitary = 1;
             case 'Reserves':
-                $post->applicant->inMilitary = 1;
+                $post->Applicant->inMilitary = 1;
             case 'ActiveDuty':
-                $post->applicant->inMilitary = 1;
+                $post->Applicant->inMilitary = 1;
         }
-        switch ($post->residence->residentialStatus) {
+        switch ($post->Residence->residentialStatus) {
             case 'HomeOwner':
-                $post->residence->residentialStatus = 'own';
+                $post->Residence->residentialStatus = 'own';
             case 'PrivateTenant':
-                $post->residence->residentialStatus = 'rent';
+                $post->Residence->residentialStatus = 'rent';
             case 'CouncilTenant':
-                $post->residence->residentialStatus = 'rent';
+                $post->Residence->residentialStatus = 'rent';
             case 'LivingWithParents':
-                $post->residence->residentialStatus = 'rent';
+                $post->Residence->residentialStatus = 'rent';
             case 'LivingWithFriends':
-                $post->residence->residentialStatus = 'rent';
+                $post->Residence->residentialStatus = 'rent';
             case 'Other':
-                $post->residence->residentialStatus = 'rent';
+                $post->Residence->residentialStatus = 'rent';
 
         }
-        switch ($post->applicant->maritalStatus) {
+        switch ($post->Applicant->maritalStatus) {
             case 'Single':
-                $post->applicant->maritalStatus = 1;
+                $post->Applicant->maritalStatus = 1;
             case 'Married':
-                $post->applicant->maritalStatus = 2;
+                $post->Applicant->maritalStatus = 2;
             case 'LivingTogether':
-                $post->applicant->maritalStatus = 3;
+                $post->Applicant->maritalStatus = 3;
             case 'Separated':
-                $post->applicant->maritalStatus = 4;
+                $post->Applicant->maritalStatus = 4;
             case 'Divorced':
-                $post->applicant->maritalStatus = 5;
+                $post->Applicant->maritalStatus = 5;
             case 'Widowed':
-                $post->applicant->maritalStatus = 6;
+                $post->Applicant->maritalStatus = 6;
             case 'Other':
-                $post->applicant->maritalStatus = 7;
+                $post->Applicant->maritalStatus = 7;
 
         }
-        switch ($post->bank->bankAccountType) {
+        switch ($post->Bank->bankAccountType) {
             case 'Checking':
-                $post->bank->bankAccountType = 'checkings';
+                $post->Bank->bankAccountType = 'checkings';
             case 'Savings':
-                $post->bank->bankAccountType = 'savings';
+                $post->Bank->bankAccountType = 'savings';
 
         }
 
-        if (Str::startsWith($post->source->referringUrl, 'http')) {
-            $input = $post->source->referringUrl;
+        if (Str::startsWith($post->Source->referringUrl, 'http')) {
+            $input = $post->Source->referringUrl;
             $new_input = preg_replace("#^[^:/.]*[:/]+#i", "", $input);
             $referringUrl = $new_input;
         } else {
-            $referringUrl = $post->source->referringUrl;
+            $referringUrl = $post->Source->referringUrl;
         }
 
 
-        $json = http_build_query(array(
+        $lead = array(
                 "time_allowed" => (int)120,
                 "partner" => (string)$client_detail->parameter1,
                 "partner_password" => (string)$client_detail->parameter2,
-                "customer_ip" => (string)$post->source->ipAddress,
-                "browser_info" => (string)$post->source->userAgent,
+                "customer_ip" => (string)$post->Source->ipAddress,
+                "browser_info" => (string)$post->Source->userAgent,
                 "domain" => (string)$referringUrl,
                 "response_type" => 'json',
-                "tier" => (int)1,
+                "tier" => (int) 1,
 //                "minimum_price" => (int)'',
                 "sub_id" => (string)$post->subid ?? 'UPING',
-                "first_name" => (string)$post->applicant->firstName,
-                "last_name" => (string)$post->applicant->lastName,
-                "email" => (string)$post->applicant->email,
+//                "first_name" => (string)$post->Applicant->firstName,
+                "first_name" => (string)'declined',
+                "last_name" => (string)$post->Applicant->lastName,
+                "email" => (string)$post->Applicant->email,
                 "birth_date" => (string)$dateOfBirth,
-                "address" => (string)$post->residence->addressStreet1,
-                "city" => (string)$post->residence->city,
-                "state" => (string)$post->residence->state,
-                "zip" => (string)$post->residence->zip,
-                "home_phone" => (string)$post->applicant->homePhoneNumber,
-                "work_phone" => (string)$post->applicant->workPhoneNumber,
-                "housing" => (string)$post->residence->residentialStatus,
-                "monthly_income" => (int)$post->employer->monthlyIncome,
-                "direct_deposit" => $post->employer->incomePaymentType,
-                "pay_period" => (string)$post->employer->incomeCycle,
+                "address" => (string)$post->Residence->addressStreet1,
+                "city" => (string)$post->Residence->city,
+                "state" => (string)$post->Residence->state,
+                "zip" => (string)$post->Residence->zip,
+                "home_phone" => (string)$post->Applicant->homePhoneNumber,
+                "work_phone" => (string)$post->Applicant->workPhoneNumber,
+                "housing" => (string)$post->Residence->residentialStatus,
+                "monthly_income" => (int)$post->Employer->monthlyIncome,
+                "direct_deposit" => $post->Employer->incomePaymentType,
+                "pay_period" => (string)$post->Employer->incomeCycle,
                 "next_pay_date" => (string)$nextPayDate,
                 "second_pay_date" => (string)$followingPayDate,
                 "months_at_residence" => (int)$AddressMoveIn,
-                "requested_loan_amount" => (int)$post->loan->loanAmount,
-                "income_type" => (string)$post->employer->incomeSource,
-                "active_military" => (string)$post->applicant->inMilitary,
-                "occupation" => (string)$post->employer->jobTitle,
-                "employer" => (string)$post->employer->employerName,
+                "requested_loan_amount" => (int)$post->Loan->loanAmount,
+                "income_type" => (string)$post->Employer->incomeSource,
+                "active_military" => (string)$post->Applicant->inMilitary,
+                "occupation" => (string)$post->Employer->jobTitle,
+                "employer" => (string)$post->Employer->employerName,
                 "months_employed" => (int)$EmploymentStarted,
 
-                "bank_name" => (string)$post->bank->bankName,
-                "account_type" => (string)$post->bank->bankAccountType,
-                "account_number" => (string)$post->bank->bankAccountNumber,
-                "routing_number" => (string)$post->bank->bankRoutingNumber,
-                "driving_license_state" => (string)$post->applicant->drivingLicenseState,
-                "driving_license_number" => (string)$post->applicant->drivingLicenseNumber,
-                "social_security_number" => (string)$post->applicant->ssn,
-            )
-        );
+                "bank_name" => (string)$post->Bank->bankName,
+                "account_type" => (string)$post->Bank->bankAccountType,
+                "account_number" => (string)$post->Bank->bankAccountNumber,
+                "routing_number" => (string)$post->Bank->bankRoutingNumber,
+                "driving_license_state" => (string)$post->Applicant->drivingLicenseState,
+                "driving_license_number" => (string)$post->Applicant->drivingLicenseNumber,
+                "social_security_number" => (string)$post->Applicant->ssn,
+            );
 
-        Log::debug('POST DATA::', (array)$json);
+        Log::debug('POST DATA::', (array)$lead);
 
-        $this->response['post_data'] = $json;
-//        $this->response['header'] = array(
-//            'Accept: application/json, text/javascript, *.*',
-//            'Content-type: application/json; charset=utf-8'
-//        );
+        $this->response['post_data'] = $lead;
         $this->response['timeout'] = $client_detail->timeout;
-        $this->response['post_url'] = ($client_detail->status == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
+        $this->response['post_url'] = ($client_detail->mode == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
 
 
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = (new App\Helpers\CurlHelper)->http_post(
-                $this->response['post_url'],
-                $this->response['post_data'],
-               '',
-                $this->response['timeout']
-            );
+
+            $application_status = Http::asForm()->post( $this->response['post_url'], $this->response['post_data'] );
+            $application_status = $application_status->object();
+
+
             Log::debug('RESP POST::', (array)$application_status);
             $this->response['application_response'] = (array)$application_status;
 
@@ -217,61 +214,34 @@ class roundsky
         }
     }
 
-    function get_client_ip($ip)
-    {
-        $ipaddress = $ip;
-        if (getenv('HTTP_CLIENT_IP'))
-            $ipaddress = getenv('HTTP_CLIENT_IP');
-        else if (getenv('HTTP_X_FORWARDED_FOR'))
-            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-        else if (getenv('HTTP_X_FORWARDED'))
-            $ipaddress = getenv('HTTP_X_FORWARDED');
-        else if (getenv('HTTP_FORWARDED_FOR'))
-            $ipaddress = getenv('HTTP_FORWARDED_FOR');
-        else if (getenv('HTTP_FORWARDED'))
-            $ipaddress = getenv('HTTP_FORWARDED');
-        else if (getenv('REMOTE_ADDR'))
-            $ipaddress = getenv('REMOTE_ADDR');
-        else
-            $ipaddress = 'UNKNOWN';
-        return $ipaddress;
-    }
-
-    function dd($parm = null)
-    {
-        echo '<pre>';
-        print_r($parm);
-        exit;
-
-    }
-
     public function returnresponse()
     {
 
         $appResponse = $this->response['application_response'];
-        Log::debug('APP RESP::', (array)$appResponse['res']);
+        Log::debug('APP RESP::', (array)$appResponse);
 
-        $resp_data = json_decode($appResponse['res']);
-        Log::debug('DEBUG::', (array)$resp_data);
+        $resp_data = json_encode($appResponse);
 
-        $this->response['post_res'] = $resp_data;
-        $this->response['post_time'] = $resp_data->post_time;
+        $this->response['post_res'] = $appResponse;
+        $this->response['post_time'] = $appResponse->post_time ?? 'Not available';
 
         Log::debug('RESP2 :: ', (array)$this->response);
 
-        if ($resp_data->decision == 'APPROVED') {
+        if ($appResponse['DECISION'] == 'APPROVED') {
             $this->response['accept'] = 'ACCEPTED';
-            $this->response['post_price'] = $resp_data->price;
+            $this->response['post_price'] = $appResponse->price;
             $this->response['post_status'] = '1';
-            $this->response['redirect_url'] = $resp_data->url;
-            $this->response['post_time'] = $resp_data->post_time;
+            $this->response['redirect_url'] = $appResponse->url;
+            $this->response['reason'] = $appResponse['message'] ?? 'Not available';
+            $this->response['post_time'];
 
 
         } else {
-            $this->response['accept'] = 'REJECTED';
+            $this->response['accept'] = 'DECLINED';
             $this->response['post_status'] = '0';
             $this->response['post_price'] = '0';
-            $this->response['post_time'] = $resp_data->post_time;
+            $this->response['post_time'];
+            $this->response['reason'] = $appResponse['message']  ?? 'Not available';;
 
         }
         //print_r($this->response);exit;

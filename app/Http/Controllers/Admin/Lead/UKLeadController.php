@@ -111,10 +111,11 @@ class UKLeadController extends Controller
             'residence',
             'expense',
             'bank',
-            'consent'])->where('id', $id)->first();
+            'consent'])
+            ->where('id', $id)->first();
 
         $recentApplications = Applicant::with('uk_lead', 'source')
-            ->select('id', 'nameTitle', 'firstName', 'lastName', 'email')
+            ->select('id', 'nameTitle', 'firstName', 'lastName')
             ->where('email', $lead->applicant->email)
             ->paginate(10);
 

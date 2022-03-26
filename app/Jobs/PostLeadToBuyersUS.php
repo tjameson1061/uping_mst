@@ -96,7 +96,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $res = array(
                     'status' => 1,
                     'price' => $res['price'],
-                    'leadid' => $res['lead_id'],
+                    'leadid' => $res['id'],
                     'ModelType' => $res['ModelType'],
 //                    'Threshold' =>
                 );
@@ -104,7 +104,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $res = array(
                     'status' => 3,
                     'price' => $res['price'],
-                    'leadid' => $res['lead_id'],
+                    'leadid' => $res['id'],
                     'ModelType' => $res['ModelType'],
                 );
             }
@@ -154,7 +154,7 @@ class PostLeadToBuyersUS implements ShouldQueue
         } else {
             $res = array(
                 'status' => 2,
-                'leadid' => $res['lead_id'],
+                'leadid' => $res['id'],
                 'ModelType' => $res['model_type'],
                 'price' => '0.00'
             );
@@ -166,7 +166,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         if (count($logs) > 0) {
             $log = $logs[0];
-            if ($log->buyer_id == "1") {
+            if ($log->buyer_id === "1") {
                 $res["check_status"] = true;
             } else {
                 $res['check_status'] = false;
@@ -215,8 +215,6 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 
         $post = BuyerFilterUS::allBuyerFilters($post);
-        Log::debug('BUYER LIST2::', (array)$post);
-
 
         $post->subid = $post->subid ?? 'DIRECT';
 
@@ -261,7 +259,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                     Log::debug('Lender Response::', (array) $lender_response);
 
                     $datalogo = array(
-                        'lead_id' => $post->id,
+                        'lead_id' => $post->lead_id,
                         'vendor_id' => $post->vid,
                         'buyer_id' => $row->buyer_id,
                         'buyer_setup_id' => $row->id,
@@ -344,17 +342,11 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $resp = (new USLead)->add($data);
                         Log::debug('LEAD::', (array) $resp);
 
-                        $lead_id = USLead::where('id', $post->id )->first()->uuid;
-                        // TODO CLEAN
-                        Log::debug('LEAD ID::', (array) $lead_id);
-
-
 
                         $data = array(
                             'price' => $price,
                             'leadStatus' => '1',
                             'id' => $post->id,
-                            'lead_id' => $lead_id,
                             'ModelType' => $row->model_type
                         );
 
@@ -370,7 +362,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'buyerTierID' => $row->buyer_tier_id,
                             'redirectUrl' => $lender_response['redirect_url'] ?? "",
                             'leadStatus' => '3',
-                            'id' => $post->id
+                            'id' => $post->lead_id,
                         );
                         $resp = (new USLead)->add($data);
 
@@ -378,8 +370,8 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'price' => '0.00',
                             'leadStatus' => '3',
-                            'id' => $post->id,
-                            'lead_id' =>  $lead_id,
+                            'leadid' => $post->lead_id,
+                            'id' => $post->lead_id,
                             'ModelType' => $row->model_type
 
                         );
@@ -391,9 +383,9 @@ class PostLeadToBuyersUS implements ShouldQueue
 
                         $data = array(
                             'leadStatus' => '2',
-                            'id' => $post->id,
+                            'id' => $post->lead_id,
+                            'leadid' => $post->lead_id,
                             'model_type' => $row->model_type,
-                            'lead_id' =>  $lead_id,
                             'reason' => $lender_response['reason'] ?? 'No Reason Provided'
                         );
 
@@ -430,6 +422,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             $data = array(
                                 'id' => $post->id,
                                 'leadStatus' => '2',
+                                'leadid' => $post->lead_id,
                                 'model_type' => $row->model_type,
                                 'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
                             );
@@ -441,6 +434,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'id' => $post->id,
                             'leadStatus' => '2',
+                            'leadid' => $post->lead_id,
                             'model_type' => $row->model_type,
                             'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
                         );
@@ -620,7 +614,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             }
             $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
             $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
-            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
+//            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
             $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) . '</RedirectURL>' : '';
             $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
@@ -644,7 +638,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
                 'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '0.00',
                 'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) : '',
-                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
+//                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
             );
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
                 $response[0] = array_merge($response[0], ['ModelType' => 'CPS']);
