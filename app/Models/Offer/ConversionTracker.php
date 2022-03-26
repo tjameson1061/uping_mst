@@ -3,6 +3,7 @@
 namespace App\Models\Offer;
 
 use App\LmsPartnerLeadType;
+use App\Models\Partner\PartnerLeadType;
 use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
 use App\Offer;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use LmsPartnerLeadtype;
 
 class ConversionTracker extends Model
 {
@@ -35,7 +37,7 @@ class ConversionTracker extends Model
         $totals->revenue = $offer->payout->revenueAmount;
 
         $data_update = (object)[];
-        $rev_share_offers = (array) [1,5];
+        $rev_share_offers = (array) [1,2];
 
         $new_data = (object)[];
 
@@ -43,7 +45,7 @@ class ConversionTracker extends Model
         $data_update->totalCost = $price;
         $data_update->totalRevenue = $totals->revenue;
 
-        if ($offer->conversion_type === "1" || $offer->conversion_type === 1) {
+        if ($offer->conversion_type == 'Revshare' ) {
             try {
 
                 $postback_log = PostbackLogs::update_postback_log($new_data, $data_update);
@@ -56,50 +58,50 @@ class ConversionTracker extends Model
             }
         }
 
-        if ($offer->conversion_type === "2" || $offer->conversion_type === 2) {
+        if ($offer->conversion_type == 'CPA') {
 
-            $partner_accumulator_amount = LmsPartnerLeadType::where('vid', '=', $partner_detail->id)
-                ->where('type', '=', 'paydayus')
+            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->id)
+                ->where('lead_type', '=', 1)
                 ->first();
 
             $accumulator_amount = round($partner_accumulator_amount->accuCPAus100, 2);
             $total_offer_revenue_threshold = round($totals->revenue, 2);
 
             if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLog::update_postback_log($data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
             } else {
-                $postback_log = PostbackLog::update_postback_log_no_conversion($data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
             }
 
             return $postback_log;
         }
 
-        if ($offer->conversion_type === "3" || $offer->conversion_type === 3) {
+        if ($offer->conversion_type == "CPL") {
 
-            $partner_accumulator_amount = LmsPartnerLeadType::where('vid', '=', $partner_detail->id)
-                ->where('type', '=', 'paydayus')
+            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->id)
+                ->where('lead_type', '=', 1)
                 ->first();
 
-            $accumulator_amount = round($partner_accumulator_amount->accuCPAus20, 2);
+            $accumulator_amount = round($partner_accumulator_amount->accuCPLus20, 2);
             $total_offer_revenue_threshold = round($totals->revenue, 2);
 
             if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLog::update_postback_log($data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
             } else {
-                $postback_log = PostbackLog::update_postback_log_no_conversion($data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
             }
 
             return $postback_log;
         }
 
-        if ($offer->conversion_type === "5" || $offer->conversion_type === 5) {
+        if ($offer->conversion_type == 'Revshare') {
 
             try {
                 $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
                 $data_update->totalCost = $price;
                 $data_update->totalRevenue = $data->amount;
 
-                $postback_log = PostbackLog::update_postback_log($data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
 
                 return $postback_log;
             } catch (\Exception $e) {
@@ -107,42 +109,6 @@ class ConversionTracker extends Model
                 echo 'No {amount} Variable Provided';
                 die();
             }
-        }
-
-        if ($offer->conversion_type === "9" || $offer->conversion_type === 9) {
-
-            $partner_accumulator_amount = LmsPartnerLeadType::where('vid', '=', $partner_detail->id)
-                ->where('type', '=', 'paydayuk')
-                ->first();
-
-            $accumulator_amount = round($partner_accumulator_amount->accuCPAuk65, 2);
-            $total_offer_revenue_threshold = round($totals->revenue, 2);
-
-            if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLog::update_postback_log($data, $data_update);
-            } else {
-                $postback_log = PostbackLog::update_postback_log_no_conversion($data, $data_update);
-            }
-
-            return $postback_log;
-        }
-
-        if ($offer->conversion_type === "11" || $offer->conversion_type === 11) {
-
-            $partner_accumulator_amount = LmsPartnerLeadType::where('vid', '=', $partner_detail->id)
-                ->where('type', '=', 'paydayus')
-                ->first();
-
-            $accumulator_amount = round($partner_accumulator_amount->accuCPAuk9, 2);
-            $total_offer_revenue_threshold = round($totals->revenue, 2);
-
-            if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLog::update_postback_log($data, $data_update);
-            } else {
-                $postback_log = PostbackLog::update_postback_log_no_conversion($data, $data_update);
-            }
-
-            return $postback_log;
         }
 
 

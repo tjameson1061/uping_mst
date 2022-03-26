@@ -139,11 +139,22 @@
 
           <template #cell(vidLeadPrice)="data">
               <b-media vertical-align="center">
-                  <small v-if="data.item.vidLeadPrice === null" >
-                          £ 0
+                  <small v-if="data.item.vidLeadPrice == null" >
+                          $ 0
                   </small>
                   <small v-else class="text-success">
-                      {{  '£'+data.item.vidLeadPrice }}
+                      {{  '$'+data.item.vidLeadPrice }}
+                  </small>
+              </b-media>
+          </template>
+
+          <template #cell(buyerLeadPrice)="data">
+              <b-media vertical-align="center">
+                  <small v-if="data.item.buyerLeadPrice == null" >
+                      $ 0
+                  </small>
+                  <small v-else class="text-success">
+                      {{  '$'+data.item.buyerLeadPrice }}
                   </small>
               </b-media>
           </template>

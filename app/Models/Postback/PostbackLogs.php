@@ -25,7 +25,6 @@ class PostbackLogs extends Model
      * @param $request
      * @param $transaction_id
      * @param $offer
-     * @return PostbackLog
      */
     public function store($request, $transaction_id, $offer)
     {
@@ -111,7 +110,7 @@ class PostbackLogs extends Model
 
         $query = DB::table('postback_logs')->where('id', $data['id'] );
         $res = $query->update(['totalCost' => $totalCost, 'totalRevenue' => $totalRevenue, 'conversion' => $conversion_threshold_met]);
-        Log::debug('Postback Log:: updated');
+        Log::debug('Postback Log:: updated',(array) $res);
 
         return $query->first();
     }
