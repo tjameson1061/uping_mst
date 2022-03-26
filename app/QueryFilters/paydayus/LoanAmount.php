@@ -32,7 +32,6 @@ class LoanAmount
         $buyerTierID = BuyerFilterUS::getBuyerTierIds($buyer_list['row']);
         // Get the filter of each buyer using the tier id.
         $filters['row'] = BuyerFilterUS::getBuyerFilters($buyerTierID);
-//        dd($filters);
 
 
         /* Loop through the filters and grab conditions & values.  */

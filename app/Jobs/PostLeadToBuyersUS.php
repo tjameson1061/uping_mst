@@ -213,6 +213,7 @@ class PostLeadToBuyersUS implements ShouldQueue
     public function BuyerPost($post)
     {
 
+        $lead = (object)$lead;
 
         $post = BuyerFilterUS::allBuyerFilters($post);
 
