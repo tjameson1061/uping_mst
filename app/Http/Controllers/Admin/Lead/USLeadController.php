@@ -940,7 +940,7 @@ class USLeadController extends Controller
             $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '';
             $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '';
             $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['lead_id'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
-            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) . '</RedirectURL>' : '';
+            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) . '</RedirectURL>' : '';
             $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
             if ($client_response['status'] && $client_response['ModelType'] === '1') {
                 $res .= '<ModelType>CPS</ModelType>';
@@ -963,7 +963,7 @@ class USLeadController extends Controller
             $response[0] = array(
                 'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
                 'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '',
-                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) : '',
+                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) : '',
                 'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['lead_id'] : '',
 //                'CheckStatusID' => $client_response['check_status_id'] ?? '',
 //                'PostbackMethod' => $client_response['postback_method'] ?? '',
