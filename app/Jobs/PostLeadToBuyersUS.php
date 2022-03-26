@@ -90,7 +90,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             $offer_detail = Offer::get($inputs['oid']);
             Log::debug('OFFER::', (array) $offer_detail);
 
-            if ($res['leadStatus'] === "1") {
+            if ($buyer_response['leadStatus'] === "1") {
                 $response = array(
                     'status' => 1,
                     'price' => $buyer_response['price'],
