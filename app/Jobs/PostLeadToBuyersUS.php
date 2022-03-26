@@ -278,6 +278,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                     // TODO CLEAN
                     Log::debug('LEAD ID::', (array) $post->uuid);
                     $lead = USLead::where('uuid', $post->uuid)->first();
+                    Log::debug('LEAD ID::', (array) $lead);
 
 
                     if (isset($lender_response['post_price']) && isset($lender_response['accept']) && $lender_response['accept'] == 'ACCEPTED') {
