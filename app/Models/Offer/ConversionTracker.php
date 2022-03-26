@@ -3,6 +3,8 @@
 namespace App\Models\Offer;
 
 use App\LmsPartnerLeadType;
+use App\Models\Postback\PostbackLogs;
+use App\Models\PostbackTracker\PostbackTracker;
 use App\Offer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,12 +41,12 @@ class ConversionTracker extends Model
 
         $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
         $data_update->totalCost = $price;
-        $data_update->totalRevenue = $new_data->amount;
+        $data_update->totalRevenue = $totals->revenue;
 
         if ($offer->conversion_type === "1" || $offer->conversion_type === 1) {
             try {
 
-                $postback_log = PostbackLog::update_postback_log($new_data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log($new_data, $data_update);
 
                 return $postback_log;
             } catch (\Exception $e) {
