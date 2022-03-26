@@ -79,13 +79,11 @@ class PostLeadToBuyersUS implements ShouldQueue
         $data = $this->data;
         $partnerlogid = $this->partnerlogid;
 
-//        dd('HERE');
 
         Log::info('Posting lead to buyer');
         $res = $this->BuyerPost($post);
         Log::debug('DEBUG RESP::', (array) $res);
 
-//        dd($res);
 
         // Parse buyer response
         if (!is_null($res) && $res['leadStatus'] == "1" || $res['leadStatus'] == "3") {
@@ -621,7 +619,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
             $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
             $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
-            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) . '</RedirectURL>' : '';
+            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) . '</RedirectURL>' : '';
             $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
                 $res .= '<ModelType>CPS</ModelType>';
@@ -643,7 +641,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             $response[0] = array(
                 'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
                 'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '0.00',
-                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['leadid']) : '',
+                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) : '',
                 'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
             );
             if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {

@@ -617,7 +617,7 @@ class USLeadController extends Controller
 
         return CurlHelper::ipqs_ip(
             $ipqs_ip_url,
-            $timeout,
+            $timeout
         );
     }
 
