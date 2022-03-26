@@ -301,6 +301,7 @@ class PostbackTrackerController extends Controller
      */
     public function postback(Request $request)
     {
+        Log::debug('POSTBACK RECEIVED:::', (array)$request->input());
         Log::debug('POSTBACK RECEIVED:::');
 
         try {
