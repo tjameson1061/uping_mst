@@ -438,9 +438,9 @@ class PostLeadToBuyersUS implements ShouldQueue
                         }
                     } else {
                         $data = array(
-                            'id' => $post->id,
+                            'id' => $lead->id,
                             'leadStatus' => '2',
-                            'leadid' => $post->lead_id,
+                            'leadid' => $lead->uuid,
                             'model_type' => $row->model_type,
                             'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
                         );
@@ -457,7 +457,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             // use case
         } else {
             $data = array(
-                'id' => $post->id,
+                'id' => $post->uuid,
                 'leadStatus' => '2',
                 'model_type' => '2',
                 'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
