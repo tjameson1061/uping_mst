@@ -377,7 +377,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'price' => '0.00',
                             'leadStatus' => '3',
                             'leadid' => $lead->uuid,
-//                            'id' => $lead->id,
+                            'id' => $lead->id,
                             'ModelType' => $row->model_type
 
                         );
