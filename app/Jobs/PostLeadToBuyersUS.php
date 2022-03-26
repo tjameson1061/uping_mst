@@ -110,12 +110,12 @@ class PostLeadToBuyersUS implements ShouldQueue
             $thresholdAmount = $offer_detail['payout']['payoutAmount'];
             $offer_id = $offer_detail['id'];
 
-            $internal_offers= [2,3];
+            $internal_offers= [3,4];
 
             if ($thresholdAmount > 0 && in_array($offer_id, $internal_offers)) {
-                if ($offer_id == 2) {
+                if ($offer_id == 3) {
                     $accumulatorAmount = 0 + $this->partner_detail->accuCPLus20;
-                } elseif ($offer_id == 3) {
+                } elseif ($offer_id == 4) {
                     $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
                 }
                 $accumulatorAmount = $accumulatorAmount + $res['price'];
@@ -129,12 +129,12 @@ class PostLeadToBuyersUS implements ShouldQueue
                 } else {
                     $res['Threshold'] = 'false';
                 }
-                if ($offer_id == 3) {
+                if ($offer_id == 4) {
                     $lead_data = array(
                         'id' => $this->partner_detail->id,
                         'accuCPAus100' => $accumulatorAmount
                     );
-                } elseif ($offer_id == 2) {
+                } elseif ($offer_id == 3) {
                     $lead_data = array(
                         'id' => $this->partner_detail->id,
                         'accuCPLus20' => $accumulatorAmount
@@ -146,7 +146,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             }
 
             if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
-                $rate = USLead::GetDailyRate(); // TODO
+                $rate = USLead::GetDailyRate();
                 $res['price'] = $res['price'] * $rate['usd'];
             }
         } else {
@@ -164,7 +164,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         if (count($logs) > 0) {
             $log = $logs[0];
-            if ($log->buyer_id === "1") {
+            if ($log->buyer_id == "1") {
                 $res["check_status"] = true;
             } else {
                 $res['check_status'] = false;

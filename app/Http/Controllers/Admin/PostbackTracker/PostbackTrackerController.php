@@ -332,7 +332,7 @@ class PostbackTrackerController extends Controller
         }
 
         // Store the Postback Request
-        $data = (new Postback\PostbackLogs())->store($request, $transaction_id, $offer);
+        $data = (new Postback\PostbackLogs)->store($request, $transaction_id, $offer);
         Log::debug('Postback:: Received');
 
 
