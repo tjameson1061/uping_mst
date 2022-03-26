@@ -96,7 +96,6 @@ class PostLeadToBuyersUS implements ShouldQueue
                     'price' => $buyer_response['price'],
                     'leadid' => $buyer_response['leadid'],
                     'ModelType' => $buyer_response['ModelType'],
-//                    'Threshold' =>
                     'id' => $buyer_response['id'],
                     );
             } else {
