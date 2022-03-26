@@ -2,17 +2,15 @@
 
 namespace App\Models\Offer;
 
-use App\LmsPartnerLeadType;
 use App\Models\Partner\PartnerLeadType;
 use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
-use App\Offer;
+use App\Models\Offer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use LmsPartnerLeadtype;
 
 class ConversionTracker extends Model
 {
