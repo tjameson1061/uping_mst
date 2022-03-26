@@ -13,6 +13,7 @@ use App\Models\Postback;
 use App\Models\PostbackTracker\PostbackTracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
@@ -264,7 +265,10 @@ class PostbackTrackerController extends Controller
         if ($postbackUrl !== null) {
             try {
                 $header = array();
-                $get_res = (new CurlHelper)->curl_postback($postbackUrl, $header);
+                $get_res = Http::post($postbackUrl);
+                Log::debug('PB RES::', (array) $get_res);
+                Log::debug('PB RES::', (array) $get_res->object());
+
                 $get_res = $get_res['res'];
 
                 if (Str::contains($get_res, 'CURL ERROR') || $get_res === false) {
