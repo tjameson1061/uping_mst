@@ -6,10 +6,11 @@ use App\Helpers\CurlHelper;
 use App\Http\Controllers\Controller;
 use App\Models\ClickTracker;
 use App\Models\IPQS;
+use App\Models\Offer\ConversionTracker;
+use App\Models\Offer\Offer;
+use App\Models\Partner\Partner;
 use App\Models\Postback;
 use App\Models\PostbackTracker\PostbackTracker;
-use App\Models\Offer;
-use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,14 +23,7 @@ class PostbackTrackerController extends Controller
 
     var $leadtype = 'offer';
 
-    public function index()
-    {
-        $postbacks = PostbackTracker::all();
-        $partners = Partner::all();
-        $offers = Offer::all();
 
-        return view('admin.postbacks.postbacks', compact('partners', 'postbacks', 'offers'));
-    }
     public function store(Request $request)
     {
         $request->validate([
@@ -338,7 +332,7 @@ class PostbackTrackerController extends Controller
         }
 
         // Store the Postback Request
-        $data = (new PostbackLogController)->store($request, $transaction_id, $offer);
+        $data = (new Postback\PostbackLogs())->store($request, $transaction_id, $offer);
         Log::debug('Postback:: Received');
 
 
