@@ -606,7 +606,7 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     function curl_response_post($client_response, $response_type)
     {
-        Log::debug('CLIENT RES::', (array) $client_response);
+        Log::debug('CLIENT RES::', (array) $client_response->id);
 //        dd($client_response);
         if (isset($response_type) && $response_type === 'xml') {
             header("Content-type: text/xml; charset=utf-8");
