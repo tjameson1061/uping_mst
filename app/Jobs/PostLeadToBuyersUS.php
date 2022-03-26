@@ -82,7 +82,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         Log::info('Posting lead to buyer');
         $buyer_response = $this->BuyerPost($post);
-        Log::debug('DEBUG RESP::', (array) $res);
+        Log::debug('DEBUG RESP::', (array) $buyer_response);
 
 
         // Parse buyer response
