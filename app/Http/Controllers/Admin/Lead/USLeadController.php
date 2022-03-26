@@ -524,9 +524,9 @@ class USLeadController extends Controller
         $api_received_at = Carbon::now()->microsecond;
 
 
-        Log::debug('REDIREC ID::', (array) $id);
+        Log::debug('REDIRECT ID::', (array) $id);
         $data['id'] = $this->redirecturl_decrypt($id);
-        Log::debug('REDIREC ID::', (array) $data['id']);
+        Log::debug('REDIRECT ID::', (array) $data['id']);
 
         $data['created_at'] = date('Y-m-d H:i:s', strtotime('-15 minutes'));
         $redirecturl = (new USLead)->UpdateRedirectUrl($data);

@@ -350,7 +350,8 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'price' => $price,
                             'leadStatus' => '1',
-                            'id' => $lead->uuid,
+                            'leadid' => $lead->uuid,
+                            'id' => $lead->id,
                             'ModelType' => $row->model_type
                         );
 
@@ -602,6 +603,7 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     function curl_response_post($client_response, $response_type)
     {
+        Log::debug('CLIENT RES::', (array) $client_response);
 //        dd($client_response);
         if (isset($response_type) && $response_type === 'xml') {
             header("Content-type: text/xml; charset=utf-8");
