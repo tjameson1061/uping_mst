@@ -29,6 +29,9 @@ class ConversionTracker extends Model
      */
     public function add_revenue( $data , $offer , $partner_detail )
     {
+        Log::debug('DATA::', (array) $data);
+        Log::debug('OFFER::', (array) $offer);
+        Log::debug('PARTNER::', (array) $partner_detail);
 
         $totals = (object)[];
         $totals->payout = $offer->payout->payoutAmount;
@@ -36,6 +39,7 @@ class ConversionTracker extends Model
 
         $data_update = (object)[];
         $new_data = (object)[];
+
 
         $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
         $data_update->totalCost = $price;
