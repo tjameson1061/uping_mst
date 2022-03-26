@@ -152,7 +152,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $response['price'] = $response['price'] * $rate['usd'];
             }
         } else {
-            $res = array(
+            $response = array(
                 'status' => 2,
                 'leadid' => $buyer_response['leadid'],
                 'id' => $buyer_response['id'],
@@ -161,20 +161,20 @@ class PostLeadToBuyersUS implements ShouldQueue
             );
         }
 
-        Log::debug('Response array: ' . json_encode($res));
+        Log::debug('Response array: ' . json_encode($response));
 
-        $logs = USLead::getlog($res['leadid']);
+        $logs = USLead::getlog($response['leadid']);
 
         if (count($logs) > 0) {
             $log = $logs[0];
             if ($log->buyer_id == "1") {
-                $res["check_status"] = true;
+                $response["check_status"] = true;
             } else {
-                $res['check_status'] = false;
+                $response['check_status'] = false;
             }
         }
 
-        $post_response = $this->curl_response_post($res, $post['response_type']);
+        $post_response = $this->curl_response_post($response, $post['response_type']);
         Log::debug('Response:: ' . $post_response);
 
 
@@ -184,9 +184,9 @@ class PostLeadToBuyersUS implements ShouldQueue
 
         $data = array(
             'id' => $partnerlogid,
-            'lead_id' => $res['leadid'],
+            'lead_id' => $response['leadid'],
             'post_response' => $post_response,
-            'post_status' => $res['status'],
+            'post_status' => $response['status'],
             'post_time' => $post_time
         );
 
