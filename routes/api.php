@@ -129,7 +129,7 @@ Route::get('/application/ca/redirecturl/{id}', 'Admin\Lead\CALeadController@redi
 
 
 Route::get('application/status/{correlationId}', [UKLeadController::class, 'CheckStatusNew'])->name('api-check-status');;
-Route::get('application/usa/status/{correlationId}', [USLeadController::class, 'CheckStatusNew'])->middleware('throttle:api, 200, 1')->name('api-check-status-us');;
+Route::get('application/usa/status/{correlationId}', [USLeadController::class, 'CheckStatusNew'])->name('api-check-status-us');;
 Route::get('application/ca/status/{correlationId}', [CALeadController::class, 'CheckStatusNew'])->name('api-check-status-ca');;
 /*** Lead Test Route ***/
 Route::post('application/test', 'LeadTestController@testmodeca.php')->name('post.test');
