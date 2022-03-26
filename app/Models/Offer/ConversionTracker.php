@@ -38,7 +38,6 @@ class ConversionTracker extends Model
         $totals->revenue = $offer->payout->revenueAmount;
 
         $data_update = (object)[];
-        $new_data = (object)[];
 
 
         $price = $data->amount - $data->amount * ($partner_detail->margin / 100);
@@ -53,7 +52,7 @@ class ConversionTracker extends Model
             $data_update->totalRevenue = $totalRevenue;
             try {
 
-                $postback_log = PostbackLogs::update_postback_log($new_data, $data_update);
+                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
 
                 return $postback_log;
             } catch (\Exception $e) {
