@@ -134,19 +134,19 @@ class BuyerFilterUS extends Model
      * @param $post
      * @return mixed
      */
-    public static function allBuyerFilters($post)
+    public static function allBuyerFilters($lead)
     {
-        $lead = USLead::where('id', $post['lead_id'])->with(
-            'source',
-            'loan',
-            'applicant',
-            'employer',
-            'residence',
-            'bank',
-            'consent',
-            'expense'
-        )
-            ->first();
+//        $lead = USLead::where('id', $post['lead_id'])->with(
+//            'source',
+//            'loan',
+//            'applicant',
+//            'employer',
+//            'residence',
+//            'bank',
+//            'consent',
+//            'expense'
+//        )
+//            ->first();
 
         if ($lead->quote_boost == 1) {
             $lead = (new BuyerFilterUS)->quote_boost($lead);
