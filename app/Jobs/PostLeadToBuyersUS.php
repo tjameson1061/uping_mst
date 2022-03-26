@@ -149,7 +149,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
             if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
                 $rate = USLead::GetDailyRate();
-                $response['price'] = $res['price'] * $rate['usd'];
+                $response['price'] = $response['price'] * $rate['usd'];
             }
         } else {
             $res = array(
