@@ -116,10 +116,10 @@ Route::post('/forgot-password', [AuthController::class, 'validatePasswordRequest
     });
 
 /**** POST BACK Routes ***/
-Route::post('conversion/track/postback', [PostbackTrackerController::class, 'postback'])->middleware('throttle:, 120, 1')->name('postback_tracker');
+Route::post('conversion/track/postback', [PostbackTrackerController::class, 'postback'])->name('postback_tracker');
 /**** Lead POST Routes ***/
-Route::post('application/post', [UKLeadController::class, 'post'])->middleware('throttle:, 120, 1');
-Route::post('application/usa/post', [USLeadController::class, 'post'])->middleware('throttle:, 120, 1');
+Route::post('application/post', [UKLeadController::class, 'post']);
+Route::post('application/usa/post', [USLeadController::class, 'post']);
 Route::post('application/ca/post', [CALeadController::class, 'post']);
 /**** REDIRECT Routes  ***/
 Route::get('/application/redirecturl/{id}', 'Admin\Lead\UKLeadController@redirecturl');
@@ -128,9 +128,9 @@ Route::get('/application/ca/redirecturl/{id}', 'Admin\Lead\CALeadController@redi
 /*** CheckStatus Route ***/
 
 
-Route::get('application/status/{correlationId}', [UKLeadController::class, 'CheckStatusNew'])->middleware('throttle:, 120, 1')->name('api-check-status');;
-Route::get('application/usa/status/{correlationId}', [USLeadController::class, 'CheckStatusNew'])->middleware('throttle:, 120, 1')->name('api-check-status-us');;
-Route::get('application/ca/status/{correlationId}', [CALeadController::class, 'CheckStatusNew'])->middleware('throttle:, 120, 1')->name('api-check-status-ca');;
+Route::get('application/status/{correlationId}', [UKLeadController::class, 'CheckStatusNew'])->name('api-check-status');;
+Route::get('application/usa/status/{correlationId}', [USLeadController::class, 'CheckStatusNew'])->name('api-check-status-us');;
+Route::get('application/ca/status/{correlationId}', [CALeadController::class, 'CheckStatusNew'])->name('api-check-status-ca');;
 /*** Lead Test Route ***/
 Route::post('application/test', 'LeadTestController@testmodeca.php')->name('post.test');
 /*** Lead Test Route ***/
