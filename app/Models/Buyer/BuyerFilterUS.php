@@ -148,6 +148,8 @@ class BuyerFilterUS extends Model
 //        )
 //            ->first();
 
+        $lead = (object)$lead;
+
         if ($lead->quote_boost == 1) {
             $lead = (new BuyerFilterUS)->quote_boost($lead);
         }
