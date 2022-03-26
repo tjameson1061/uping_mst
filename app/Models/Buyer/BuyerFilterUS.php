@@ -115,14 +115,14 @@ class BuyerFilterUS extends Model
     public function quote_boost($lead)
     {
 
-        if ($lead->loan->loanAmount >= '600' && $lead->loan->loanAmount <= '900') {
-            $lead->loan->loanAmount = '500';
-        } elseif ($lead->loan->loanAmount >= '1100' && $lead->loan->loanAmount <= '1900')
-            $lead->loan->loanAmount = '1000';
-        elseif ($lead->loan->loanAmount >= '2100' && $lead->loan->loanAmount <= '2900')
-            $lead->loan->loanAmount = '2000';
-        elseif ($lead->loan->loanAmount >= '3000' && $lead->loan->loanAmount <= '3900')
-            $lead->loan->loanAmount = '3000';
+        if ($lead->Loan->loanAmount >= '600' && $lead->Loan->loanAmount <= '900') {
+            $lead->Loan->loanAmount = '500';
+        } elseif ($lead->Loan->loanAmount >= '1100' && $lead->Loan->loanAmount <= '1900')
+            $lead->Loan->loanAmount = '1000';
+        elseif ($lead->Loan->loanAmount >= '2100' && $lead->Loan->loanAmount <= '2900')
+            $lead->Loan->loanAmount = '2000';
+        elseif ($lead->Loan->loanAmount >= '3000' && $lead->Loan->loanAmount <= '3900')
+            $lead->Loan->loanAmount = '3000';
 
         return $lead;
     }
