@@ -277,6 +277,11 @@ class PostLeadToBuyersUS implements ShouldQueue
                     Log::debug('Log::', (array) $res);
 
 
+                    // TODO CLEAN
+                    Log::debug('LEAD ID::', (array) $post->uuid);
+                    $lead = USLead::where('uuid', $post->uuid)->first();
+
+
                     if (isset($lender_response['post_price']) && isset($lender_response['accept']) && $lender_response['accept'] == 'ACCEPTED') {
 
                         if (!empty($this->partner_detail->margin)) {
@@ -325,9 +330,6 @@ class PostLeadToBuyersUS implements ShouldQueue
                         }
 
 
-                        // TODO CLEAN
-                        Log::debug('POST::', (array) $post);
-//                        USLead::where('uuid', $post->)
 
 
                         Log::debug('PRICE::', (array)$price);
@@ -341,7 +343,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'buyerTierID' => $row->buyer_tier_id,
                             'redirectUrl' => $lender_response['redirect_url'] ?? "",
                             'leadStatus' => '1',
-                            'id' => $post->id
+                            'id' => $lead->id
                         );
                         $resp = (new USLead)->add($data);
                         Log::debug('LEAD::', (array) $resp);
@@ -350,7 +352,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'price' => $price,
                             'leadStatus' => '1',
-                            'id' => $post->id,
+                            'id' => $lead->id,
                             'ModelType' => $row->model_type
                         );
 
@@ -366,7 +368,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'buyerTierID' => $row->buyer_tier_id,
                             'redirectUrl' => $lender_response['redirect_url'] ?? "",
                             'leadStatus' => '3',
-                            'id' => $post->lead_id,
+                            'id' => $lead->id,
                         );
                         $resp = (new USLead)->add($data);
 
@@ -374,8 +376,8 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $data = array(
                             'price' => '0.00',
                             'leadStatus' => '3',
-                            'leadid' => $post->lead_id,
-                            'id' => $post->lead_id,
+                            'leadid' => $lead->uuid,
+                            'id' => $lead->id,
                             'ModelType' => $row->model_type
 
                         );
