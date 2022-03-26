@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\PostbackTracker;
 
 use App\Helpers\CurlHelper;
+use App\Http\Controllers\Controller;
 use App\Models\ClickTracker;
 use App\Models\IPQS;
 use App\Models\Postback;
