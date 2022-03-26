@@ -81,30 +81,32 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 
         Log::info('Posting lead to buyer');
-        $res = $this->BuyerPost($post);
+        $buyer_response = $this->BuyerPost($post);
         Log::debug('DEBUG RESP::', (array) $res);
 
 
         // Parse buyer response
-        if (!is_null($res) && $res['leadStatus'] == "1" || $res['leadStatus'] == "3") {
+        if (!is_null($buyer_response) && $buyer_response['leadStatus'] == "1" || $buyer_response['leadStatus'] == "3") {
             $offer_detail = Offer::get($inputs['oid']);
             Log::debug('OFFER::', (array) $offer_detail);
 
             if ($res['leadStatus'] === "1") {
-                $res = array(
+                $response = array(
                     'status' => 1,
-                    'price' => $res['price'],
-                    'leadid' => $res['id'],
-                    'ModelType' => $res['ModelType'],
+                    'price' => $buyer_response['price'],
+                    'leadid' => $buyer_response['leadid'],
+                    'ModelType' => $buyer_response['ModelType'],
 //                    'Threshold' =>
-                );
+                    'id' => $buyer_response['id'],
+                    );
             } else {
-                $res = array(
+                $response = array(
                     'status' => 3,
-                    'price' => $res['price'],
-                    'leadid' => $res['id'],
-                    'ModelType' => $res['ModelType'],
-                );
+                    'price' => $buyer_response['price'],
+                    'leadid' => $buyer_response['leadid'],
+                    'ModelType' => $buyer_response['ModelType'],
+                    'id' => $buyer_response['id'],
+                    );
             }
 
             $thresholdAmount = $offer_detail['payout']['payoutAmount'];
@@ -118,16 +120,16 @@ class PostLeadToBuyersUS implements ShouldQueue
                 } elseif ($offer_id == 4) {
                     $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
                 }
-                $accumulatorAmount = $accumulatorAmount + $res['price'];
+                $accumulatorAmount = $accumulatorAmount + $response['price'];
 
                 $thresholdAmount = $offer_detail['payout']['revenueAmount'];
                 Log::debug('THRESHOLD::', (array)$thresholdAmount);
 
                 if ($accumulatorAmount >= $thresholdAmount) {
                     $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
-                    $res['Threshold'] = 'true';
+                    $buyer_response['Threshold'] = 'true';
                 } else {
-                    $res['Threshold'] = 'false';
+                    $buyer_response['Threshold'] = 'false';
                 }
                 if ($offer_id == 4) {
                     $lead_data = array(
@@ -141,19 +143,20 @@ class PostLeadToBuyersUS implements ShouldQueue
                     );
                 }
 
-                $response = Partner::AddLeadType($lead_data);
+                $response_lead_data = Partner::AddLeadType($lead_data);
 
             }
 
             if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
                 $rate = USLead::GetDailyRate();
-                $res['price'] = $res['price'] * $rate['usd'];
+                $response['price'] = $res['price'] * $rate['usd'];
             }
         } else {
             $res = array(
                 'status' => 2,
-                'leadid' => $res['id'],
-                'ModelType' => $res['model_type'],
+                'leadid' => $buyer_response['leadid'],
+                'id' => $buyer_response['id'],
+                'ModelType' => $buyer_response['model_type'],
                 'price' => '0.00'
             );
         }
