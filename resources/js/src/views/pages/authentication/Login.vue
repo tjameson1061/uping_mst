@@ -272,7 +272,7 @@ export default {
                             })
 
                             // debugger
-                            this.$refs.loginForm.setErrors(error.response.error)
+                            this.$refs.loginForm.setErrors(error)
                         })
                 }
             })
