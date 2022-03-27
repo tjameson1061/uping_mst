@@ -84,7 +84,7 @@ class USLeadController extends Controller
         }
 
         if ($query != null) {
-            $wherelist[] = ['', 'LIKE', $query];
+            $wherelist[] = ['', 'LIKE', '%' . $query . '%'];
         }
 
         $leads = USLead::with([

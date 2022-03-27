@@ -14,6 +14,7 @@ export default function useReportsList() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'id', label: 'ID', sortable: true },
     { key: 'offer_id', label: 'Offer ID', sortable: true },
     { key: 'conversion', label: 'Conversion',  sortable: true },
     { key: 'totalCost', label: 'Price',  sortable: true },

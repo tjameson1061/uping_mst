@@ -77,39 +77,16 @@
         :sort-desc.sync="isSortDirDesc"
       >
 
-        <!-- Column: Report -->
-        <template #cell(report)="data">
-          <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
-                :variant="`light-${resolveReportRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
-              />
-            </template>
-            <b-link
-              :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
-              class="font-weight-bold d-block text-nowrap"
-            >
-              {{ data.item.fullName }}
-            </b-link>
-            <small class="text-muted">@{{ data.item.reportname }}</small>
-          </b-media>
-        </template>
-
-        <!-- Column: Role -->
-        <template #cell(role)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolveReportRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveReportRoleVariant(data.item.role)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
-          </div>
+        <template #cell(id)="data">
+          <b-link
+                  :to="{
+              name: 'apps-offer-report-view',
+              params: { id: data.item.id },
+            }"
+                  class="font-weight-bold"
+          >
+            <small> #{{ data.item.id }} </small>
+          </b-link>
         </template>
 
         <template #cell(ip)="data">

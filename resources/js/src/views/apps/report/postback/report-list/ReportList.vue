@@ -71,11 +71,23 @@
         :sort-desc.sync="isSortDirDesc"
       >
 
+          <template #cell(id)="data">
+              <b-link
+                      :to="{
+              name: 'apps-report-postback-view',
+              params: { id: data.item.id },
+            }"
+                      class="font-weight-bold"
+              >
+                  <small> #{{ data.item.id }} </small>
+              </b-link>
+          </template>
+
 
           <template #cell(offer_id)="data">
               <b-media vertical-align="center">
                   <b-link
-                      :to="{ name: 'apps-report-offer-view', params: { id: data.item.id } }"
+                      :to="{ name: 'apps-report-postback-view', params: { id: data.item.id } }"
                       class="font-weight-bold d-block text-nowrap"
                   >
                       {{ data.item.offer_id }}

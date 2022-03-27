@@ -14,8 +14,9 @@ export default function useReportsList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'aff_click_id', sortable: true },
-    { key: 'ip', sortable: true },
+    { key: 'id', label: 'ID', sortable: true },
+    { key: 'aff_click_id', label: 'Click ID', sortable: true },
+    { key: 'ip', label: 'IP Address', sortable: true },
     { key: 'aff_sub', sortable: true },
     { key: 'aff_sub2', sortable: true },
     { key: 'aff_sub3', sortable: true },

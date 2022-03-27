@@ -84,7 +84,7 @@ class UKLeadController extends Controller
         }
 
         if ($query != null) {
-            $wherelist[] = ['', 'LIKE', $query];
+            $wherelist[] = ['', 'LIKE', '%' . $query .'%'];
         }
 
         $leads = UKLead::with([

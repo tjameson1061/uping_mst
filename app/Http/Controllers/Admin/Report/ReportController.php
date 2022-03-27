@@ -9,6 +9,7 @@ use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
 use App\Models\Postback\Postback;
 use App\Models\ClickTracker\ClickTracker;
+use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
 use App\Models\User;
 use Carbon\Carbon;
@@ -276,7 +277,7 @@ class ReportController extends Controller
             $wherelist[] = ['', 'LIKE', '%',  $query, '%'];
         }
 
-        $reports = PostbackTracker::where($wherelist)
+        $reports = PostbackLogs::where($wherelist)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 

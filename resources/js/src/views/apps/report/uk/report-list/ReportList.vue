@@ -83,6 +83,18 @@
         :hover="true"
       >
 
+          <template #cell(id)="data">
+              <b-link
+                      :to="{
+              name: 'apps-uk-lead-view',
+              params: { id: data.item.id },
+            }"
+                      class="font-weight-bold"
+              >
+                  <small> #{{ data.item.id }} </small>
+              </b-link>
+          </template>
+
         <!-- Column: vid -->
         <template #cell(vid)="data">
           <b-media vertical-align="center">
@@ -118,18 +130,15 @@
           </template>
 
 <!--          tier-->
-          <template #cell(tier)="data">
+          <template #cell(buyer_tier_id)="data">
               <b-media vertical-align="center">
                   <b-link
                       :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
                       class="font-weight-bold d-block text-nowrap"
                   >
-                      <b-badge variant="light-primary" v-if="data.item.tier == 0">
-                         ALL Tiers
-                      </b-badge>
                       <b-badge variant="light-primary" v-else>
                           <small>
-                              {{ data.item.tier }}
+                              {{ data.item.buyer_tier_id }}
 
                           </small>
                       </b-badge>

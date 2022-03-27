@@ -27,6 +27,7 @@ use App\Models\ClickTracker\ClickTracker;
 use App\Models\Lead\UKLead;
 use App\Models\Lead\USLead;
 use App\Models\Partner\Partner;
+use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
 use App\Models\User\Referral;
 use Illuminate\Http\Request;
@@ -184,7 +185,7 @@ class PartReportController extends Controller
 
         $partner = Partner::where('user_id', $id)->first();
 
-        $reports = DB::table('postback_logs')->where('partner_id', $partner->id)
+        $reports = PostbackLogs::where('partner_id', $partner->id)
             ->select('affiliatePostbackUrl', 'conversion', 'totalCost', 'offer_id')
             ->paginate(10);
 

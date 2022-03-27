@@ -14,9 +14,10 @@ export default function useReportsList() {
 
     // Table Handlers
     const tableColumns = [
+        {key: 'id', label: 'ID', sortable: true},
         {key: 'vid', label: 'AFF ID', sortable: true},
         {key: 'subid', label: 'SUB ID', sortable: true},
-        {key: 'tier', label: 'Tier', sortable: true},
+        {key: 'buyer_tier_id', label: 'Tier ID', sortable: true},
         {key: 'vidLeadPrice', label: 'Price', sortable: true},
         {key: 'buyerLeadPrice', label: 'Buyer Price', sortable: true},
         {key: 'quality_score', label: 'Lead Quality', sortable: true},
