@@ -227,8 +227,8 @@ export default {
                             password: this.password,
                         })
                         .then(response => {
-                            // console.log(response)
-                            // debugger
+                            console.log(response)
+                            debugger
                             const userData = response.data.user
                             useJwt.setToken(response.data.access_token)
                             useJwt.setRefreshToken(response.data.refresh_token)
@@ -272,7 +272,7 @@ export default {
                             })
 
                             // debugger
-                            this.$refs.loginForm.setErrors(error.response.data.error)
+                            this.$refs.loginForm.setErrors(error.response.error)
                         })
                 }
             })
