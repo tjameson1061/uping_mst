@@ -135,7 +135,7 @@
                       :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
                       class="font-weight-bold d-block text-nowrap"
                   >
-                      <b-badge variant="light-primary" v-else>
+                      <b-badge variant="light-primary">
                           <small>
                               {{ data.item.buyer_tier_id }}
 

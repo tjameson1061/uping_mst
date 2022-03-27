@@ -37,16 +37,7 @@ class PostbackLogs extends Model
         } else {
             $postback_log->partner_id = $request->partner_id ?? '1';
         }
-
-
-//        try {
-//            $click_log = ClickTracker::where('aff_click_id', '=', $request->aff_sub)->first();
-//            $postback_log->click_tracker_id = $click_log->aff_click_id ?? '';
-//        } catch (Exception $e) {
-//            Log::debug($e);
-//        }
-//        $postback_log->click_tracker_id = $click_log->aff_click_id ?? '';
-        Log::debug('PB::', (array) $request->totalCost);
+        Log::debug('PB::', (array) $request->amount);
         $postback_log->offer_id = $request->offer_id ?? $offer->id;
         $postback_log->aff_sub = $request->aff_sub ?? 'NOT PROVIDED';
         $postback_log->aff_sub2 = $request->aff_sub2 ?? 'NOT PROVIDED';

@@ -13,7 +13,7 @@
                 No user found with this Partner id. Check
                 <b-link
                     class="alert-link"
-                    :to="{ name: 'apps-users-list'}"
+                    :to="{ name: 'apps-partners-list'}"
                 >
                     Partner List
                 </b-link>
@@ -54,7 +54,7 @@
 
         </template>
 
-        <partner-invoice-list v-if="inv">
+        <partner-invoice-list v-if="inv" />
 
     </div>
 </template>

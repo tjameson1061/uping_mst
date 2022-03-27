@@ -47,7 +47,7 @@ class ConversionTracker extends Model
 
         if ($offer->conversion_type == 'Revshare' ) {
 
-            $totalRevenue = $data->amount + $data->amount * ($partner_detail->margin / 100);
+            $totalRevenue = $data->amount * ($partner_detail->margin / 100) + $data->amount;
             $data_update->totalCost = $price;
             $data_update->totalRevenue = $totalRevenue;
             try {

@@ -254,25 +254,40 @@ export default {
                         })
                         .catch(error => {
                             console.log(error)
+                            console.log(error.response)
+                            console.log('here')
                             debugger
                             // console.log(error.response.status === 401)
                             // console.log(error.response.status ===  200)
                             // console.log(error.response.status === 459)
 
-                            if (error.response.data)
-                            this.$toast({
-                                component: ToastificationContent,
-                                position: 'top-right',
-                                props: {
-                                    title: `Incorrect Login Credentials`,
-                                    icon: 'AlertCircleIcon',
-                                    variant: 'danger',
-                                    text: `Please enter your correct login credentials.`,
-                                },
-                            })
+                            if (error.response.status === 401) {
+                                if (error.response.data)
+                                    this.$toast({
+                                        component: ToastificationContent,
+                                        position: 'top-right',
+                                        props: {
+                                            title: `Incorrect Login Credentials`,
+                                            icon: 'AlertCircleIcon',
+                                            variant: 'danger',
+                                            text: `${error.response.data.error} `,
+                                        },
+                                    })
+                                } else {
+                                this.$toast({
+                                    component: ToastificationContent,
+                                    position: 'top-right',
+                                    props: {
+                                        title: `Incorrect Login Credentials`,
+                                        icon: 'AlertCircleIcon',
+                                        variant: 'danger',
+                                        text: `Please enter your correct credentials`,
+                                    },
+                                })
+                            }
 
-                            // debugger
-                            this.$refs.loginForm.setErrors(error.response.error)
+                            debugger
+                            this.$refs.loginForm.setErrors(error.response.data.error)
                         })
                 }
             })
