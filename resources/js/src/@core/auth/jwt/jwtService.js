@@ -39,12 +39,12 @@ export default class JwtService {
       error => {
           // console.log(error.response.data)
           // debugger
-        // const { config, response: { status } } = error
-        const { config, response } = error
+        const { config, response: { status } } = error
+        // const { config, response } = error
         const originalRequest = config
 
-        if (error.response.data === 401) {
-        // if (response && response.status === 401) {
+        // if (error.response.data === 401) {
+        if (response && response.status === 401) {
           if (!this.isAlreadyFetchingAccessToken) {
             this.isAlreadyFetchingAccessToken = true
             this.refreshToken().then(r => {
