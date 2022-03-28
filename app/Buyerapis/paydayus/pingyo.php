@@ -395,8 +395,6 @@ class pingyo
             } catch (Exception $e) {
                 Log::debug($e);
             }
-//                $application_status = Http::post($this->response['post_url'], $application);
-
 
             $this->response['application_response'] = $application_status;
 
