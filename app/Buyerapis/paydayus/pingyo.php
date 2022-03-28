@@ -237,23 +237,21 @@ class pingyo
         }
 
         Log::debug('POST::', (array)$post->Applicant);
-//        dd($post->Applicant);
 
-
-        $application = (object)[];
+        $application = new Application();
         $application->AffiliateId =  (string) "TOMJ-USA";
         $application->Campaign =  (string)$post->vid ?? 'UPING';
         $application->SubAffiliate =  (string)$post->subid ?? '';
         $application->Timeout =  (int)$client_detail->timeout ?? '120';
         $application->TestOnly =  (boolean)true;
 
-        $application->SourceDetails = (object)[];
+        $application->SourceDetails = new SourceDetails();
         $application->SourceDetails->Address = (string)$post->Source->ipAddress;
         $application->SourceDetails->ClientUserAgent = (string)$post->Source->userAgent;
         $application->SourceDetails->CreationUrl = (string)$post->Source->creationUrl;
         $application->SourceDetails->ReferringUrl = (string)$post->Source->referringUrl;
 
-        $application->Application = (object)[];
+        $application->Application = new ApplicationDetails();
         $application->Application->ConsentToCreditSearch = (boolean)true;
         $application->Application->Title =  (int)$post->Applicant->nameTitle ?? 1;
         $application->Application->FirstName =  (string)$post->Applicant->firstName;
@@ -379,7 +377,6 @@ class pingyo
 
 //            $application =  (new Application)->toArray();
             Log::debug('STATUS::', (array)$application);
-            dd($application);
 
 
                 $application_status = (new Application)->send($application);
