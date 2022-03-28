@@ -97,6 +97,7 @@ class Application
     public function send($application)
     {
             Log::debug('PRE_POST::', (array) $application);
+            dd($application);
 
 
 
