@@ -89,7 +89,7 @@ class Application
         if ($r === true) {
             Log::debug('PRE_POST::', (array) $application);
 
-            $application = $application->toArray();
+            $application = (array)$application;
             Log::info("application sent: " . $application);
             dd('here');
 
