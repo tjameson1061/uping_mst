@@ -186,7 +186,7 @@ class PartReportController extends Controller
 
         foreach ($partners as $partner) {
             $partner_ids[] = $partner->id;
-
+        }
 
         $reports = PostbackLogs::whereIn('partner_id', $partner_ids)
             ->select('affiliatePostbackUrl', 'conversion', 'totalCost', 'offer_id')
@@ -194,7 +194,6 @@ class PartReportController extends Controller
 
         return Response::json(['reports' => $reports], 200);
 
-        }
 
 
     }
