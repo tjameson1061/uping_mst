@@ -285,7 +285,6 @@ class pingyo
                 "BankName" =>  (string) $post->Bank->bankName,
                 "BankAccountNumber" => (string) $post->Bank->bankAccountNumber,
                 "BankRoutingNumber" => (string) $post->Bank->bankRoutingNumber,
-//                "BankRoutingNumber" => (string) '256074974',
                 "BankAccountType" =>  (int) $post->Bank->bankAccountType,
                 "BankAccountOpened" => (string) $BankAccountOpened,
 
@@ -379,7 +378,7 @@ class pingyo
                         $this->response['accept'] = 'REJECTED';
                         $this->response['post_status'] = '0';
                         $this->response['post_price'] = '0';
-                        $this->response['post_time'] = $appResponse['post_time'];
+                        $this->response['post_time'] = $appResponse->post_time;
                     }
                     //print_r($this->response);exit;
                     return $this->response;
@@ -387,7 +386,7 @@ class pingyo
                     $this->response['accept'] = 'Validation Failed';
                     $this->response['post_status'] = '0';
                     $this->response['post_price'] = '0';
-                    $this->response['post_time'] = $appResponse['post_time'];
+                    $this->response['post_time'] = $appResponse->post_time;
                     return $this->response;
                 }
 
