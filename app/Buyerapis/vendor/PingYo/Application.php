@@ -87,6 +87,8 @@ class Application
         if ($r === true) {
             Log::debug('REQ::', (array) $application);
 
+            dd('here');
+
             if (!is_null($this->logger)) {
                 $this->logger->info("request sent: " . $application);
             }
