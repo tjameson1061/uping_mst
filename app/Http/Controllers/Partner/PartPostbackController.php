@@ -18,8 +18,6 @@ class PartPostbackController extends Controller
 
     public function getPostbacks(Request $request, $id)
     {
-//        dd($id);
-        $partner = Partner::where('user_id', $id)->first();
         $perPage = $request->input("perPage");
         $status = $request->input("status");
         $query = $request->input("q");
@@ -32,7 +30,16 @@ class PartPostbackController extends Controller
             $wherelist[] = ['status', '=', $status];
         }
 
-        $postbacks = PostbackTracker::where('partner_id', $partner->id)->where($wherelist)->paginate($perPage);
+
+        $partners = Partner::where('user_id', $id)->get();
+
+        foreach ($partners as $partner) {
+            $partner_ids[] = $partner->id;
+        }
+
+        $postbacks = PostbackTracker::whereIn('partner_id', $partner_ids)
+            ->where($wherelist)
+            ->paginate($perPage);
 
 
         return Response::json(['postbacks' => $postbacks], 200);
