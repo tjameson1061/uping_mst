@@ -277,7 +277,7 @@ class PostbackTrackerController extends Controller
                     Log::debug('Success:: Postback Fired');
                     die();
                 } else {
-                    Log::error('Error:: Postback Failed' . (array) $get_res);
+                    Log::debug('Error:: Postback Failed' . (array) $get_res);
                     echo 'Error:: Invalid Postback';
                     die();
                 }
