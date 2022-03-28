@@ -90,7 +90,7 @@ class Application
             Log::debug('PRE_POST::', (array) $application);
 
             $application = $application->toArray();
-            Log::info("application sent: " . (array)$application);
+            Log::info("application sent: " . $application);
             dd('here');
 
 
