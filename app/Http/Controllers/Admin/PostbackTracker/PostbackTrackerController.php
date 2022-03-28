@@ -304,10 +304,6 @@ class PostbackTrackerController extends Controller
     public function postback(Request $request)
     {
 
-        if ($request->amount == '0.00') {
-            echo '{amount} Required';
-            die();
-        }
 
         Log::debug('POSTBACK RECEIVED:::', (array)$request->input());
         Log::debug('OFFER ID:::', (array)$request->offer_id);
@@ -331,11 +327,19 @@ class PostbackTrackerController extends Controller
 
         if ($offer->id == 2 || $offer->id == 3 || $offer->id == 4 ) {
             $duplicate = PostbackLogs::where('lead_id', $request->lead_id)->first();
+            $valid_lead = USLead::where('uuid', $request->lead_id)->first();
 
             $duplicate = collect($duplicate);
             if ($duplicate->isNotEmpty()) {
                 echo 'Duplicate Postback';
                 Log::debug('DUPLICATE', (array) $duplicate);
+                die();
+            }
+
+            $valid_lead = collect($valid_lead);
+            if ($valid_lead->isEmpty()) {
+                echo 'Invalid Lead ID';
+                Log::debug('Lead ID', (array) $duplicate);
                 die();
             }
         }
