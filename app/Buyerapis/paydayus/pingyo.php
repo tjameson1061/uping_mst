@@ -388,13 +388,9 @@ class pingyo
             Log::debug('STATUS::', (array)$application);
 
 
-            try {
                 $application_status = (new Application)->send($application);
                 Log::debug('STATUS::', (array)$application_status);
 //                $application_status = $application_status->object();
-            } catch (Exception $e) {
-                Log::debug($e);
-            }
 
             $this->response['application_response'] = $application_status;
 
