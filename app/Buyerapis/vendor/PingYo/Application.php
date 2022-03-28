@@ -49,7 +49,7 @@ class Application
     public function setApplicationDetails(ApplicationDetails $Application)
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::setApplicationDetails() called with ApplicationDetails=" . var_export($Application,
+            Log::debug("Application::setApplicationDetails() called with ApplicationDetails=" . var_export($Application,
                     true));
         }
         $this->Application = $Application;
@@ -61,7 +61,7 @@ class Application
     public function setSourceDetails(SourceDetails $SourceDetails)
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::setSourceDetails() called with SourceDetails=" . var_export($SourceDetails,
+            Log::debug("Application::setSourceDetails() called with SourceDetails=" . var_export($SourceDetails,
                     true));
         }
         $this->SourceDetails = $SourceDetails;
@@ -73,7 +73,7 @@ class Application
     public function get_connection_status()
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::get_connection_status() called");
+            Log::debug("Application::get_connection_status() called");
         }
         return $this->connection_status;
     }
@@ -81,16 +81,18 @@ class Application
     public function send($application)
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::send() called");
+            Log::debug("Application::send() called");
         }
         $r = $application->validate();
+        Log::debug('PRE_POST::', (array) $r);
+
         if ($r === true) {
             Log::debug('PRE_POST::', (array) $application);
 
             dd('here');
 
             if (!is_null($this->logger)) {
-                $this->logger->info("request sent: " . $application);
+                Log::info("request sent: " . $application);
             }
 
 
@@ -100,9 +102,7 @@ class Application
             Log::debug('POST::', (array) $application);
             Log::debug('PingYo::', (array) $server_output);
 
-            if (!is_null($this->logger)) {
-                $this->logger->info("got response with code " . $server_output->status() . ': ' . $server_output);
-            }
+                Log::info("got response with code " . $server_output->status() . ': ' . $server_output);
 
 //            $this->connection_status = $info;
             return new Status($server_output->status(), $server_output, null, $this->logger);
@@ -115,7 +115,7 @@ class Application
     public function validate($full_validation = true)
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::validate() called with full_validation=$full_validation");
+            Log::debug("Application::validate() called with full_validation=$full_validation");
         }
 
         $validator = new ExtendedValidator(array(
@@ -132,13 +132,13 @@ class Application
             if ($full_validation) {
                 if (($this->Application->validate()) && ($this->SourceDetails->validate())) {
                     if (!is_null($this->logger)) {
-                        $this->logger->info("Application validation passed");
+                        Log::info("Application validation passed");
                     }
                     //echo " valido 1";
                     return true;
                 } else {
                     if (!is_null($this->logger)) {
-                        $this->logger->warning("Application validation errors found in child object");
+                        Log::warning("Application validation errors found in child object");
                     }
                     //echo "NO valido 1";
                     return false;
@@ -150,7 +150,7 @@ class Application
         } else {
 			//echo "NO valido 2";
             if (!is_null($this->logger)) {
-                $this->logger->warning("Application validation errors found in main object: ",
+                Log::warning("Application validation errors found in main object: ",
                     array('errors' => $validator->errors()));
             }
             return $validator->errors();
@@ -160,7 +160,7 @@ class Application
     public function toJson()
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::toJson() called");
+            Log::debug("Application::toJson() called");
         }
         $r = $this->validate();
         if ($r === true) {
@@ -173,7 +173,7 @@ class Application
     public function toArray()
     {
         if (!is_null($this->logger)) {
-            $this->logger->debug("Application::toArray() called");
+            Log::debug("Application::toArray() called");
         }
         $r = $this->validate();
         if ($r === true) {
