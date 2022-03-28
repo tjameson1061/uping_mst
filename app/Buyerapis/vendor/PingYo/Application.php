@@ -89,8 +89,8 @@ class Application
         if ($r === true) {
             Log::debug('PRE_POST::', (array) $application);
 
-            $application = (array)$application;
-            Log::info("application sent: " . $application);
+            $application = collect($application)->toArray();
+            Log::info("application sent: " . (array)$application);
             dd('here');
 
 
@@ -168,26 +168,26 @@ class Application
         }
     }
 
-    public function toArray()
-    {
-        if (!is_null($this->logger)) {
-            Log::debug("Application::toArray() called");
-        }
-        $r = $this->validate();
-        if ($r === true) {
-//            dd($this->applicationdetails);
-             return [
-                 'Campaign' => $this->Campaign,
-                 'AffiliateId' => $this->AffiliateId,
-                 'SubAffiliate' => $this->SubAffiliate,
-                 'Timeout' => $this->Timeout,
-                 'TestOnly' => $this->TestOnly,
-                 'Application' => $this->Application,
-                 'SourceDetails' => $this->SourceDetails
-            ];
-
-        } else {
-            return false;
-        }
-    }
+//    public function toArray()
+//    {
+//        if (!is_null($this->logger)) {
+//            Log::debug("Application::toArray() called");
+//        }
+//        $r = $this->validate();
+//        if ($r === true) {
+////            dd($this->applicationdetails);
+//             return [
+//                 'Campaign' => $this->Campaign,
+//                 'AffiliateId' => $this->AffiliateId,
+//                 'SubAffiliate' => $this->SubAffiliate,
+//                 'Timeout' => $this->Timeout,
+//                 'TestOnly' => $this->TestOnly,
+//                 'Application' => $this->Application,
+//                 'SourceDetails' => $this->SourceDetails
+//            ];
+//
+//        } else {
+//            return false;
+//        }
+//    }
 }
