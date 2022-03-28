@@ -115,6 +115,7 @@ class PartReportController extends Controller
 
         $reports = ClickTracker::whereIn('aff_id', $partner_ids)
             ->select(
+                'aff_id',
                 'offer_id',
                 'aff_click_id',
                 'aff_sub',
