@@ -384,7 +384,7 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = (new Application)->send((array)$application);
+            $application_status = (new Application)->send($application);
             dd($application_status);
 
             try {

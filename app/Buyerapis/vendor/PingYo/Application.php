@@ -85,7 +85,7 @@ class Application
         }
         $r = $application->validate();
         if ($r === true) {
-            Log::debug('REQ::', (array) $application);
+            Log::debug('PRE_POST::', (array) $application);
 
             dd('here');
 
