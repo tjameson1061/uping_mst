@@ -19,7 +19,6 @@ use App\Models\User;
 use App\Models\User\Referral;
 use Exception;
 
-use App\Models\Mapping;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
