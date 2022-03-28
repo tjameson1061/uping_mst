@@ -47,47 +47,6 @@ Route::get('adv_postback', [PostbackTrackerController::class, 'adv_postback'])->
 
 
 /* RESET PASSWORD ROUTES */
-//Route::get('/reset-password/{token}', function (Request $request, $token) {
-//    return redirect('/reset-password/'.$token.'/'. $request->email );
-//})->middleware('guest')->name('password.reset');
-//Route::post('/reset-password', function (Request $request) {
-//
-//    $request->validate([
-//        'token' => 'required',
-//        'email' => 'required|email',
-//        'password' => 'required|min:8',
-//    ]);
-//
-//    $status = Password::reset(
-//        $request->only('email', 'password', 'password_confirmation', 'token'),
-//        function ($user, $password) {
-//            $user->forceFill([
-//                'password' => Hash::make($password)
-//            ])->setRememberToken(Str::random(60));
-//
-//            $res = $user->save();
-//
-//            event(new PasswordReset($user));
-//        }
-//    );
-////    dd($status);
-//
-//    return $status === Password::PASSWORD_RESET
-//        ? Response::json(['status', __($status)])
-//        : response()->json(['email' => [__($status)]]);
-//})->middleware('guest')->name('password.update');
-//Route::post('/forgot-password', function (Request $request) {
-//    $request->validate(['email' => 'required|email']);
-//    $status = Password::sendResetLink(
-//        $request->only('email')
-//    );
-//
-//
-//    return $status === Password::RESET_LINK_SENT
-//        ? response()->json(['status' => __($status)])
-//        : response()->json(['email' => __($status)]);
-//})->middleware('guest')->name('password.email');
-/* RESET PASSWORD ROUTES */
 Route::get('/reset-password/{token}', function (Request $request, $token) {
     return redirect('/reset-password/'.$token.'/'.$request->email );
 })->middleware('guest')->name('password.reset');

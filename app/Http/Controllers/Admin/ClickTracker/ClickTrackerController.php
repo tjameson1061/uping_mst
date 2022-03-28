@@ -48,7 +48,6 @@ class ClickTrackerController extends Controller
 
         // Store the $request
         $data = $this->store($request);
-//        dd($data);
 
         // Create Click ID & Transaction ID
         $click_log = Offer::OfferLog($data);
@@ -107,7 +106,6 @@ class ClickTrackerController extends Controller
     public function store(Request $request)
     {
 //        $vendor_id = Partner::where('vendor_id', '=', $request->aff_id)->first()->id;
-// here
 
         $data = new ClickTracker;
 
@@ -120,7 +118,6 @@ class ClickTrackerController extends Controller
         $data->aff_sub3 = $request->aff_sub3;
         $data->aff_sub4 = $request->aff_sub4;
         $data->aff_sub5 = $request->aff_sub5;
-//        dd($data);
 
         $data->advertiser_id = $request->advertiser_id;
         $data->advertiser_ref = $request->advertiser_ref;
