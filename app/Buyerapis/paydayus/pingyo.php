@@ -371,7 +371,7 @@ class pingyo
 
 
         $Application = (new Application)->validate();
-        dd($Application);
+        Log::debug('APP::', (array) $Application);
         $SourceDetails = (new SourceDetails)->validate();
         $ApplicationDetails = (new ApplicationDetails)->validate();
 
