@@ -267,21 +267,18 @@ class PostbackTrackerController extends Controller
     {
         if ($postbackUrl !== null) {
             try {
-                $header = array();
                 $get_res = Http::post($postbackUrl);
                 Log::debug('PB RES::', (array) $get_res);
                 Log::debug('PB RES::', (array) $get_res->object());
 
-                $get_res = $get_res['res'];
 
-                if (Str::contains($get_res, 'CURL ERROR') || $get_res === false) {
-                    Log::error('Error:: Postback Failed' . $get_res);
-                    echo 'Error:: Invalid Postback';
-                    die();
-
-                } else {
+                if ($get_res->status() == 200) {
                     echo 'Success:: Postback Fired';
                     Log::debug('Success:: Postback Fired');
+                    die();
+                } else {
+                    Log::error('Error:: Postback Failed' . $get_res);
+                    echo 'Error:: Invalid Postback';
                     die();
                 }
             } catch (Exception $e) {
