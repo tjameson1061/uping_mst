@@ -98,7 +98,9 @@ class Application
 //            $application = $application->toArray();
             Log::debug('PRE_POST::', (array) $application);
             $application = $application->toArray();
-            dd($application);
+            Log::debug('PRE_POST::', (array) $application);
+
+        dd($application);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
 //            $server_output = $output->object();
