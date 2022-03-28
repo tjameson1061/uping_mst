@@ -99,7 +99,6 @@ class Application
             Log::debug('PRE_POST::', (array) $application);
 
             Log::info("application sent: " . (array)$application);
-            dd('here');
 
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);

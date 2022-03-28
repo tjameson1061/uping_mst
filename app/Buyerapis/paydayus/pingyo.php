@@ -387,12 +387,11 @@ class pingyo
             $application =  json_decode(json_encode($application), true);
             Log::debug('STATUS::', (array)$application);
 
-            dd($application);
 
             try {
                 $application_status = (new Application)->send($application);
                 Log::debug('STATUS::', (array)$application_status);
-                $application_status = $application_status->object();
+//                $application_status = $application_status->object();
             } catch (Exception $e) {
                 Log::debug($e);
             }
