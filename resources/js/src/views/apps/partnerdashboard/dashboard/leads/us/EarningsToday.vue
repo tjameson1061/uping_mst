@@ -1,57 +1,53 @@
 <template>
     <b-card
-            v-if="data"
-            no-body
-            class="rounded"
+        no-body
     >
         <b-card-header>
             <h4 class="mb-0">
-                {{ title }}
+               Today
             </h4>
             <b-card-text class="font-medium-5 mb-0">
-
                 <feather-icon
-                        icon="HelpCircleIcon"
-                        size="21"
-                        class="text-muted cursor-pointer"
-                        v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                        v-b-tooltip.hover.focus.v-primary
-                        title="Earnings For Today"
-                        variant="outline-primary"
-                />
+                    icon="HelpCircleIcon"
+                    size="21"
+                    class="text-muted cursor-pointer"
+                    v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                    v-b-tooltip.hover.focus.v-primary
+                    title="Earnings For Today"
+                    variant="outline-primary" />
             </b-card-text>
         </b-card-header>
-
         <!-- apex chart -->
         <vue-apex-charts
-                type="radialBar"
-                height="180"
-                class="my-2"
-                :options="goalOverviewRadialBar"
-                :series="[data.todayEarnings.redirection.redirected_ratio[0]]"
+            v-if="todayRedirection"
+            type="radialBar"
+            height="200"
+            class="my-2"
+            :options="goalOverviewRadialBar"
+            :series="[todayRedirection.redirected_ratio]"
         />
         <b-row class="text-center mx-0">
             <b-col
-                    cols="6"
-                    class="border-top border-right d-flex align-items-between flex-column py-1"
+                cols="6"
+                class="border-top border-right d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
-                    Leads
+                   Leads
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0">
-                    {{ data.lead_count.today }}
+                <h3 class="font-weight-bolder mb-0" v-if="leadCounts">
+                    {{ leadCounts.today }}
                 </h3>
             </b-col>
 
             <b-col
-                    cols="6"
-                    class="border-top d-flex align-items-between flex-column py-1"
+                cols="6"
+                class="border-top d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
                     Commission
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0">
-                    $ {{ data.todayEarnings.today_revenue.toFixed(2) }}
+                <h3 class="font-weight-bolder mb-0" v-if="todayEarnings">
+                    $ {{ todayEarnings.today_total }}
                 </h3>
             </b-col>
         </b-row>
@@ -85,7 +81,7 @@
         directives: {
             'b-tooltip': VBTooltip,
             Ripple,
-        },
+        },z
         props: {
             leadCounts: {
                 type: Object,
@@ -181,7 +177,7 @@
         methods: {
             fetchDashboardData() {
                 axios
-                    .get(`/api/partner/getDashboardLeadDataPartner/uk/${this.userData.id}`)
+                    .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
                     .then((response) => {
                         this.todayRedirection = response.data.dashboard_data.redirectionToday;
                     })
