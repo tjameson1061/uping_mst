@@ -107,13 +107,13 @@ class PartReportController extends Controller
     public function getOfferReports(Request $request, $id)
     {
 
-        $partners = Partner::where('user_id', $id)->select('id')->get();
+        $partners = Partner::where('user_id', $id)->select('vendor_id')->get();
 
         foreach ($partners as $partner) {
             $partner_ids[] = $partner->id;
         }
 
-        $reports = ClickTracker::whereIn('partner_id', $partner_ids)
+        $reports = ClickTracker::whereIn('aff_id', $partner_ids)
             ->select(
                 'offer_id',
                 'aff_click_id',
