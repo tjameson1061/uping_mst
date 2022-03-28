@@ -134,8 +134,11 @@
               <h6 class="item-price" v-if="offer.payout.payoutType == 'CPS'">
                 {{ offer.payout.payout_amount }} %
               </h6>
-              <h6 class="item-price" v-else>
-                {{ offer.payout.payout_amount }} %
+              <h6 class="item-price" v-else-if="offer.id == 3 || offer.id == 4">
+                ${{ offer.payout.payout_amount }}
+              </h6>
+              <h6 class="item-price" v-else-if="offer.id == 5 || offer.id == 6">
+                ${{ offer.payout.payout_amount }}
               </h6>
             </div>
           </div>
