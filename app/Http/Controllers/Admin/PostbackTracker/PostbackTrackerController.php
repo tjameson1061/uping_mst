@@ -328,8 +328,10 @@ class PostbackTrackerController extends Controller
         if ($offer->id == 2 || $offer->id == 3 || $offer->id == 4 ) {
             $duplicate = USLead::where('uuid', $request->lead_id)->first();
 
-            if (!$duplicate->isEmpty()) {
+            $duplicate = collect($duplicate);
+            if ($duplicate->isNotEmpty()) {
                 echo 'Duplicate Postback';
+                Log::debug('DUPLICATE', (array) $duplicate);
                 die();
             }
         }
