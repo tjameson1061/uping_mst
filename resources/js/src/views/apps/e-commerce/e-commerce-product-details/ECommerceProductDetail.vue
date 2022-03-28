@@ -136,7 +136,7 @@
                         <hr>
 
                         <!-- Restrictions -->
-                        <b-card-text> <h6>Restrictions: </h6>  <span>  {{ offer.description }}</span></b-card-text>
+                        <b-card-text> <h6>Restrictions: </h6>  <span>  {{ offer.restrictions }}</span></b-card-text>
                         <!-- Allowed Sources -->
                         <b-card-text> <h6>Allowed Sources: </h6>  <span>  {{ offer.description }}</span></b-card-text>
                         <!-- Terms -->
