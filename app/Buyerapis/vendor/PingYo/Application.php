@@ -101,7 +101,7 @@ class Application
             $application = json_decode(json_encode($application), true);
             Log::debug('PRE_POST::', (array) $application);
 
-        dd($application);
+//        dd($application);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
 //            $server_output = $output->object();
