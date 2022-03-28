@@ -182,7 +182,7 @@ class PartReportController extends Controller
     }
     public function getPostbackReports($id)
     {
-        $partners = Partner::where('user_id', $id)->select('id')->toArray();
+        $partners = Partner::where('user_id', $id)->select('id')->get();
 
         foreach ($partners as $partner) {
             $partner_ids[] = $partner->id;
