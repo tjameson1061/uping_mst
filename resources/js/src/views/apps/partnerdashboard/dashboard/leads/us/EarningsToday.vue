@@ -81,7 +81,7 @@
         directives: {
             'b-tooltip': VBTooltip,
             Ripple,
-        },z
+        },
         props: {
             leadCounts: {
                 type: Object,
