@@ -340,12 +340,12 @@ class pingyo
 
                 Log::debug('APP RESP::', (array)$appResponse->CorrelationId);
                 $CorrelationId = $appResponse->CorrelationId;
-                $appResponse['correlationid'] = $CorrelationId;
+//                $appResponse['correlationid'] = $CorrelationId;
 
 
                 $this->response['validated'] = true;
                 if ($this->response['validated'] === true) {
-                    $status = new PingYo\Status('202', null, $appResponse->correlationid, null);
+                    $status = new PingYo\Status('202', null, $CorrelationId, null);
                     Log::debug('RESP STATUS::', (array)$status);
 
                     $counter = 0;
