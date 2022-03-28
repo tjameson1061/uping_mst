@@ -376,17 +376,17 @@ class pingyo
 //        $ApplicationDetails = (new ApplicationDetails)->validate();
 
 
-
-
         $this->response['timeout'] = $client_detail->timeout;
         $this->response['post_url'] = ($client_detail->status == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
 
-        $validation_result = true;
+        $validation_result = (new Application)->pre_validate($application);
+
+//        $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = (new Application)->send($application);
-            dd($application_status);
+            $application =  json_decode(json_encode($application), true);
 
+            dd($application);
             try {
                 $application_status = Http::post($this->response['post_url'], $application);
                 $application_status = $application_status->object();

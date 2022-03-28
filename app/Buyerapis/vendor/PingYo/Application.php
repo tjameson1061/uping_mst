@@ -78,18 +78,25 @@ class Application
         return $this->connection_status;
     }
 
-    public function send($application)
+    public function pre_validate($application)
     {
         if (!is_null($this->logger)) {
             Log::debug("Application::send() called");
         }
         $r = $application->validate();
-        Log::debug('PRE_POST::', (array) $r);
+        Log::debug('PRE_POST::', (array)$r);
 
         if ($r === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function send($application)
+    {
             Log::debug('PRE_POST::', (array) $application);
 
-            $application = collect($application)->toArray();
             Log::info("application sent: " . (array)$application);
             dd('here');
 
