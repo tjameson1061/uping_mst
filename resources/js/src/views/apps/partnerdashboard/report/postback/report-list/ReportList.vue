@@ -117,10 +117,10 @@
 
 
           <!-- Column: Report -->
-          <template #cell(affiliatePostbackUrl)="data">
+          <template #cell(transaction_id)="data">
               <b-media vertical-align="center">
                   <b-badge variant="light-primary">
-                      {{ data.item.affiliatePostbackUrl }}
+                      {{ data.item.transaction_id }}
 
                   </b-badge>
 

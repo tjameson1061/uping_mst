@@ -17,7 +17,7 @@ export default function useReportsList() {
     { key: 'offer_id', label: 'Offer ID', sortable: true },
     { key: 'conversion', label: 'Conversion',  sortable: true },
     { key: 'totalCost', label: 'Price',  sortable: true },
-    { key: 'affiliatePostbackUrl', label: 'Postback URL',  sortable: true },
+    { key: 'transaction_id', label: 'Transaction ID',  sortable: true },
     // { key: 'actions' },
   ]
   const perPage = ref(10)
