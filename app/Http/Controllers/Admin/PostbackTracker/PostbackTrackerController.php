@@ -11,6 +11,7 @@ use App\Models\Offer\ConversionTracker;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
 use App\Models\Postback;
+use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -326,7 +327,7 @@ class PostbackTrackerController extends Controller
         }
 
         if ($offer->id == 2 || $offer->id == 3 || $offer->id == 4 ) {
-            $duplicate = USLead::where('uuid', $request->lead_id)->first();
+            $duplicate = PostbackLogs::where('lead_id', $request->lead_id)->first();
 
             $duplicate = collect($duplicate);
             if ($duplicate->isNotEmpty()) {
