@@ -326,89 +326,89 @@ class pingyo
             $this->response['validated'] = false;
         }
     }
-//
-//    public function returnresponse()
-//            {
-//                $appResponse = $this->response['application_response'];
-//                Log::debug('APP RESP::', (array)$appResponse['res']);
-//
-//                $resp_data = json_decode($appResponse['res']);
-//                Log::debug('DEBUG::', (array)$resp_data);
-//
-//                Log::debug('APP RESP::', (array)$resp_data->CorrelationId);
-//                $CorrelationId = $resp_data->CorrelationId;
-//                $appResponse['correlationid'] = $CorrelationId;
-//
-//
-//                $this->response['validated'] = true;
-//                if ($this->response['validated'] === true) {
-//                    $status = new PingYo\Status('202', null, $appResponse['correlationid'], null);
-//                    Log::debug('RESP STATUS::', (array)$status);
-//
-//                    $counter = 0;
-//                    while (true) {
-//                        $res = $status->refresh();
-//                        Log::debug('STATUS REFRESH::', (array)$res);
-//                        $counter++;
-//                        if ($status->percentagecomplete == 100) {
-//                            break;
-//                        }
-//
-//                        sleep(3);
-//                    }
-//
-//                    $this->response['post_res'] = json_encode($res);
-//                    $this->response['correlationid'] = $status->correlationid;
-//                    Log::debug('RESP2 :: ', (array)$this->response);
-//                    Log::debug('RESP3 :: ', (array)$status);
-//                    //print_r($price); print_r($status);exit;
-//
-//                    if ($status->status == 'LenderMatchFound') {
-//                        $this->response['accept'] = 'ACCEPTED';
-//                        $this->response['post_price'] = $status->estimatedcommission->Amount;
-//                        $this->response['post_status'] = '1';
-//                        try {
-//                            $this->response['redirect_url'] = $status->redirecturl;
-//                        } catch (Exception $e) {
-//                            $this->response['redirect_url'] = $status->redirectionurl;
-//                        }
-//                        $this->response['post_time'] = $appResponse['post_time'];
-//                    } else {
-//                        $this->response['accept'] = 'REJECTED';
-//                        $this->response['post_status'] = '0';
-//                        $this->response['post_price'] = '0';
-//                        $this->response['post_time'] = $appResponse['post_time'];
-//                    }
-//                    //print_r($this->response);exit;
-//                    return $this->response;
-//                } else {
-//                    $this->response['accept'] = 'Validation Failed';
-//                    $this->response['post_status'] = '0';
-//                    $this->response['post_price'] = '0';
-//                    $this->response['post_time'] = $appResponse['post_time'];
-//                    return $this->response;
-//                }
-//
-//            }
-//
-//    private function manageDependencies()
-//            {
-//                require_once dirname(__DIR__) . '/vendor/PingYo/Application.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/SourceDetails.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/ApplicationDetails.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/Status.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/TitleType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/BankCardType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/ResidentialStatusType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/IncomePaymentType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/PayFrequencyType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/IncomeSourceType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/EmployerIndustryType.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/NationalIdentityNumberType.php';
-//                require_once dirname(__DIR__) . '/vendor/autoload.php';
-//                require_once dirname(__DIR__) . '/vendor/PingYo/ExtendedValidator.php';
-//
-//            }
+
+    public function returnresponse()
+            {
+                $appResponse = $this->response['application_response'];
+                Log::debug('APP RESP::', (array)$appResponse['res']);
+
+                $resp_data = json_decode($appResponse['res']);
+                Log::debug('DEBUG::', (array)$resp_data);
+
+                Log::debug('APP RESP::', (array)$resp_data->CorrelationId);
+                $CorrelationId = $resp_data->CorrelationId;
+                $appResponse['correlationid'] = $CorrelationId;
+
+
+                $this->response['validated'] = true;
+                if ($this->response['validated'] === true) {
+                    $status = new PingYo\Status('202', null, $appResponse['correlationid'], null);
+                    Log::debug('RESP STATUS::', (array)$status);
+
+                    $counter = 0;
+                    while (true) {
+                        $res = $status->refresh();
+                        Log::debug('STATUS REFRESH::', (array)$res);
+                        $counter++;
+                        if ($status->percentagecomplete == 100) {
+                            break;
+                        }
+
+                        sleep(3);
+                    }
+
+                    $this->response['post_res'] = json_encode($res);
+                    $this->response['correlationid'] = $status->correlationid;
+                    Log::debug('RESP2 :: ', (array)$this->response);
+                    Log::debug('RESP3 :: ', (array)$status);
+                    //print_r($price); print_r($status);exit;
+
+                    if ($status->status == 'LenderMatchFound') {
+                        $this->response['accept'] = 'ACCEPTED';
+                        $this->response['post_price'] = $status->estimatedcommission->Amount;
+                        $this->response['post_status'] = '1';
+                        try {
+                            $this->response['redirect_url'] = $status->redirecturl;
+                        } catch (Exception $e) {
+                            $this->response['redirect_url'] = $status->redirectionurl;
+                        }
+                        $this->response['post_time'] = $appResponse['post_time'];
+                    } else {
+                        $this->response['accept'] = 'REJECTED';
+                        $this->response['post_status'] = '0';
+                        $this->response['post_price'] = '0';
+                        $this->response['post_time'] = $appResponse['post_time'];
+                    }
+                    //print_r($this->response);exit;
+                    return $this->response;
+                } else {
+                    $this->response['accept'] = 'Validation Failed';
+                    $this->response['post_status'] = '0';
+                    $this->response['post_price'] = '0';
+                    $this->response['post_time'] = $appResponse['post_time'];
+                    return $this->response;
+                }
+
+            }
+
+    private function manageDependencies()
+            {
+                require_once dirname(__DIR__) . '/vendor/PingYo/Application.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/SourceDetails.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/ApplicationDetails.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/Status.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/TitleType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/BankCardType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/ResidentialStatusType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/IncomePaymentType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/PayFrequencyType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/IncomeSourceType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/EmployerIndustryType.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/NationalIdentityNumberType.php';
+                require_once dirname(__DIR__) . '/vendor/autoload.php';
+                require_once dirname(__DIR__) . '/vendor/PingYo/ExtendedValidator.php';
+
+            }
 
 
 }

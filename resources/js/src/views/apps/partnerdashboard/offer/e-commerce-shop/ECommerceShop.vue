@@ -151,7 +151,15 @@
         <div class="item-options text-center">
           <div class="item-wrapper">
             <div class="item-cost">
-             <h1>here</h1>
+              <h6 class="item-price" v-if="offer.id == '1' || offer.id == '2'">
+                {{ offer.payout.payout_amount }} %
+              </h6>
+              <h6 class="item-price" v-else-if="offer.id == '3' || offer.id == '4'">
+                ${{ offer.payout.payout_amount }}
+              </h6>
+              <h6 class="item-price" v-else-if="offer.id == '5' || offer.id == '6'">
+                ${{ offer.payout.payout_amount }}
+              </h6>
             </div>
           </div>
           <b-button
