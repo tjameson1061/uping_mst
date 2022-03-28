@@ -340,7 +340,6 @@ class pingyo
 
                 Log::debug('APP RESP::', (array)$appResponse->CorrelationId);
                 $CorrelationId = $appResponse->CorrelationId;
-//                $appResponse['correlationid'] = $CorrelationId;
 
 
                 $this->response['validated'] = true;
