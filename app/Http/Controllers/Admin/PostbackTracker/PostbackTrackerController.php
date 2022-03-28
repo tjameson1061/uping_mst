@@ -6,6 +6,7 @@ use App\Helpers\CurlHelper;
 use App\Http\Controllers\Controller;
 use App\Models\ClickTracker;
 use App\Models\IPQS;
+use App\Models\Lead\USLead;
 use App\Models\Offer\ConversionTracker;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
@@ -301,6 +302,9 @@ class PostbackTrackerController extends Controller
      */
     public function postback(Request $request)
     {
+
+
+
         Log::debug('POSTBACK RECEIVED:::', (array)$request->input());
         Log::debug('OFFER ID:::', (array)$request->offer_id);
 
@@ -319,6 +323,15 @@ class PostbackTrackerController extends Controller
             Log::debug($e);
             echo 'Invalid Offer ID';
             die();
+        }
+
+        if ($offer->id == 2 || $offer->id == 3 || $offer->id == 4 ) {
+            $duplicate = USLead::where('uuid', $request->lead_id)->first();
+
+            if (!$duplicate->isEmpty()) {
+                echo 'Duplicate Postback';
+                die();
+            }
         }
 
         Log::debug('DEBUG::', (array)$request->input());
