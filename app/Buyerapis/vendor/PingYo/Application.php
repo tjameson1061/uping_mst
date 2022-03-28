@@ -96,6 +96,7 @@ class Application
 
     public function send($application)
     {
+            $application = $application->toArray();
             Log::debug('PRE_POST::', (array) $application);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
@@ -162,32 +163,32 @@ class Application
         }
         $r = $this->validate();
         if ($r === true) {
-            return json_encode($this->toArray());
+            return $this->toArray();
         } else {
             return false;
         }
     }
 
-//    public function toArray()
-//    {
-//        if (!is_null($this->logger)) {
-//            Log::debug("Application::toArray() called");
-//        }
-//        $r = $this->validate();
-//        if ($r === true) {
-////            dd($this->applicationdetails);
-//             return [
-//                 'Campaign' => $this->Campaign,
-//                 'AffiliateId' => $this->AffiliateId,
-//                 'SubAffiliate' => $this->SubAffiliate,
-//                 'Timeout' => $this->Timeout,
-//                 'TestOnly' => $this->TestOnly,
-//                 'Application' => $this->Application,
-//                 'SourceDetails' => $this->SourceDetails
-//            ];
-//
-//        } else {
-//            return false;
-//        }
-//    }
+    public function toArray()
+    {
+        if (!is_null($this->logger)) {
+            Log::debug("Application::toArray() called");
+        }
+        $r = $this->validate();
+        if ($r === true) {
+//            dd($this->applicationdetails);
+             return [
+                 'Campaign' => $this->Campaign,
+                 'AffiliateId' => $this->AffiliateId,
+                 'SubAffiliate' => $this->SubAffiliate,
+                 'Timeout' => $this->Timeout,
+                 'TestOnly' => $this->TestOnly,
+                 'Application' => $this->Application,
+                 'SourceDetails' => $this->SourceDetails
+            ];
+
+        } else {
+            return false;
+        }
+    }
 }
