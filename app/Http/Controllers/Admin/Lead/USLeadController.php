@@ -402,9 +402,9 @@ class USLeadController extends Controller
         $data_update->employer_id = $data->Employer->id;
         $data_update->bank_id = $data->Bank->id;
         $data_update->consent_id = $data->Consent->id;
-        if (isset($data->Additional)) {
-            $data_update->additional_id = $data->Additional->id;
-        }
+//        if (isset($data->Additional)) {
+//            $data_update->additional_id = $data->Additional->id;
+//        }
         $res = $data_update->save();
 
         return $data;

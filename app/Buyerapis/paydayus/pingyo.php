@@ -236,70 +236,69 @@ class pingyo
             $post->Employer->jobTitle = 'unknown';
         }
 
-        Log::debug('POST::', (array)$post->Applicant);
 
-        $application = new Application();
-        $application->AffiliateId =  (string) "TOMJ-USA";
-        $application->Campaign =  (string)$post->vid ?? 'UPING';
-        $application->SubAffiliate =  (string)$post->subid ?? '';
-        $application->Timeout =  (int)$client_detail->timeout ?? '120';
-        $application->TestOnly =  (boolean)true;
+        $application = [];
+        $application['AffiliateId'] =  (string) "TOMJ-USA";
+        $application['Campaign'] =  (string)$post->vid ?? 'UPING';
+        $application['SubAffiliate'] =  (string)$post->subid ?? '';
+        $application['Timeout'] =  (int)$client_detail->timeout ?? '120';
+        $application['TestOnly'] =  (boolean)true;
 
-        $application->SourceDetails = new SourceDetails();
-        $application->SourceDetails->Address = (string)$post->Source->ipAddress;
-        $application->SourceDetails->ClientUserAgent = (string)$post->Source->userAgent;
-        $application->SourceDetails->CreationUrl = (string)$post->Source->creationUrl;
-        $application->SourceDetails->ReferringUrl = (string)$post->Source->referringUrl;
+        $application['SourceDetails'] = [];
+        $application['SourceDetails']['Address'] = (string)$post->Source->ipAddress;
+        $application['SourceDetails']['ClientUserAgent'] = (string)$post->Source->userAgent;
+        $application['SourceDetails']['CreationUrl'] = (string)$post->Source->creationUrl;
+        $application['SourceDetails']['ReferringUrl'] = (string)$post->Source->referringUrl;
 
-        $application->Application = new ApplicationDetails();
-        $application->Application->ConsentToCreditSearch = (boolean)true;
-        $application->Application->Title =  (int)$post->Applicant->nameTitle ?? 1;
-        $application->Application->FirstName =  (string)$post->Applicant->firstName;
-        $application->Application->LastName =  (string)$post->Applicant->lastName;
-        $application->Application->DateOfBirth =  (string)$dateOfBirth;
-        $application->Application->Email =  (string)$post->Applicant->email;
-        $application->Application->HomePhoneNumber =  (string)$post->Applicant->homePhoneNumber;
-        $application->Application->MobilePhoneNumber =  (string)$post->Applicant->cellPhoneNumber;
-        $application->Application->WorkPhoneNumber =  (string)$post->Applicant->workPhoneNumber ?? $post->Applicant->cellPhoneNumber;
-        $application->Application->EmployerName =  (string)$post->Employer->employerName ?? 'NOT AVAILABLE';
-        $application->Application->JobTitle =  (string)$post->Employer->jobTitle ?? 'unknown';
-        $application->Application->EmploymentStarted =  (string)$EmploymentStarted;
-        $application->Application->IncomeSource =  (int)$post->Employer->incomeSource;
-        $application->Application->PayFrequency =  (int)$post->Employer->incomeCycle;
-        $application->Application->PayAmount =  (int)$post->Employer->monthlyIncome;
-        $application->Application->IncomePaymentType =  (int)$post->Employer->incomePaymentType;
+        $application['Application'] = [];
+        $application['Application']['ConsentToCreditSearch'] = (boolean)true;
+        $application['Application']['Title'] =  (int)$post->Applicant->nameTitle ?? 1;
+        $application['Application']['FirstName'] =  (string)$post->Applicant->firstName;
+        $application['Application']['LastName'] =  (string)$post->Applicant->lastName;
+        $application['Application']['DateOfBirth'] =  (string)$dateOfBirth;
+        $application['Application']['Email'] =  (string)$post->Applicant->email;
+        $application['Application']['HomePhoneNumber'] =  (string)$post->Applicant->homePhoneNumber;
+        $application['Application']['MobilePhoneNumber'] =  (string)$post->Applicant->cellPhoneNumber;
+        $application['Application']['WorkPhoneNumber'] =  (string)$post->Applicant->workPhoneNumber ?? $post->Applicant->cellPhoneNumber;
+        $application['Application']['EmployerName'] =  (string)$post->Employer->employerName ?? 'NOT AVAILABLE';
+        $application['Application']['JobTitle'] =  (string)$post->Employer->jobTitle ?? 'unknown';
+        $application['Application']['EmploymentStarted'] =  (string)$EmploymentStarted;
+        $application['Application']['IncomeSource'] =  (int)$post->Employer->incomeSource;
+        $application['Application']['PayFrequency'] =  (int)$post->Employer->incomeCycle;
+        $application['Application']['PayAmount'] =  (int)$post->Employer->monthlyIncome;
+        $application['Application']['IncomePaymentType'] =  (int)$post->Employer->incomePaymentType;
 
-        $application->Application->NextPayDate =  (string)$nextPayDate;
-        $application->Application->FollowingPayDate =  (string)$followingPayDate;
+        $application['Application']['NextPayDate'] =  (string)$nextPayDate;
+        $application['Application']['FollowingPayDate'] =  (string)$followingPayDate;
 
-        $application->Application->LoanAmount =  (int)$post->Loan->loanAmount;
-        $application->Application->Term =  (int)$post->Loan->loanTerms;
-        $application->Application->ResidentialStatus =  (int)$post->Residence->residentialStatus;
-        $application->Application->HouseNumber =  (string)$post->Residence->houseNumber;
-        $application->Application->HouseName =  (string)$post->Residence->houseName;
-        $application->Application->AddressStreet1 =  (string)$post->Residence->addressStreet1;
-        $application->Application->AddressCity =  (string)$post->Residence->city;
-        $application->Application->AddressState =  (string)$post->Residence->state;
-        $application->Application->AddressMoveIn =  (string)$AddressMoveIn ?? '10-11-2018';
-        $application->Application->AddressPostcode =  (string)$post->Residence->zip;
-        $application->Application->BankName =  (string)$post->Bank->bankName;
-        $application->Application->BankAccountNumber =  (string)$post->Bank->bankAccountNumber;
-        $application->Application->BankRoutingNumber =  (string)$post->Bank->bankRoutingNumber;
-        $application->Application->BankAccountType =  (int)$post->Bank->bankAccountType;
-        $application->Application->BankAccountOpened =  (string)$BankAccountOpened;
+        $application['Application']['LoanAmount'] =  (int)$post->Loan->loanAmount;
+        $application['Application']['Term'] =  (int)$post->Loan->loanTerms;
+        $application['Application']['ResidentialStatus'] =  (int)$post->Residence->residentialStatus;
+        $application['Application']['HouseNumber'] =  (string)$post->Residence->houseNumber;
+        $application['Application']['HouseName'] =  (string)$post->Residence->houseName;
+        $application['Application']['AddressStreet1'] =  (string)$post->Residence->addressStreet1;
+        $application['Application']['AddressCity'] =  (string)$post->Residence->city;
+        $application['Application']['AddressState'] =  (string)$post->Residence->state;
+        $application['Application']['AddressMoveIn'] =  (string)$AddressMoveIn ?? '10-11-2018';
+        $application['Application']['AddressPostcode'] =  (string)$post->Residence->zip;
+        $application['Application']['BankName'] =  (string)$post->Bank->bankName;
+        $application['Application']['BankAccountNumber'] =  (string)$post->Bank->bankAccountNumber;
+        $application['Application']['BankRoutingNumber'] =  (string)$post->Bank->bankRoutingNumber;
+        $application['Application']['BankAccountType'] =  (int)$post->Bank->bankAccountType;
+        $application['Application']['BankAccountOpened'] =  (string)$BankAccountOpened;
 
-        $application->Application->MaritalStatus =  (int)$post->Applicant->maritalStatus ?? 1;
-        $application->Application->NumberOfDependents =  (int)$post->Applicant->dependants;
-        $application->Application->CombinedMonthlyHouseholdIncome =  (float)$post->Applicant->dependants;
+        $application['Application']['MaritalStatus'] =  (int)$post->Applicant->maritalStatus ?? 1;
+        $application['Application']['NumberOfDependents'] =  (int)$post->Applicant->dependants;
+        $application['Application']['CombinedMonthlyHouseholdIncome'] =  (float)$post->Applicant->dependants;
 
-        $application->Application->DriversLicenseNumber =  (string)$post->Applicant->drivingLicenseNumber;
-        $application->Application->DriversLicenseState =  (string)$post->Applicant->drivingLicenseState;
-        $application->Application->NationalIdentityNumber =  (string)$post->Applicant->ssn;
-        $application->Application->MilitaryService =  (int)$post->Applicant->inMilitary;
+        $application['Application']['DriversLicenseNumber'] =  (string)$post->Applicant->drivingLicenseNumber;
+        $application['Application']['DriversLicenseState'] =  (string)$post->Applicant->drivingLicenseState;
+        $application['Application']['NationalIdentityNumber'] =  (string)$post->Applicant->ssn;
+        $application['Application']['MilitaryService'] =  (int)$post->Applicant->inMilitary;
 
-        $application->Application->ConsentToMarketingEmails =   (boolean)$post->Consent->consentThirdPartyEmails;
-////      $application->Application->         "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
-//      $application->Application->         "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
+        $application['Application']['ConsentToMarketingEmails'] =   (boolean)$post->Consent->consentThirdPartyEmails;
+////      $application['Application'][''         "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
+//      $application['Application->         "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
 
 
 //        $application = array(
@@ -371,13 +370,11 @@ class pingyo
         $this->response['timeout'] = $client_detail->timeout;
         $this->response['post_url'] = ($client_detail->status == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
 
-        $validation_result = (new Application)->pre_validate($application);
-//        $validation_result = true;
+//        $validation_result = (new Application)->pre_validate($application);
+        $validation_result = true;
         if ($validation_result == true) {
 
-//            $application =  (new Application)->toArray();
             Log::debug('STATUS::', (array)$application);
-
 
                 $application_status = (new Application)->send($application);
                 Log::debug('STATUS::', (array)$application_status);
@@ -391,15 +388,15 @@ class pingyo
         }
     }
 
+
     public function returnresponse()
     {
         $appResponse = $this->response['application_response'];
-        $appResponse = $appResponse->object();
         Log::debug('APP RESP::', (array)$appResponse);
 
 
-        Log::debug('APP RESP::', (array)$appResponse->CorrelationId);
-        $CorrelationId = $appResponse->CorrelationId;
+        Log::debug('APP RESP::', (array)$appResponse->correlationid);
+        $CorrelationId = $appResponse->correlationid;
 
 
         $this->response['validated'] = true;
@@ -423,18 +420,14 @@ class pingyo
             $this->response['correlationid'] = $status->correlationid;
             Log::debug('POST RES :: ', (array)$this->response);
             Log::debug('RESP3 :: ', (array)$status);
-            //print_r($price); print_r($status);exit;
 
             if ($status->status == 'LenderMatchFound') {
                 $this->response['accept'] = 'ACCEPTED';
                 $this->response['post_price'] = $status->estimatedcommission->Amount;
                 $this->response['post_status'] = '1';
-                try {
-                    $this->response['redirect_url'] = $status->redirecturl;
-                } catch (Exception $e) {
-                    $this->response['redirect_url'] = $status->redirectionurl;
-                }
+                $this->response['redirect_url'] = $status->redirecturl;
                 $this->response['post_time'] = $appResponse->post_time;
+
             } elseif ($status->status == 'ConditionalLenderMatchFound') {
                 $this->response['accept'] = 'ACCEPTED';
                 $this->response['post_status'] = '0';
@@ -454,6 +447,9 @@ class pingyo
             $this->response['post_time'] = $appResponse->post_time;
             return $this->response;
         }
+
+
+
 
     }
 

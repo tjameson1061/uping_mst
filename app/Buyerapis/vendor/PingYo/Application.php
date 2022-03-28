@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Log;
 class Application
 {
 
-    public $Campaign;
     public $AffiliateId;
+    public $Campaign;
     public $SubAffiliate;
     public $Timeout;
     public $TestOnly;
 
-    public $Application;
     public $SourceDetails;
+    public $Application;
 
     private $connection_status = false;
     private $logger = null;
@@ -95,24 +95,21 @@ class Application
 
     public function send($application)
     {
-//            $application = $application->toArray();
-            Log::debug('PRE_POST::', (array) $application);
-            $application = $application->toArray();
-            $application[] = json_decode(json_encode($application), true);
             Log::debug('PRE_POST::', (array) $application);
 
-        dd($application);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
-//            $server_output = $output->object();
+            $server_output = $output->body();
+//            dd($server_output);
 
+//            Log::debug('POST::', (array) $server_output);
             Log::debug('POST::', (array) $application);
 //            Log::debug('PingYo::', (array) $output->object());
 
-                Log::info("got response with code " . $output->status() . ': ' . $output);
+                Log::debug("got response with code " . $output->status() . ': ' . $server_output);
 
 //            $this->connection_status = $info;
-            return new Status($output->status(), $output, null, $this->logger);
+            return new Status($output->status(), $server_output, null, $this->logger);
     }
 
     public function validate($full_validation = true)
@@ -186,8 +183,8 @@ class Application
                  'SubAffiliate' => $this->SubAffiliate,
                  'Timeout' => $this->Timeout,
                  'TestOnly' => $this->TestOnly,
-                 'Application' => $this->Application,
-                 'SourceDetails' => $this->SourceDetails
+                 'SourceDetails' => $this->SourceDetails,
+                 'Application' => $this->Application
             ];
 
         } else {

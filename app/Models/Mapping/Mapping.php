@@ -110,7 +110,7 @@ class Mapping extends Model
             ->select(
                 'mappings.*',
                 'buyer_setups.*',
-                'buyers.*',
+                'buyers.*'
             )
             ->leftJoin(
                 'buyer_setups',
@@ -132,6 +132,7 @@ class Mapping extends Model
             ->where('buyers.status', 1)
             ->where('mappings.partner_id', $search['vid']);
 
+//        dd($query->get());
         $buyers = $query->orderBy('buyer_setups.tier_price', 'DESC');
 
         if (!empty($search['tier'])) {
@@ -153,6 +154,7 @@ class Mapping extends Model
         if (!empty($search['max_price'])) {
             $buyers->where('buyer_setups.tier_price', '<=', $search['max_price']);
         }
+//        dd($buyers->get());
         if (!empty($search['mode'])) {
             $buyers = $buyers->where('buyer_setups.mode', $search['mode']);
         } else {
@@ -160,7 +162,7 @@ class Mapping extends Model
         }
 
         $buyers = $buyers->get();
-
+//        dd($buyers);
         if ($buyers->isEmpty()) {
             echo json_encode(['error' => 'Tier Not Found']);
             die();

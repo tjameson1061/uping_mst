@@ -1,6 +1,7 @@
 <?php
 namespace PingYo;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class Status
@@ -59,29 +60,12 @@ class Status
 
     public function refresh()
     {
-//        if (!is_null($this->logger)) {
-//            $this->logger->debug("Status::refresh()");
-//        }
-        $ch = curl_init();
+        Log::debug("PingYo Status::refresh()");
 
-        if (!is_null($this->logger)) {
-            $this->logger->info("status request sent: http://leads.pingyo.co.uk" . $this->statuscheckurl);
-        }
+        $server_output = Http::get("http://leads.pingyo.co.uk" . $this->statuscheckurl);
 
-        curl_setopt($ch, CURLOPT_URL, "http://leads.pingyo.co.uk" . $this->statuscheckurl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json, text/javascript, *.*',
-            'Content-type: application/json; charset=utf-8'
-        ));
-
-        $server_output = curl_exec($ch);
         Log::debug('Status Output::', (array) $server_output);
 
-//        if (!is_null($this->logger)) {
-//            $this->logger->info('got response: ' . $server_output);
-//        }
 
         $r = json_decode($server_output);
         Log::debug('Status RESP::', (array) $r);
@@ -101,9 +85,6 @@ class Status
         if (isset($r->EstimatedCommission)) {
             $this->estimatedcommission = $r->EstimatedCommission;
         }
-
-        $info = curl_getinfo($ch);
-        curl_close($ch);
 
         return $r;
     }
