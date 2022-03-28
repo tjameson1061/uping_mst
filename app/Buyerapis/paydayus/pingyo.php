@@ -312,7 +312,7 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = Application::send($lead);
+            $application_status = (new Application)->send($lead);
 
             try {
                 $application_status = Http::post( $this->response['post_url'], $lead);
