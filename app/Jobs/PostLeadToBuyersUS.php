@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Http\Controllers\Admin\PostbackTracker\PostbackTrackerController;
 use App\Models\Buyer\BuyerFilterUS;
 use App\Models\Buyer\BuyerRotation;
 use App\Models\Buyer\BuyerSetup;
@@ -110,6 +111,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
             if ($offer_id == 3 || $offer_id == 4) {
 
+                $payoutAmount = $offer_detail['payout']['payoutAmount'];
                 $thresholdAmount = $offer_detail['payout']['revenueAmount'];
 
                 if ($thresholdAmount > 0) {
@@ -128,6 +130,10 @@ class PostLeadToBuyersUS implements ShouldQueue
                     } else {
                         $response['Threshold'] = 'false';
                     }
+
+//                    if ($response['Threshold'] == true && $offer_id == 3) {
+//                        PostbackTrackerController::
+//                    }
 
                     if ($offer_id == 4) {
                         $lead_data = array(

@@ -47,58 +47,68 @@ class ConversionTracker extends Model
 
         $data_update->totalRevenue = $totals->revenue;
 
-        if ($offer->conversion_type == 'Revshare' ) {
+        $postback_log = PostbackLogs::update_postback_log($data, $data_update);
 
-            $totalRevenue = $data->amount * ($partner_detail->margin / 100) + $data->amount;
-            $data_update->totalCost = $price;
-            $data_update->totalRevenue = $totalRevenue;
-            try {
-
-                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
-
-                return $postback_log;
-            } catch (\Exception $e) {
-                Log::debug($e);
-                echo 'No {amount} Variable Provided';
-                die();
-            }
-        }
-
-        if ($offer->conversion_type == 'CPA') {
-
-            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->id)
-                ->where('lead_type', '=', 1)
-                ->first();
-
-            $accumulator_amount = round($partner_accumulator_amount->accuCPAus100, 2);
-            $total_offer_revenue_threshold = round($totals->revenue, 2);
-
-            if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
-            } else {
-                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
-            }
-
-            return $postback_log;
-        }
-
-        if ($offer->conversion_type == "CPL") {
-
-            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->id)
-                ->where('lead_type', '=', 1)
-                ->first();
-
-            $accumulator_amount = round($partner_accumulator_amount->accuCPLus20, 2);
-            $total_offer_revenue_threshold = round($totals->revenue, 2);
-
-            if ($accumulator_amount >= $total_offer_revenue_threshold) {
-                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
-            } else {
-                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
-            }
-
-            return $postback_log;
-        }
+        return $postback_log;
+//        if ($offer->conversion_type == 'Revshare' ) {
+//
+//            $totalRevenue = $data->amount * ($partner_detail->margin / 100) + $data->amount;
+//            $data_update->totalCost = $price;
+//            $data_update->totalRevenue = $totalRevenue;
+//            try {
+//
+//                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
+//
+//                return $postback_log;
+//            } catch (\Exception $e) {
+//                Log::debug($e);
+//                echo 'No {amount} Variable Provided';
+//                die();
+//            }
+//        }
+//
+//        if ($offer->conversion_type == 'CPA') {
+//
+//            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->vendor_id)
+//                ->where('lead_type', '=', 2)
+//                ->first();
+//
+//            if ($offer->id == 3) {
+//                $accumulator_amount = round($partner_accumulator_amount->accuCPAus20, 2);
+//                $total_offer_revenue_threshold = round($totals->revenue, 2);
+//            } elseif ($offer->id == 4) {
+//                $accumulator_amount = round($partner_accumulator_amount->accuCPAus100, 2);
+//                $total_offer_revenue_threshold = round($totals->revenue, 2);
+//            }
+//
+//
+//
+//            if ($accumulator_amount >= $total_offer_revenue_threshold) {
+//                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
+//            } else {
+//                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
+//            }
+//
+//            return $postback_log;
+//        }
+//
+//        if ($offer->conversion_type == "CPL") {
+//
+//            $partner_accumulator_amount = PartnerLeadType::where('vendor_id', '=', $partner_detail->vendor_id)
+//                ->where('lead_type', '=', 1)
+//                ->first();
+//
+//            $accumulator_amount = round($partner_accumulator_amount->accuCPLus20, 2);
+//            $total_offer_revenue_threshold = round($totals->revenue, 2);
+//
+//            if ($accumulator_amount >= $total_offer_revenue_threshold) {
+//                $postback_log = PostbackLogs::update_postback_log($data, $data_update);
+//            } else {
+//                $postback_log = PostbackLogs::update_postback_log_no_conversion($data, $data_update);
+//            }
+//
+//            return $postback_log;
+//        }
 
 
 
