@@ -95,21 +95,21 @@
         <div class="item-img text-center">
           <b-link :to="{ name: 'apps-admin-offers-details', params: { id: offer.id } }">
             <b-img
-                v-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'light'"
+                v-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
               :alt="`${offer.name}-${offer.id}`"
               fluid
               class="card-img-top p-1"
               :src="require('@/assets/images/offer_logo/loanie-logo.png')"
             />
             <b-img
-                    v-else-if="offer.id == 1 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
+                    v-else-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-1"
                     :src="require('@/assets/images/offer_logo/loanie-logo-white.png')"
             />
               <b-img
-                  v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
+                  v-else-if="offer.id == 2 || offer.id == 3 ||  offer.id == 4 && skin == 'light'"
                   :alt="`${offer.name}-${offer.id}`"
                   fluid
                   class="card-img-top p-3"
@@ -117,7 +117,7 @@
 
               />
             <b-img
-                    v-else-if="offer.id == 2 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
+                    v-else-if="offer.id == 2 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-3"
