@@ -98,16 +98,16 @@ class Application
             }
 
 
-            $server_output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
-            $server_output = $server_output->object();
+            $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
+//            $server_output = $output->object();
 
             Log::debug('POST::', (array) $application);
-            Log::debug('PingYo::', (array) $server_output);
+            Log::debug('PingYo::', (array) $output->object());
 
-                Log::info("got response with code " . $server_output->status() . ': ' . $server_output);
+                Log::info("got response with code " . $output->status() . ': ' . $output);
 
 //            $this->connection_status = $info;
-            return new Status($server_output->status(), $server_output, null, $this->logger);
+            return new Status($output->status(), $output, null, $this->logger);
         } else {
             Log::debug('PingYo, INVALID Application');
             return false;
