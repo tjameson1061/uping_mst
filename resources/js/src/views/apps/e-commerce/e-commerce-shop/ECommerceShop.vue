@@ -131,7 +131,7 @@
         <b-card-body>
           <div class="item-wrapper">
             <div>
-              <h6 class="item-price" v-if="offer.payout.payoutType == 'CPS'">
+              <h6 class="item-price" v-if="offer.conversion_type == 'CPS'">
                 {{ offer.payout.payout_amount }} %
               </h6>
               <h6 class="item-price" v-else-if="offer.id == 3 || offer.id == 4">
