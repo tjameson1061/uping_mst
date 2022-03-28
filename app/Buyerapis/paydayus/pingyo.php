@@ -234,8 +234,8 @@ class pingyo
             $post->Employer->jobTitle = 'unknown';
         }
 
-        Log::debug('POST::', (array) $post);
-//        dd($post->Residence);
+        Log::debug('POST::', (array) $post->Applicant);
+        dd($post->Applicant);
 
         // POST DATA
         $lead = array(
