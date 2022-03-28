@@ -7,30 +7,32 @@
                 xl="4"
                 md="4"
             >
-                <earnings-today  v-if="userData" :today-earnings="todayEarnings"
-                                 :lead-counts="leadCounts"
+                <earnings-today  v-if="userData"
+                                 :data="data.dashboard_data" v-if="data.dashboard_data"
                                  :user-data="userData"
                                  title="Today"/>
 
             </b-col>
+<!--                                 :today-earnings="todayEarnings"-->
+<!--                                 :lead-counts="leadCounts"-->
             <b-col
                 xl="4"
                 md="4"
             >
-                <earnings-week :week-earnings="weekEarnings"
-                               :lead-counts="leadCounts"
-                               :user-data="userData"
-                               title="Week"/>
-            </b-col>
-            <b-col
-                xl="4"
-                md="4"
-            >
-                <earnings-month :month-earnings="monthEarnings"
-                                :lead-counts="leadCounts"
-                                :user-data="userData"
-                                title="Month"/>
-            </b-col>
+<!--                <earnings-week :week-earnings="weekEarnings"-->
+<!--                               :lead-counts="leadCounts"-->
+<!--                               :user-data="userData"-->
+<!--                               title="Week"/>-->
+<!--            </b-col>-->
+<!--            <b-col-->
+<!--                xl="4"-->
+<!--                md="4"-->
+<!--            >-->
+<!--                <earnings-month :month-earnings="monthEarnings"-->
+<!--                                :lead-counts="leadCounts"-->
+<!--                                :user-data="userData"-->
+<!--                                title="Month"/>-->
+<!--            </b-col>-->
         </b-row>
 
 
@@ -107,20 +109,35 @@
         },
         data() {
             return {
-                todayRedirection: {},
-                weekRedirection: {},
-                monthRedirection: {},
-                todayEarnings: {},
-                weekEarnings: {},
-                monthEarnings: {},
-                affiliate_table_data: {},
-                leadCounts: {},
+                data: {},
+                // weekRedirection: {},
+                // monthRedirection: {},
+                // todayEarnings: {},
+                // weekEarnings: {},
+                // monthEarnings: {},
+                // affiliate_table_data: {},
+                // leadCounts: {},
                 userData: {},
             }
         },
         created() {
             this.fetchDashboardData();
         },
+        data() {
+            return {
+                data: {
+                    dashboard_data : {affiliate_table_data : [],
+                        todayEarnings : {redirection : { redirected_ratio : []},today_revenue : 0 },
+                        weekEarnings :  {redirection : { redirected_ratio : []},week_revenue : 0 },
+                        monthEarnings :  {redirection : { redirected_ratio : []},month_revenue : 0 },
+                        profitEarnings :  {redirection : { redirected_ratio : []},profit : 0 },
+                        lead_count : {today : 0, week :0 , month : 0},
+
+                    }
+                },
+            }
+        },
+
         methods: {
             fetchDashboardData() {
                 const userData = getUserData()
@@ -128,14 +145,16 @@
                 axios
                     .get(`/api/partner/getDashboardLeadDataPartner/us/${userData.id}`)
                     .then((response) => {
-                        this.todayEarnings = response.data.dashboard_data.todayEarnings;
-                        this.todayRedirection = response.data.dashboard_data.redirectionToday;
-                        this.weekEarnings = response.data.dashboard_data.weekEarnings;
-                        this.weekRedirection = response.data.dashboard_data.redirectionWeek;
-                        this.monthEarnings = response.data.dashboard_data.monthEarnings;
-                        this.monthRedirection = response.data.dashboard_data.redirectionMonth;
-                        this.affiliate_table_data = response.data.dashboard_data.affiliate_table_data;
-                        this.leadCounts = response.data.dashboard_data.leadCounts;
+                        // this.todayEarnings = response.data.dashboard_data.todayEarnings;
+                        // this.todayRedirection = response.data.dashboard_data.redirectionToday;
+                        // this.weekEarnings = response.data.dashboard_data.weekEarnings;
+                        // this.weekRedirection = response.data.dashboard_data.redirectionWeek;
+                        // this.monthEarnings = response.data.dashboard_data.monthEarnings;
+                        // this.monthRedirection = response.data.dashboard_data.redirectionMonth;
+                        // this.affiliate_table_data = response.data.dashboard_data.affiliate_table_data;
+                        // this.leadCounts = response.data.dashboard_data.leadCounts;
+                        this.data = response.data
+
                     })
                     .catch((error) => console.log(error));
             },
