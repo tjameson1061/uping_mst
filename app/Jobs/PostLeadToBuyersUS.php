@@ -34,9 +34,9 @@ class PostLeadToBuyersUS implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 //    public $timeout = 3600;
+//    public $tries = 3;
 
     private $leadtype = 2;
-//    public $tries = 3;
     private $post;
     private $inputs;
     private $partner_detail;
@@ -45,12 +45,6 @@ class PostLeadToBuyersUS implements ShouldQueue
     private $status_check;
     private $buyer_status;
 
-
-    /**
-     *  if (isset($post->timeout)) {
-    $row->timeout = $post->timeout;
-    }
-     */
 
     /**
      * Create a new job instance.

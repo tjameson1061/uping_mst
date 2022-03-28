@@ -25,13 +25,15 @@ class ConversionTracker extends Model
     /**
      * This function adds the revenue to the LmsOffersLog
      * @param $data
+     * @param $offer
+     * @param $partner_detail
      * @return object
      */
     public function add_revenue( $data , $offer , $partner_detail )
     {
-        Log::debug('DATA::', (array) $data);
-        Log::debug('OFFER::', (array) $offer);
-        Log::debug('PARTNER::', (array) $partner_detail);
+//        Log::debug('DATA::', (array) $data);
+//        Log::debug('OFFER::', (array) $offer);
+        Log::debug('PARTNER::', (array) $partner_detail->vendor_id);
 
         $totals = (object)[];
         $totals->payout = $offer->payout->payoutAmount;

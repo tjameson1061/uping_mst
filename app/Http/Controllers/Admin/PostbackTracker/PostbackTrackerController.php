@@ -308,7 +308,7 @@ class PostbackTrackerController extends Controller
             $offer = Offer::get($request->offer_id);
             Log::debug('Postback DEBUG::', (array)$request->input());
             // Check for duplicate transaction ID.
-//                $request = $this->duplicate_postback_checker($request);
+//          $request = $this->duplicate_postback_checker($request);
 
 //            if ($offer->multiple_conversions === "1") {
 //                // Check IF multiple conversions are allowed.
