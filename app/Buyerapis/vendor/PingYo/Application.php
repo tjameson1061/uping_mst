@@ -1,6 +1,7 @@
 <?php
 namespace PingYo;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class Application
@@ -82,51 +83,29 @@ class Application
         if (!is_null($this->logger)) {
             $this->logger->debug("Application::send() called");
         }
-//        $r = $application->validate();
-        $r = true;
+        $r = $application->validate();
         if ($r === true) {
-//            dd($application);
-            $request = json_encode($application);
             Log::debug('REQ::', (array) $application);
-//            $request = $application->toJson();
-//            dd($request);
-//            $request = json_encode($application);
-//            dd($request);
-
-//            if (!is_null($this->logger)) {
-//                $this->logger->info("request sent: " . $request);
-//            }
-
-            $ch = curl_init();
-
-            curl_setopt($ch, CURLOPT_URL, "https://leads.pingyo.co.uk/application/submit");
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Accept: application/json, text/javascript, *.*',
-                'Content-Type: application/json; charset=utf-8',
-                'Expect:'
-            ));
-
-
-            $server_output = curl_exec($ch);
-            Log::debug('POST::', (array) $request);
-            Log::debug('PingYo::', (array) $server_output);
-            $info = curl_getinfo($ch);
 
             if (!is_null($this->logger)) {
-                $this->logger->info("got response with code " . $info['http_code'] . ': ' . $server_output);
+                $this->logger->info("request sent: " . $application);
             }
 
-            curl_close($ch);
-            $this->connection_status = $info;
-            return new Status($info['http_code'], $server_output, null, $this->logger);
+
+            $server_output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
+            $server_output = $server_output->object();
+
+            Log::debug('POST::', (array) $application);
+            Log::debug('PingYo::', (array) $server_output);
+
+            if (!is_null($this->logger)) {
+                $this->logger->info("got response with code " . $server_output->status() . ': ' . $server_output);
+            }
+
+//            $this->connection_status = $info;
+            return new Status($server_output->status(), $server_output, null, $this->logger);
         } else {
             Log::debug('PingYo, INVALID Application');
-			//echo "APPLI no valido";
             return false;
         }
     }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Log;
+use PingYo\Application;
 use PingYo\Status;
 use Illuminate\Support\Facades\Http;
 
@@ -311,6 +312,8 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
+            $application_status = Application::send($lead);
+
             try {
                 $application_status = Http::post( $this->response['post_url'], $lead);
                 $application_status = $application_status->object();
@@ -318,8 +321,6 @@ class pingyo
             } catch (Exception $e) {
                 Log::debug($e);
             }
-
-//            if($application_status)
 
 
 
