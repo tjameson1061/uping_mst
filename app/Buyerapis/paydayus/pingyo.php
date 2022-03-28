@@ -385,15 +385,18 @@ class pingyo
         if ($validation_result == true) {
 
             $application =  json_decode(json_encode($application), true);
+            Log::debug('STATUS::', (array)$application);
 
             dd($application);
+
             try {
-                $application_status = Http::post($this->response['post_url'], $application);
-                $application_status = $application_status->object();
+                $application_status = (new Application)->send($application);
                 Log::debug('STATUS::', (array)$application_status);
+                $application_status = $application_status->object();
             } catch (Exception $e) {
                 Log::debug($e);
             }
+//                $application_status = Http::post($this->response['post_url'], $application);
 
 
             $this->response['application_response'] = $application_status;
