@@ -370,10 +370,10 @@ class pingyo
 //            );
 
 
-        $Application = (new Application)->validate($application);
-        Log::debug('APP::', (array) $Application);
-        $SourceDetails = (new SourceDetails)->validate();
-        $ApplicationDetails = (new ApplicationDetails)->validate();
+//        $Application = (new Application)->validate($application);
+//        Log::debug('APP::', (array) $Application);
+//        $SourceDetails = (new SourceDetails)->validate();
+//        $ApplicationDetails = (new ApplicationDetails)->validate();
 
 
 
@@ -384,7 +384,7 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = (new Application)->send($application);
+            $application_status = (new Application)->send((array)$application);
             dd($application_status);
 
             try {
