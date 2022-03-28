@@ -360,7 +360,7 @@ class pingyo
 
                     $this->response['post_res'] = json_encode($res);
                     $this->response['correlationid'] = $status->correlationid;
-                    Log::debug('RESP2 :: ', (array)$this->response);
+                    Log::debug('POST RES :: ', (array)$this->response);
                     Log::debug('RESP3 :: ', (array)$status);
                     //print_r($price); print_r($status);exit;
 
@@ -373,14 +373,20 @@ class pingyo
                         } catch (Exception $e) {
                             $this->response['redirect_url'] = $status->redirectionurl;
                         }
-                        $this->response['post_time'] = $appResponse['post_time'];
-                    } else {
+                        $this->response['post_time'] = $appResponse->post_time;
+                    }
+                    elseif($status->status == 'ConditionalLenderMatchFound') {
+                        $this->response['accept'] = 'ACCEPTED';
+                        $this->response['post_status'] = '0';
+                        $this->response['post_price'] = '0';
+                        $this->response['post_time'] = $appResponse->post_time;
+                    }
+                    elseif($status->status == 'NoLenderMatchFound') {
                         $this->response['accept'] = 'REJECTED';
                         $this->response['post_status'] = '0';
                         $this->response['post_price'] = '0';
                         $this->response['post_time'] = $appResponse->post_time;
                     }
-                    //print_r($this->response);exit;
                     return $this->response;
                 } else {
                     $this->response['accept'] = 'Validation Failed';
