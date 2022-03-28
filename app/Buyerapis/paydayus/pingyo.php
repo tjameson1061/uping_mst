@@ -407,6 +407,7 @@ class pingyo
     public function returnresponse()
     {
         $appResponse = $this->response['application_response'];
+        $appResponse = $appResponse->object();
         Log::debug('APP RESP::', (array)$appResponse);
 
 
