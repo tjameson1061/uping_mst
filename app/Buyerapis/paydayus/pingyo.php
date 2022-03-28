@@ -312,9 +312,13 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = Http::post( $this->response['post_url'], $lead);
-            $application_status = $application_status->object();
-            Log::debug('STATUS::', (array)$application_status);
+            try {
+                $application_status = Http::post( $this->response['post_url'], $lead);
+                $application_status = $application_status->object();
+                Log::debug('STATUS::', (array)$application_status);
+            } catch (Exception $e) {
+                Log::debug($e);
+            }
 
 //            if($application_status)
 
@@ -333,17 +337,15 @@ class pingyo
                 $appResponse = $this->response['application_response'];
                 Log::debug('APP RESP::', (array)$appResponse);
 
-                $resp_data = json_decode($appResponse);
-                Log::debug('DEBUG::', (array)$resp_data);
 
-                Log::debug('APP RESP::', (array)$resp_data->CorrelationId);
-                $CorrelationId = $resp_data->CorrelationId;
+                Log::debug('APP RESP::', (array)$appResponse->CorrelationId);
+                $CorrelationId = $appResponse->CorrelationId;
                 $appResponse['correlationid'] = $CorrelationId;
 
 
                 $this->response['validated'] = true;
                 if ($this->response['validated'] === true) {
-                    $status = new PingYo\Status('202', null, $appResponse['correlationid'], null);
+                    $status = new PingYo\Status('202', null, $appResponse->correlationid, null);
                     Log::debug('RESP STATUS::', (array)$status);
 
                     $counter = 0;
