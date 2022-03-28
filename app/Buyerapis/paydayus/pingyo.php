@@ -384,7 +384,7 @@ class pingyo
 //        $validation_result = true;
         if ($validation_result == true) {
 
-            $application =  json_decode(json_encode($application), true);
+//            $application =  json_decode(json_encode($application), true);
             Log::debug('STATUS::', (array)$application);
 
 
