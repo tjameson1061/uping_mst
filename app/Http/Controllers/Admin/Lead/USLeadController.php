@@ -291,7 +291,7 @@ class USLeadController extends Controller
         $data->Applicant->dateOfBirthYear = $this->toString($post->applicant->dateOfBirthYear ?? '');
         $data->Applicant->email = $this->toString($post->applicant->email ?? '');
         $data->Applicant->gender = $this->toString($post->applicant->gender ?? '');
-        $data->Applicant->mobilePhoneNumber = $this->toString($post->applicant->mobilePhoneNumber ?? '');
+        $data->Applicant->cellPhoneNumber = $this->toString($post->applicant->cellPhoneNumber ?? '');
         $data->Applicant->homePhoneNumber = $this->toString($post->applicant->homePhoneNumber ?? '');
         $data->Applicant->workPhoneNumber = $this->toString($post->applicant->workPhoneNumber ?? '');
         $data->Applicant->maritalStatus = $this->toString($post->applicant->maritalStatus ?? '');
@@ -312,7 +312,7 @@ class USLeadController extends Controller
         $data->Residence->addressStreet1 = $this->toString($post->residence->addressStreet1 ?? '');
         $data->Residence->addressStreet2 = $this->toString($post->residence->addressStreet2 ?? '');
         $data->Residence->city = $this->toString($post->residence->city ?? '');
-        $data->Residence->county = $this->toString($post->residence->county ?? '');
+        $data->Residence->state = $this->toString($post->residence->state ?? '');
         $data->Residence->zip = $this->toString($post->residence->zip ?? '');
         $data->Residence->residentialStatus = $this->toString($post->residence->residentialStatus ?? '');
         $data->Residence->monthsAtAddress = $this->toString($post->residence->monthsAtAddress ?? '');
