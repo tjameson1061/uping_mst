@@ -89,6 +89,7 @@ class Application
         if ($r === true) {
             return true;
         } else {
+            Log::debug('PingYo, INVALID Application');
             return false;
         }
     }
@@ -111,10 +112,10 @@ class Application
 
 //            $this->connection_status = $info;
             return new Status($output->status(), $output, null, $this->logger);
-        } else {
-            Log::debug('PingYo, INVALID Application');
-            return false;
-        }
+//        } else {
+//            Log::debug('PingYo, INVALID Application');
+//            return false;
+//        }
     }
 
     public function validate($full_validation = true)
