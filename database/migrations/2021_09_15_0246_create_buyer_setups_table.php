@@ -31,6 +31,8 @@ class CreateBuyerSetupsTable extends Migration
                 $table->char('post_url_test', 255)->nullable();
                 $table->char('ping_url_live', 255);
                 $table->char('post_url_live', 255)->nullable();
+                $table->float('min_price')->nullable();
+                $table->float('max_price')->nullable();
                 $table->integer('timeout')->nullable();
                 $table->tinyInteger('mode')->default(2)->comment('2=test, 1=live');
                 $table->tinyInteger('status')->default(1)->comment('inactive=2, active=1');

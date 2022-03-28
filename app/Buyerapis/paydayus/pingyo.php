@@ -297,8 +297,8 @@ class pingyo
                 "MilitaryService" => (int) $post->Applicant->inMilitary,
 
                 "ConsentToMarketingEmails" => (boolean) $post->Consent->consentThirdPartyEmails,
-                "MinimumCommissionAmount" => (float) $client_detail->min_price,
-                "MaximumCommissionAmount" => (float) $client_detail->max_price,
+//                "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
+//                "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
             )
         );
 
@@ -311,15 +311,12 @@ class pingyo
         $validation_result = true;
         if ($validation_result == true) {
 
-            dd($this->response['post_data']);
             $application_status = Http::post( $this->response['post_url'], $this->response['post_data'] );
             $application_status = $application_status->object();
-            dd($application_status);
 
 
 
             $this->response['application_response'] = $application_status;
-            dd($this->response['application_response']);
 
         } else {
             $this->response['application_response'] = $validation_result;
