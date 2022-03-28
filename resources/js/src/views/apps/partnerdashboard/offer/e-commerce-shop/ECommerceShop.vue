@@ -117,13 +117,13 @@
         <b-card-body>
           <div class="item-wrapper">
             <div>
-              <h6 class="item-price" v-if="offer.id == 1 || offer.id == 2">
+              <h6 class="item-price" v-if="offer.payout.payout_amount == 'CPS'">
                 {{ offer.payout.payout_amount }} %
               </h6>
-              <h6 class="item-price" v-else-if="offer.id == 3 || offer.id == 4">
+              <h6 class="item-price" v-else-if="offer.payout.payout_amount == 'CPA'">
                ${{ offer.payout.payout_amount }}
               </h6>
-              <h6 class="item-price" v-else-if="offer.id == 5 || offer.id == 6">
+              <h6 class="item-price" v-else-if="offer.payout.payout_amount == 'CPL'">
                 £{{ offer.payout.payout_amount }}
               </h6>
             </div>
