@@ -304,7 +304,10 @@ class PostbackTrackerController extends Controller
     public function postback(Request $request)
     {
 
-
+        if ($request->amount == '0.00') {
+            echo '{amount} Required';
+            die();
+        }
 
         Log::debug('POSTBACK RECEIVED:::', (array)$request->input());
         Log::debug('OFFER ID:::', (array)$request->offer_id);
