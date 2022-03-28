@@ -102,7 +102,7 @@ class Application
 //            $server_output = $output->object();
 
             Log::debug('POST::', (array) $application);
-            Log::debug('PingYo::', (array) $output->object());
+//            Log::debug('PingYo::', (array) $output->object());
 
                 Log::info("got response with code " . $output->status() . ': ' . $output);
 
