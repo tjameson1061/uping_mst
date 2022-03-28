@@ -35,7 +35,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 //    public $timeout = 3600;
 
-    var string $leadtype = 2;
+    private $leadtype = 2;
 //    public $tries = 3;
     private $post;
     private $inputs;
