@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Buyer\BuyerFilterUS;
+use App\Models\Buyer\BuyerRotation;
 use App\Models\Buyer\BuyerSetup;
 use App\Models\CheckStatus\CheckStatusLogger;
 use App\Http\Controllers\Admin\Lead\LeadTestController;
@@ -10,8 +11,10 @@ use App\Http\Controllers\Partner\ReferralController;
 use App\Models\Buyer\BuyerFilter;
 //use App\Models\Buyer\Rotation;
 use App\Models\Lead\USLead;
+use App\Models\Mapping\Mapping;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
+use App\Models\PingtreeTracker\PingtreeTracker;
 use App\Models\User;
 use App\Models\User\Referral;
 use Exception;
@@ -33,7 +36,7 @@ class PostLeadToBuyersUS implements ShouldQueue
 
 //    public $timeout = 3600;
 
-    var string $leadtype = 'paydayus';
+    var string $leadtype = 2;
 //    public $tries = 3;
     private $post;
     private $inputs;
@@ -90,7 +93,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             $offer_detail = Offer::get($inputs['oid']);
             Log::debug('OFFER::', (array) $offer_detail);
 
-            if ($buyer_response['leadStatus'] === "1") {
+            if ($buyer_response['leadStatus'] == "1") {
                 $response = array(
                     'status' => 1,
                     'price' => $buyer_response['price'],
@@ -494,12 +497,10 @@ class PostLeadToBuyersUS implements ShouldQueue
                 ->where('model_type', '=', 5)
                 ->count();
 
-//            dd($lead_count_today);
             // Get Sample EPL from each Tree
             if ($lead_count_today < 50) {
 
                 $res = $this->GetBuyerRotate($row, $buyer_list['row'], 'lead_post');
-//                    dd($res);
                 return $res;
 
             } else {
@@ -524,7 +525,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         $search = (object)[];
                         $search->tier_id = $buyer->buyersetup_id;
 
-                        $row = Pubbuyermapping::GetSingleBuyer($search);
+                        $row = Mapping::GetSingleBuyer($search);
 
                         return (object)$row;
                     }
@@ -593,7 +594,7 @@ class PostLeadToBuyersUS implements ShouldQueue
     public function buyer_rotate($row)
     {
         Log::debug('buyer Rotate::,' , (array) $row);
-        $buyer_rotate = BuyerRotation::where('buyersetup_id', '=', $row->buyersetup_id)->first();
+        $buyer_rotate = BuyerRotation::where('buyer_setup_id', '=', $row->buyer_setup_id)->first();
 
         return $buyer_rotate;
 
@@ -690,7 +691,7 @@ class PostLeadToBuyersUS implements ShouldQueue
      * @param string $type
      * @return mixed|object
      */
-    public function GetBuyerObject($row, string $type = 'lead_post')
+    public function GetBuyerObject($row, string $type = null)
     {
         if ($row->post_url_live == 'random') {
             $buyerIndex = $row->parameter3;
@@ -721,7 +722,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             $search['buyerid'] = $buyer->buyerid;
             $search['setupid'] = $buyer->setupid;
 
-            $v = Pubbuyermapping::GetSingleBuyer($search);
+            $v = Mapping::GetSingleBuyer($search);
             $row = (object)$v[0];
         }
 

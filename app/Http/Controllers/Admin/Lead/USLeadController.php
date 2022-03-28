@@ -130,7 +130,6 @@ class USLeadController extends Controller
     {
 
 
-//        dd($request->input());
 //        $ip = $request->ip();
 //        $userAgent = $request->server('HTTP_USER_AGENT');
 
@@ -146,11 +145,7 @@ class USLeadController extends Controller
             $post->oid = 1;
         }
 
-//        $startTime = explode(' ', microtime());
-//        $startTime = $startTime[1] + $startTime[0];
-
         // Retrieve Partner Account Status if VID present.
-//        dd($post);
         $this->partner_detail = Partner::GetPartnerFullDetail($post->vid, $this->leadtype);
         Log::debug('Partner_vendor::', (array)$this->partner_detail);
         if ($this->partner_detail === null) {
@@ -178,7 +173,6 @@ class USLeadController extends Controller
         $partner_log = USLead::add_log_partner($data);
         $partnerlogid = $partner_log->id;
 
-//        dd($post);
 
         // Get Generated Lead ID and log it to Telescope
         $post->lead_id = DB::table('us_leads')->latest()->first()->id;
@@ -187,8 +181,7 @@ class USLeadController extends Controller
 
 
 
-        //       **** IPQualityScore - Fraud Scoring ****
-
+//       **** IPQualityScore - Fraud Scoring ****
 //        // Email Validation
 //        $email = $post->email;
 //        $response = $this->ipqs_email($email);
@@ -202,11 +195,10 @@ class USLeadController extends Controller
         if (isset($post->response_type)) {
             $response_type = $post->response_type;
         } else {
-            $response_type = 'xml';
+            $response_type = 'json';
         }
 
         // Status Check Code
-//        dd($post);
         $inputs = $post;
         $status_check = new CheckStatus();
         $status_check->lead_id = $post->uuid;
@@ -219,9 +211,6 @@ class USLeadController extends Controller
         $post = $post->toArray();
         $inputs = $inputs->toArray();
         $partner_detail = $this->partner_detail;
-//        $partnerlogid;
-//        $data = $data;
-//        $status_check = $status_check->toArray();
 
         PostLeadToBuyersUS::dispatch( $post, $inputs, $partner_detail, $partnerlogid, $data, $status_check);
         $resp = $this->curl_response_status($status_check, $response_type);
