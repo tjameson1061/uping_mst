@@ -235,8 +235,8 @@ class pingyo
         }
 
 
-        Log::debug('POST::', (array)$post->Loan->LoanAmount);
-//        dd($post->Loan->LoanAmount);
+        Log::debug('POST::', (array)$post->loan);
+        dd($post->loan);
         // POST DATA
         $lead = array(
             "AffiliateId" => (string) "TOMJ-USA",
@@ -331,9 +331,9 @@ class pingyo
     public function returnresponse()
             {
                 $appResponse = $this->response['application_response'];
-                Log::debug('APP RESP::', (array)$appResponse['res']);
+                Log::debug('APP RESP::', (array)$appResponse);
 
-                $resp_data = json_decode($appResponse['res']);
+                $resp_data = json_decode($appResponse);
                 Log::debug('DEBUG::', (array)$resp_data);
 
                 Log::debug('APP RESP::', (array)$resp_data->CorrelationId);
