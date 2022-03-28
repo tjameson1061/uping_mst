@@ -39,8 +39,8 @@ export default class JwtService {
         error => {
           console.log(error.response.status)
           debugger
-          const { config, response: { status } } = error
-          // const { config, response } = error
+          // const { config, response: { status } } = error
+          const { config, response } = error
           const originalRequest = config
 
           // if (error.response.status === 401) {
