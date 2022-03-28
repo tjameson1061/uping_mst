@@ -113,7 +113,12 @@
           <template #cell(totalCost)="data">
               <b-media vertical-align="center">
 
-                      {{ data.item.totalCost }}
+                  <small class=text-success" v-if="data.item.offer_id == 2 || data.item.offer_id == 3 || data.item.offer_id == 4">
+                     $ {{ data.item.totalCost }}
+                  </small>
+                  <small class=text-success" v-if="data.item.offer_id == 1 || data.item.offer_id == 4 || data.item.offer_id == 5">
+                      £ {{ data.item.totalCost }}
+                  </small>
               </b-media>
           </template>
 

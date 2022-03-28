@@ -235,7 +235,6 @@ class pingyo
         }
 
 
-        dd($post);
         // POST DATA
         $lead = array(
             "AffiliateId" => (string) "TOMJ-USA",
