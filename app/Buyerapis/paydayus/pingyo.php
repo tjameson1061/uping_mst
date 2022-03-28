@@ -235,7 +235,7 @@ class pingyo
         }
 
         Log::debug('POST::', (array) $post);
-        dd($post->Residence);
+//        dd($post->Residence);
 
         // POST DATA
         $lead = array(
