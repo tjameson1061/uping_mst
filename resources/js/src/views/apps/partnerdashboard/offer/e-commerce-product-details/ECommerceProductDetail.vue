@@ -106,12 +106,15 @@
                                 <b-badge variant="light-primary">
                                     <!--                <feather-icon icon="StarIcon" />-->
 
-                                    CPL
+                                    {{offer.conversion_type}}
                                 </b-badge>
                                 <b-badge variant="light-primary">
                                     Finance
                                 </b-badge>
-                                <b-badge variant="light-primary">
+                                <b-badge variant="light-primary" v-if="offer.id == 2 || offer.id == 3 || offer.id == 4 ">
+                                    USA
+                                </b-badge>
+                                <b-badge variant="light-primary" v-else-if="offer.id == 1 || offer.id == 5 || offer.id == 6 ">
                                     UK
                                 </b-badge>
                             </b-card-text>
