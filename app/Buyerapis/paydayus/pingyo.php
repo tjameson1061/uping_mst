@@ -381,11 +381,11 @@ class pingyo
 
         $validation_result = (new Application)->pre_validate($application);
 
-//        $validation_result = true;
         if ($validation_result == true) {
 
-//            $application =  json_decode(json_encode($application), true);
+            $application[] =  json_decode(json_encode($application), true);
             Log::debug('STATUS::', (array)$application);
+            dd($application);
 
 
                 $application_status = (new Application)->send($application);

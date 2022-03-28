@@ -97,11 +97,8 @@ class Application
     public function send($application)
     {
             Log::debug('PRE_POST::', (array) $application);
-//            dd($application);
 
-
-
-            $output = Http::post("https://leads.pingyo.co.uk/application/submit", (array)$application);
+            $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
 //            $server_output = $output->object();
 
             Log::debug('POST::', (array) $application);
@@ -111,10 +108,6 @@ class Application
 
 //            $this->connection_status = $info;
             return new Status($output->status(), $output, null, $this->logger);
-//        } else {
-//            Log::debug('PingYo, INVALID Application');
-//            return false;
-//        }
     }
 
     public function validate($full_validation = true)
