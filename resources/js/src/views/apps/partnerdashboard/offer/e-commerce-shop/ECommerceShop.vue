@@ -95,35 +95,21 @@
         <div class="item-img text-center">
           <b-link :to="{ name: 'apps-admin-offers-details', params: { id: offer.id } }">
             <b-img
-                    v-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6 && skin == 'light'"
+                    v-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6"
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-1"
                     :src="require('@/assets/images/offer_logo/loanie-logo.png')"
             />
             <b-img
-                    v-else-if="offer.id == 1 || offer.id == 5 ||  offer.id == 6 && skin == 'dark'"
-                    :alt="`${offer.name}-${offer.id}`"
-                    fluid
-                    class="card-img-top p-1"
-                    :src="require('@/assets/images/offer_logo/loanie-logo-white.png')"
-            />
-            <b-img
-                    v-else-if="offer.id == 2 || offer.id == 3 ||  offer.id == 4 && skin == 'light'"
+                    v-else-if="offer.id == 2 || offer.id == 3 ||  offer.id == 4"
                     :alt="`${offer.name}-${offer.id}`"
                     fluid
                     class="card-img-top p-3"
                     :src="require('@/assets/images/offer_logo/magic-lend.png')"
 
             />
-            <b-img
-                    v-else-if="offer.id == 2 || offer.id == 3 ||  offer.id == 4 && skin == 'dark'"
-                    :alt="`${offer.name}-${offer.id}`"
-                    fluid
-                    class="card-img-top p-3"
-                    :src="require('@/assets/images/offer_logo/magic-lend-logo-white.png')"
 
-            />
           </b-link>
         </div>
 
@@ -131,14 +117,14 @@
         <b-card-body>
           <div class="item-wrapper">
             <div>
-              <h6 class="item-price" v-if="offer.payout.payoutType == 'CPS'">
+              <h6 class="item-price" v-if="offer.id == 1 || offer.id == 2">
                 {{ offer.payout.payout_amount }} %
               </h6>
               <h6 class="item-price" v-else-if="offer.id == 3 || offer.id == 4">
                ${{ offer.payout.payout_amount }}
               </h6>
               <h6 class="item-price" v-else-if="offer.id == 5 || offer.id == 6">
-                ${{ offer.payout.payout_amount }}
+                £{{ offer.payout.payout_amount }}
               </h6>
             </div>
           </div>
