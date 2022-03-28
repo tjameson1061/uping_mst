@@ -182,15 +182,19 @@ class PartReportController extends Controller
     }
     public function getPostbackReports($id)
     {
+        $partners = Partner::where('user_id', $id)->select('id')->toArray();
 
-        $partner = Partner::where('user_id', $id)->first();
+        foreach ($partners as $partner) {
+            $partner_ids[] = $partner->id;
 
-        $reports = PostbackLogs::where('partner_id', $partner->id)
+
+        $reports = PostbackLogs::whereIn('partner_id', $partner_ids)
             ->select('affiliatePostbackUrl', 'conversion', 'totalCost', 'offer_id')
             ->paginate(10);
 
         return Response::json(['reports' => $reports], 200);
 
+        }
 
 
     }
