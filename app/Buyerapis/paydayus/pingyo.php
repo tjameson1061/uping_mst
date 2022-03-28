@@ -313,6 +313,9 @@ class pingyo
 
             $application_status = Http::post( $this->response['post_url'], $this->response['post_data'] );
             $application_status = $application_status->object();
+            Log::debug('STATUS::', (array)$application_status);
+
+//            if($application_status)
 
 
 
