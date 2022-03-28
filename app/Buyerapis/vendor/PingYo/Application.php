@@ -95,7 +95,7 @@ class Application
 
     public function send($application)
     {
-            $application = $application->toArray();
+//            $application = $application->toArray();
             Log::debug('PRE_POST::', (array) $application);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
@@ -170,9 +170,8 @@ class Application
 
     public function toArray()
     {
-        if (!is_null($this->logger)) {
-            Log::debug("Application::toArray() called");
-        }
+        Log::debug("Application::toArray() called");
+
         $r = $this->validate();
         if ($r === true) {
 //            dd($this->applicationdetails);
