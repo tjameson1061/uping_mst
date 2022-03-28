@@ -263,13 +263,13 @@ class PostbackTrackerController extends Controller
      * @param $postbackUrl
      * @return void
      */
-    public function fire_postback($postbackUrl)
+    public function fire_postback($postbackUrl, $params)
     {
+
         if ($postbackUrl !== null) {
             try {
-                $get_res = Http::post($postbackUrl);
+                $get_res = Http::post($postbackUrl, $params);
                 Log::debug('PB RES::', (array) $get_res);
-//                Log::debug('PB RES::', (array) $get_res->object());
                 Log::debug('PB RES::', (array) $get_res->status());
 
 
@@ -394,9 +394,19 @@ class PostbackTrackerController extends Controller
 //            Log::debug('INTERNAL OFFER::', (array) $internal_offer);
 //            die();
 //        }
+        $params = array(
+            'offer_id' => $data->oid,
+            'partner_id' => $data->vid,
+            'amount' => $data->amount ?? '',
+            'transaction_id' => $data->transaction_id,
+            'aff_sub' => $data->aff_sub ?? '',
+            'aff_sub2' => $data->aff_sub2 ?? '',
+            'aff_sub3' => $data->aff_sub3 ?? '',
+            'aff_sub4' => $data->aff_sub4 ?? '',
+            'aff_sub5' => $data->aff_sub5 ?? ''
+        );
 
-
-        $this->fire_postback($postbackUrl);
+        $this->fire_postback($postbackUrl, $params);
         Log::debug('Postback:: Fired');
 
 
