@@ -84,7 +84,13 @@
         <template #cell(offer_id)="data">
           <b-media vertical-align="center">
 
-              {{ data.item.offer_id }}
+              <b-badge class="badge-light-primary">
+                  <small>
+                      {{ data.item.offer_id }}
+
+                  </small>
+
+              </b-badge>
           </b-media>
         </template>
 
