@@ -71,9 +71,8 @@ class ReportController extends Controller
     public function fetchFilterPostbackData(Request $request)
     {
         $filterData= [];
-        $filterData['vendor_ids'] = Partner::with('postbacks')->groupBy('vendor_id')->whereNotNull('vendor_id')->get(['id', 'vendor_id']);
+        $filterData['vendor_ids'] = Partner::with('postbacks')->groupBy('vendor_id')->whereNotNull('vendor_id')->get(['vendor_id']);
 
-//        dd($filterData);
 
         return Response::json(['filterData' => $filterData], 200);
 

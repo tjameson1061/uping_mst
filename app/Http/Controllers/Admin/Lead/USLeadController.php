@@ -244,7 +244,6 @@ class USLeadController extends Controller
         $data->subid = $this->toString($post->subid);
         $data->oid = $this->toString($post->oid);
         $data->tier = $this->toString($post->tier ?? null);
-//        $data->tier_id = $this->toString($post->tier_id ?? null);
         $data->transaction_id = $this->toString($post->transaction_id ?? null);
 
         if ($post->minCommissionAmount == '') {

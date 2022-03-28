@@ -17,7 +17,7 @@ export default function useReportsList() {
         {key: 'id', label: 'ID', sortable: true},
         {key: 'vid', label: 'AFF ID', sortable: true},
         {key: 'subid', label: 'SUB ID', sortable: true},
-        {key: 'buyer_tier_id', label: 'Tier ID', sortable: true},
+        {key: 'buyerTierID', label: 'Tier ID', sortable: true},
         {key: 'vidLeadPrice', label: 'Price', sortable: true},
         {key: 'buyerLeadPrice', label: 'Buyer Price', sortable: true},
         {key: 'quality_score', label: 'Lead Quality', sortable: true},

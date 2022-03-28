@@ -130,7 +130,7 @@
           </template>
 
 <!--          tier-->
-          <template #cell(buyer_tier_id)="data">
+          <template #cell(buyerTierID)="data">
               <b-media vertical-align="center">
                   <b-link
                       :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
@@ -138,7 +138,7 @@
                   >
                       <b-badge variant="light-primary">
                           <small>
-                              {{ data.item.buyer_tier_id }}
+                              {{ data.item.buyerTierID }}
 
                           </small>
                       </b-badge>
