@@ -89,7 +89,7 @@ class Application
         if ($r === true) {
             Log::debug('PRE_POST::', (array) $application);
 
-            dd('here');
+//            dd('here');
 
             if (!is_null($this->logger)) {
                 Log::info("request sent: " . $application);
