@@ -151,15 +151,7 @@
         <div class="item-options text-center">
           <div class="item-wrapper">
             <div class="item-cost">
-              <h6 class="item-price" v-if="offer.conversion_type == 'CPS'">
-                {{ offer.payout.payout_amount }} %
-              </h6>
-              <h6 class="item-price" v-else-if="offer.conversion_type == 'CPA'">
-                ${{ offer.payout.payout_amount }}
-              </h6>
-              <h6 class="item-price" v-else-if="offer.conversion_type == 'CPA'">
-                ${{ offer.payout.payout_amount }}
-              </h6>
+             <h1>here</h1>
             </div>
           </div>
           <b-button
