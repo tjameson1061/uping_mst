@@ -41,6 +41,10 @@ class USLeadController extends Controller
     var $partner_detail = [];
     var $partner_status = '';
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
         $perPage = $request->input("perPage");
@@ -102,6 +106,12 @@ class USLeadController extends Controller
 
         return Response::json(['leads' => $leads]);
     }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(Request $request, $id)
     {
         $lead = USLead::with([
@@ -539,23 +549,7 @@ class USLeadController extends Controller
         return $unsecure = substr(substr($id, 2), 0, -2);
     }
 
-    /**
-     * This function will check for tiers
-     *
-     * @param $str
-     * @return bool
-     */
-    public function tier_check($str)
-    {
-        if (!array_key_exists($str, config('array.paydayus_tiers'))) {
 
-            echo 'tier_check', 'The %s field value is out of the given list.';
-
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     /**
      * This function calls the IPQS curl post
@@ -611,29 +605,6 @@ class USLeadController extends Controller
         );
     }
 
-    /**
-     *
-     * @param Request $request
-     */
-    public function last_check_status(Request $request)
-    {
-        dd($request);
-
-        $CheckStatusLogger = new CheckStatusLogger;
-        $check_status_id = $request->input('id');
-
-        Log::debug('DEBUG: Check Status ID is numeric: ' . (is_numeric($check_status_id)));
-
-
-        if (is_numeric($check_status_id)) {
-            $CheckStatusLogger->updateStatus($check_status_id,
-                [
-                    'response_affiliate_received_at' => $request->input('response_affiliate_received_at'),
-                    'response_affiliate_issued_at' => $request->input('response_affiliate_issued_at'),
-                    'response_client_received_at' => $request->input('response_client_received_at')
-                ]);
-        }
-    }
 
     /**
      * This function handles the new check status,
@@ -646,7 +617,6 @@ class USLeadController extends Controller
     {
         $status_check = CheckStatus::where('correlationId', '=', $correlationId)->first();
         $lead = USLead::where('uuid', '=', $status_check->lead_id)->first();
-//        $response_type = 'json';
         $response_type = $lead->response_type;
 
         if (isset($response_type) && $response_type === 'xml') {
@@ -670,334 +640,6 @@ class USLeadController extends Controller
             Log::info('DEBUG:: Check Status ID', (array)$correlationId);
         }
         die();
-    }
-
-
-    /*
-     * This function checks the last check status ->  OLD check status
-     *
-     */
-
-    public function CheckStatus(Request $request)
-    {
-        dd($request);
-        $CheckStatusLogger = new CheckStatusLogger;
-        $check_status_id = $request->input('id');
-
-        Log::debug('DEBUG: Check Status ID is numeric: ' . print_r(is_numeric($check_status_id), true));
-
-        if (is_numeric($check_status_id)) {
-            $CheckStatusLogger->updateStatus($check_status_id,
-                [
-                    'response_affiliate_received_at' => $request->input('response_affiliate_received_at'),
-                    'response_affiliate_issued_at' => $request->input('response_affiliate_issued_at'),
-                    'response_client_received_at' => $request->input('response_client_received_at')
-                ]);
-        }
-
-        $leadid = $request->input('leadid');
-        $CheckStatusLogger->lead_id = $leadid;
-        $CheckStatusLogger->country_code = 'uk';
-        $CheckStatusLogger->request = [
-            'client_issued_at' => $request->input('request_client_issued_at'),
-            'affiliate_received_at' => $request->input('request_affiliate_received_at'),
-            'affiliate_issued_at' => $request->input('request_affiliate_issued_at'),
-            'api_received_at' => Carbon::now()->microsecond
-        ];
-
-        Log::debug('DEBUG: CHECK STATUS LEAD ID ' . $leadid);
-
-        // Fetch the status of the lead ID from the DB
-        $res = USLead::CheckStatus($leadid);
-        $post_response = $res[0]->post_response;
-
-        // Get log ID from the DB using lead ID
-        $partnerlogid = USLead::FindPartnerLogId($leadid);
-        $partnerlogid = $partnerlogid[0]->id;
-        $vid = $partnerlogid[0]->vid;
-
-        $buyer = new Buyer;
-        $buyer->$res[0]->buyer_id;
-
-
-        // Call the buyer API
-        $filename = app_path("Buyerapis/" . $this->leadtype . '/' . strtolower($buyer['company']) . ".php");
-
-        if (file_exists($filename)) {
-
-            require_once($filename);
-
-            $classname = strtolower($buyer['company']);
-            $obj = new $classname();
-
-            $lender_response = $obj->CheckStatus($post_response);
-//            dd($lender_response);
-
-
-            // Parse the XML response
-//            dd($res[0])
-            if ($res[0]->buyer_id == 1) {
-                $last_post_response = $post_response . '<br/>' . trim(preg_replace('/\s+/', ' ', $lender_response['post_res']));
-            } elseif ($res[0]->buyer_id = 2) {
-                $last_post_response = $post_response;
-            }
-
-            $datalogo = array(
-                'leadid' => $leadid,
-                'buyersetup_id' => $res[0]->buyersetup_id,
-                'post_url' => $res[0]->post_url,
-                'post_data' => $res[0]->post_data,
-                'post_response' => $last_post_response,
-                'post_price' => $lender_response['post_price'],
-                'post_status' => $lender_response['post_status'],
-            );
-
-            if ($lender_response['percentage'] == 100) {
-                $res_log = (new USLead)->UpdateLog($datalogo);
-            }
-
-            if ($lender_response['accept'] == 'ACCEPTED') {
-                // Lead has been accepted
-                // Calculate price
-                $lender_response['post_price'] = (float)$lender_response['post_price'];
-                $this->partner_detail = Partner::get_callcenter_fulldetail($vid, $this->leadtype);
-
-                $price = $lender_response['post_price'] - (float)($lender_response['post_price'] *
-                        ((float)$this->partner_detail->margin / 100));
-
-
-                // Update lead details in the database
-                $data = array(
-                    'buyerid' => $res[0]->buyerid,
-                    'buyerLeadPrice' => $lender_response['post_price'],
-                    'vidLeadPrice' => $price,
-                    'buyerTierID' => $res[0]->buyersetup_id,
-                    'redirectUrl' => $lender_response['redirect_url'],
-                    'leadStatus' => '1',
-                    'id' => $leadid
-                );
-                $res = (new USLead)->add($data);
-
-
-                // Calculate affiliate margin
-                $this->offer_detail = Offer::get($request->input('oid'));
-                $thresholdAmount = $this->offer_detail['payoutAmount'];
-                $offerid = $this->offer_detail['id'];
-
-                // Separate threshold amount for VID 87 and OID.
-                $postback_method = 'http';
-                $iframe_url = '';
-                if ($vid == 87 && $offerid == 7) {
-                    $thresholdAmount = 10;
-                } else if ($vid == 69 && $offerid == 7) {
-                    $thresholdAmount = 20;
-                } else if ($vid == 122 && $offerid == 7) {
-                    $thresholdAmount = 11;
-                } else if ($vid == 108 && $offerid == 2) {
-                    $postback_method = 'iframe';
-                    $tracking_details = Offer::GetPostback([
-                        'transaction_id' => $request->input('transaction_id')]);
-                }
-
-
-                $response = array(
-                    'status' => $data['leadStatus'],
-                    'price' => $data['vidLeadPrice'],
-                    'leadid' => $data['id'],
-                    'LenderFound' => $lender_response['status']
-                );
-
-                if ($thresholdAmount > 0 && ($offerid == 5 || $offerid == 7)) {
-                    if ($offerid == 5) {
-                        $accumulatorAmount = (float)$this->partner_detail->accuCPAuk65;
-                    } elseif ($offerid == 7) {
-                        $accumulatorAmount = (float)$this->partner_detail->accuCPLuk9;
-                    }
-
-                    $accumulatorAmount = ($accumulatorAmount) + ($response['price']);
-                    $response['ThresholdAmount'] = $thresholdAmount;
-
-                    if ($accumulatorAmount >= $thresholdAmount) {
-                        $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
-                        $response['Threshold'] = 'true';
-                    } else {
-                        $response['Threshold'] = 'false';
-                    }
-                    if ($offerid == 5) {
-                        $lead_data = array(
-                            'id' => $this->partner_detail->id,
-                            'accuCPAuk65' => $accumulatorAmount
-                        );
-                    } elseif ($offerid == 7) {
-                        $lead_data = array(
-                            'id' => $this->partner_detail->id,
-                            'accuCPLuk9' => $accumulatorAmount
-                        );
-                    }
-
-
-                    // Update affiliate earnings
-//                    Lmscallcenter::AddLeadType($lead_data);
-
-
-                    // Rev-share
-                } elseif ($offerid == 2) {
-                    $response['Threshold'] = 'true';
-                    $response['ThresholdAmount'] = $price;
-                }
-                if ($this->partner_detail->currencyType != 1) {
-                    $rate = USLead::GetDailyRate();
-                    $response['price'] = $data['vidLeadPrice'] * $rate['usd'];
-                }
-
-
-                // Prepare response
-                $CheckStatusLogger->response['api_issued_at'] = Carbon::now()->microsecond;
-                $CheckStatusLogger->response['progress_percentage'] = $lender_response['status'];
-
-                $response['check_status_id'] = $CheckStatusLogger->add();
-                $response['postback_method'] = $postback_method;
-                $response['iframe_url'] = $iframe_url;
-
-                $post_response = $this->curl_response_post($response, $response_type = 'json' );
-
-
-                $data_pub = array(
-                    'id' => $partnerlogid,
-                    'leadid' => $leadid,
-                    'post_response' => $post_response,
-                    'post_status' => $response['status']
-                );
-
-                // Update the partners log with this response
-                $res_pub = USLead::add_log_partner($data_pub);
-
-                Log::debug('DEBUG: CHECK STATUS LEAD ID ' . $leadid . ': Final response: ' . print_r($post_response, true));
-
-                print_r($post_response);
-                die;
-
-            } else {
-                // Lead is not accepted
-                // Prepare a response
-                $response = array(
-                    'status' => 2,
-                    'PercentageComplete' => $lender_response['percentage'],
-                    'Descriptions' => $lender_response['percentage'],
-                    'LenderFound' => $lender_response['status']
-                );
-
-
-                $CheckStatusLogger->response['api_issued_at'] = Carbon::now()->microsecond;
-                $CheckStatusLogger->response['progress_percentage'] = $lender_response['percentage'];
-                $response['check_status_id'] = $CheckStatusLogger->add();
-
-
-                $post_response = $this->curl_response_post($response,  $response_type = 'json');
-
-                Log::debug('DEBUG: CHECK STATUS LEAD ID ' . $leadid . ': Final response: ' . print_r($post_response, true));
-
-
-                print_r($post_response);
-                die;
-            }
-        }
-    }
-
-    /**
-     * Return Curl Response in XML | JSON
-     * @param $client_response
-     * @param $response_type
-     * @return false|string
-     */
-    function curl_response_post($client_response, $response_type)
-    {
-        if (isset($response_type) && $response_type === 'xml') {
-            header("Content-type: text/xml; charset=utf-8");
-            $res = '<?xml version="1.0"?>';
-            $res .= '<PostResponse>';
-
-            if (isset($client_response['status']) && $client_response['status'] === 1) {
-                $res .= '<Response>LenderFound</Response>';
-
-            } elseif (isset($client_response['status']) && $client_response['status'] === 3) {
-                $res .= '<Response>ConditionalLenderFound</Response>';
-            } else {
-                $res .= '<Response>NoLenderFound</Response>';
-            }
-            $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '';
-            $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '';
-            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['lead_id'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
-            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) . '</RedirectURL>' : '';
-            $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
-            if ($client_response['status'] && $client_response['ModelType'] === '1') {
-                $res .= '<ModelType>CPS</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '2') {
-                $res .= '<ModelType>CPA</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '3') {
-                $res .= '<ModelType>CPL</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '4') {
-                $res .= '<ModelType>CPF</ModelType>';
-            } else {
-                $res .= '<ModelType>Pingtree</ModelType>';
-            }
-            $res .= ($client_response['status'] == '2') ? '<Descriptions>' . $client_response['Descriptions'] . '</Descriptions>' : '';
-            $res .= isset($client_response['errors']) ? '<Errors>' . $client_response['errors'] . '</Errors>' : '';
-            $res .= '</PostResponse>';
-            return $res;
-        } else {
-            header("Content-type: application/json; charset=utf-8");
-            $response = array();
-            $response[0] = array(
-                'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
-                'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '',
-                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) : '',
-                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['lead_id'] : '',
-//                'CheckStatusID' => $client_response['check_status_id'] ?? '',
-//                'PostbackMethod' => $client_response['postback_method'] ?? '',
-//                'IframeURL' => $client_response['iframe_url'] ?? '',
-            );
-            if ($client_response['status'] && $client_response['ModelType'] === '1') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPS']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '2') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPA']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '3') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPL']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === '3') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPF']);
-            } else {
-                $response[0] = array_merge($response[0], ['ModelType' => 'Pingtree']);
-            }
-
-            if ($client_response['status'] == '1' && (!empty($client_response['CheckStatusID']))) {
-                $response[0] = array_merge($response[0], ['CheckStatusID' => $client_response['CheckStatusID']]);
-            }
-            if ($client_response['status'] == '1' && !empty($client_response['Threshold'])) {
-                $response[0] = array_merge($response[0], ['Threshold' => $client_response['Threshold']]);
-            }
-            if (isset($client_response['Descriptions']) && !empty($client_response['Descriptions'])) {
-                $response[0] = array_merge($response[0], ['Descriptions' => $client_response['Descriptions']]);
-            }
-            if (isset($client_response['Errors']) && !empty($client_response['Errors'])) {
-                $response[0] = array_merge($response[0], ['Errors' => $client_response['Errors']]);
-            }
-            if (isset($client_response['CheckStatus']) && !empty($client_response['CheckStatus'])) {
-                $response[0] = array_merge($response[0], ['CheckStatus' => $client_response['CheckStatus']]);
-            }
-            return json_encode($response);
-        }
-    }
-
-
-    /**
-     * @param $id
-     * @return string
-     */
-    public function redirecturl_encrypt($id)
-    {
-
-        $secure = rand(10, 99) . $id . rand(10, 99);
-//        return
     }
 
 
@@ -1038,6 +680,12 @@ class USLeadController extends Controller
             abort(403, 'Not Authorized');
         }
     }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUsLeadLog(Request $request, $id)
     {
 

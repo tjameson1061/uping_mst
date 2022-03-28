@@ -111,43 +111,49 @@ class PostLeadToBuyersUS implements ShouldQueue
                     );
             }
 
-            $thresholdAmount = $offer_detail['payout']['payoutAmount'];
             $offer_id = $offer_detail['id'];
 
-            $internal_offers= [3,4];
+            $internal_offers = [3,4];
 
-            if ($thresholdAmount > 0 && in_array($offer_id, $internal_offers)) {
-                if ($offer_id == 3) {
-                    $accumulatorAmount = 0 + $this->partner_detail->accuCPLus20;
-                } elseif ($offer_id == 4) {
-                    $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
-                }
-                $accumulatorAmount = $accumulatorAmount + $response['price'];
+            if ($offer_id == 3 || $offer_id == 4) {
 
                 $thresholdAmount = $offer_detail['payout']['revenueAmount'];
-                Log::debug('THRESHOLD::', (array)$thresholdAmount);
 
-                if ($accumulatorAmount >= $thresholdAmount) {
-                    $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
-                    $buyer_response['Threshold'] = 'true';
-                } else {
-                    $buyer_response['Threshold'] = 'false';
+                if ($thresholdAmount > 0) {
+                    if ($offer_id == 3) {
+                        $accumulatorAmount = 0 + $this->partner_detail->accuCPLus20;
+                    } elseif ($offer_id == 4) {
+                        $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
+                    }
+                    $accumulatorAmount = $accumulatorAmount + $response['price'];
+
+                    Log::debug('THRESHOLD::', (array)$thresholdAmount);
+
+                    if ($accumulatorAmount >= $thresholdAmount) {
+                        $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
+                        $response['Threshold'] = 'true';
+                    } else {
+                        $response['Threshold'] = 'false';
+                    }
+
+                    if ($offer_id == 4) {
+                        $lead_data = array(
+                            'id' => $this->partner_detail->id,
+                            'accuCPAus100' => $accumulatorAmount
+                        );
+                    } elseif ($offer_id == 3) {
+                        $lead_data = array(
+                            'id' => $this->partner_detail->id,
+                            'accuCPLus20' => $accumulatorAmount
+                        );
+                    }
+
+                    $response_lead_data = Partner::AddLeadType($lead_data);
+
                 }
-                if ($offer_id == 4) {
-                    $lead_data = array(
-                        'id' => $this->partner_detail->id,
-                        'accuCPAus100' => $accumulatorAmount
-                    );
-                } elseif ($offer_id == 3) {
-                    $lead_data = array(
-                        'id' => $this->partner_detail->id,
-                        'accuCPLus20' => $accumulatorAmount
-                    );
-                }
-
-                $response_lead_data = Partner::AddLeadType($lead_data);
-
             }
+
+
 
             if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
                 $rate = USLead::GetDailyRate();
