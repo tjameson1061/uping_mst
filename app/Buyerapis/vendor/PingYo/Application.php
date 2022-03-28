@@ -89,13 +89,9 @@ class Application
         if ($r === true) {
             Log::debug('PRE_POST::', (array) $application);
 
-//            dd('here');
             $application = $application->toArray();
-
-
-            if (!is_null($this->logger)) {
-                Log::info("application sent: " . $application);
-            }
+            Log::info("application sent: " . $application);
+            dd('here');
 
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
