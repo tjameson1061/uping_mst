@@ -235,7 +235,7 @@ class pingyo
         }
 
         Log::debug('POST::', (array) $post->Applicant);
-        dd($post->Applicant);
+//        dd($post->Applicant);
 
         // POST DATA
         $lead = array(
