@@ -107,31 +107,13 @@ class PartReportController extends Controller
     public function getOfferReports(Request $request, $id)
     {
 
-        $perPage = $request->input("perPage");
-        $aff_sub = $request->input("aff_sub");
-        $q = $request->input("q");
-
-
-
-        $wherelist = array();
-        if ($aff_sub != null) {
-            $wherelist[] = ['vid', '=', $aff_sub];
-        }
-
-        if ($q != null) {
-            $wherelist[] = ['', 'like',  '%' . $q .'%'];
-        }
-
-        $partners = Partner::where('user_id', '=', $id)->get();
+        $partners = Partner::where('user_id', $id)->select('id')->get();
 
         foreach ($partners as $partner) {
             $partner_ids[] = $partner->id;
         }
 
-
-//        dd($partner->id);
-
-        $reports = ClickTracker::whereIn('aff_id', $partner_ids)
+        $reports = ClickTracker::whereIn('partner_id', $partner_ids)
             ->select(
                 'offer_id',
                 'aff_click_id',
@@ -139,13 +121,12 @@ class PartReportController extends Controller
                 'aff_sub2',
                 'aff_sub3',
                 'aff_sub4',
-                'aff_sub5'
-            )
-            ->where($wherelist)
+                'aff_sub5')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return Response::json(['reports' => $reports], 200);
+
 
 
     }
@@ -169,7 +150,7 @@ class PartReportController extends Controller
         }
 
         $reports = PostbackLogs::whereIn('partner_id', $partner_ids)
-            ->select('affiliatePostbackUrl', 'conversion', 'totalCost', 'offer_id')
+            ->select('transaction_id', 'conversion', 'totalCost', 'offer_id')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
