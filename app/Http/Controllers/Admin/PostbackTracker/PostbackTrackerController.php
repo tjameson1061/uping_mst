@@ -270,6 +270,7 @@ class PostbackTrackerController extends Controller
                 $get_res = Http::post($postbackUrl);
                 Log::debug('PB RES::', (array) $get_res);
                 Log::debug('PB RES::', (array) $get_res->object());
+                Log::debug('PB RES::', (array) $get_res->status());
 
 
                 if ($get_res->status() == 200) {
