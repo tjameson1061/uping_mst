@@ -100,7 +100,7 @@ class Application
 
 
 
-            $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
+            $output = Http::post("https://leads.pingyo.co.uk/application/submit", [$application]);
 //            $server_output = $output->object();
 
             Log::debug('POST::', (array) $application);
