@@ -235,8 +235,8 @@ class pingyo
         }
 
 
-        Log::debug('POST::', (array)$post);
-        dd($post);
+        Log::debug('POST::', (array)$post->Loan->LoanAmount);
+//        dd($post->Loan->LoanAmount);
         // POST DATA
         $lead = array(
             "AffiliateId" => (string) "TOMJ-USA",
@@ -306,14 +306,13 @@ class pingyo
 
 
 
-        $this->response['post_data'] = $lead;
         $this->response['timeout'] = $client_detail->timeout;
         $this->response['post_url'] = ($client_detail->status == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
 
         $validation_result = true;
         if ($validation_result == true) {
 
-            $application_status = Http::post( $this->response['post_url'], $this->response['post_data'] );
+            $application_status = Http::post( $this->response['post_url'], $lead);
             $application_status = $application_status->object();
             Log::debug('STATUS::', (array)$application_status);
 
