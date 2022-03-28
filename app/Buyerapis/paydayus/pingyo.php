@@ -235,8 +235,6 @@ class pingyo
         }
 
 
-        Log::debug('POST::', (array)$post->Loan);
-        dd($post->Loan);
         // POST DATA
         $lead = array(
             "AffiliateId" => (string) "TOMJ-USA",
@@ -272,8 +270,8 @@ class pingyo
                 "NextPayDate" => (string) $nextPayDate,
                 "FollowingPayDate" => (string) $followingPayDate,
 
-                "LoanAmount" => (int) $post->Loan->LoanAmount,
-                "Term" => (int) $post->Loan->LoanTerms,
+                "LoanAmount" => (int) $post->Loan->loanAmount,
+                "Term" => (int) $post->Loan->loanTerms,
                 "ResidentialStatus" => (int) $post->Residence->residentialStatus,
                 "HouseNumber" => (string) $post->Residence->houseNumber,
                 "HouseName" =>  (string) $post->Residence->houseName,
@@ -283,10 +281,10 @@ class pingyo
                 "AddressMoveIn" => (string) $AddressMoveIn ?? '10-11-2018',
                 "AddressPostcode" =>  (string) $post->Residence->zip,
                 "BankName" =>  (string) $post->Bank->BankName,
-                "BankAccountNumber" => (string) $post->Bank->BankAccountNumber,
-                "BankRoutingNumber" => (string) $post->Bank->BankRoutingNumber,
+                "BankAccountNumber" => (string) $post->Bank->bankAccountNumber,
+                "BankRoutingNumber" => (string) $post->Bank->bankRoutingNumber,
 //                "BankRoutingNumber" => (string) '256074974',
-                "BankAccountType" =>  (int) $post->Bank->BankAccountType,
+                "BankAccountType" =>  (int) $post->Bank->bankAccountType,
                 "BankAccountOpened" => (string) $BankAccountOpened,
 
                 "MaritalStatus" =>  (int) $post->Applicant->maritalStatus ?? 1,
