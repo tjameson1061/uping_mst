@@ -9,6 +9,7 @@
             >
                 <earnings-today  v-if="userData"
                                  :today-earnings="todayEarnings"
+                                 :today-redirection="todayRedirection"
                                  :lead-counts="leadCounts"
                                  :user-data="userData"
                                  title="Today"/>

@@ -24,7 +24,7 @@
             height="200"
             class="my-2"
             :options="goalOverviewRadialBar"
-            :series="[todayRedirection.redirected_ratio]"
+            :series="[todayRedirection.redirected_ratio[0]]"
         />
         <b-row class="text-center mx-0">
             <b-col
@@ -87,6 +87,10 @@
                 type: Object,
                 required:true,
             },
+            todayRedirection: {
+                type: Object,
+                required:true,
+            },
             todayEarnings: {
                 type: Object,
                 required:true,
@@ -102,9 +106,9 @@
         },
         data() {
             return {
-                todayRedirection: {
-                    redirected_ratio : 0
-                },
+                // todayRedirection: {
+                //     redirected_ratio : 0
+                // },
 
                 series: [10],
                 goalOverviewRadialBar: {
@@ -172,17 +176,17 @@
             }
         },
         created() {
-            this.fetchDashboardData();
+            // this.fetchDashboardData();
         },
         methods: {
-            fetchDashboardData() {
-                axios
-                    .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
-                    .then((response) => {
-                        this.todayRedirection = response.data.dashboard_data.redirectionToday;
-                    })
-                    .catch((error) => console.log(error));
-            },
+            // fetchDashboardData() {
+            //     axios
+            //         .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
+            //         .then((response) => {
+            //             this.todayRedirection = response.data.dashboard_data.redirectionToday;
+            //         })
+            //         .catch((error) => console.log(error));
+            // },
         },
     }
 </script>
