@@ -10,6 +10,7 @@ use App\Models\Lead\USLead;
 use App\Models\Offer\ConversionTracker;
 use App\Models\Offer\Offer;
 use App\Models\Partner\Partner;
+use App\Models\Partner\PartnerLeadType;
 use App\Models\Postback;
 use App\Models\Postback\PostbackLogs;
 use App\Models\PostbackTracker\PostbackTracker;
@@ -325,6 +326,7 @@ class PostbackTrackerController extends Controller
             die();
         }
 
+        // Check valid psotback
         if ($offer->id == 2 || $offer->id == 3 || $offer->id == 4 ) {
             $duplicate = PostbackLogs::where('lead_id', $request->lead_id)->first();
             $valid_lead = USLead::where('uuid', $request->lead_id)->first();
@@ -386,14 +388,14 @@ class PostbackTrackerController extends Controller
         // Get conversion rate
 //        $data = Offer::get_conversion_rate($partner_detail, $data);
 
-        $internal_offer = $this->check_internal_offer($offer, $partner_detail);
+//        $internal_offer = $this->check_internal_offer($offer, $partner_detail);
 
 
 
-        if ($internal_offer === false) {
-            Log::debug('INTERNAL OFFER::', (array) $internal_offer);
-            die();
-        }
+//        if ($internal_offer === false) {
+//            Log::debug('INTERNAL OFFER::', (array) $internal_offer);
+//            die();
+//        }
 
 
         $this->fire_postback($postbackUrl);
@@ -419,7 +421,7 @@ class PostbackTrackerController extends Controller
 
                 Log::debug('THRES::', (array) $thresholdAmount);
 
-                $partner_lead_type = LmsPartnerLeadType::where('vid', '=', $partner_detail->id)->first();
+                $partner_lead_type = PartnerLeadType::where('vendor_id', '=', $partner_detail->vendor_id)->first();
 
 
                 if ($offer_id === 1) {
