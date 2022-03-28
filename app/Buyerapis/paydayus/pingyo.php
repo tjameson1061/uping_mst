@@ -241,11 +241,11 @@ class pingyo
 
 
         $application = new Application();
-        $application['AffiliateId'] =  (string) "TOMJ-USA";
-        $application['Campaign'] =  (string)$post->vid ?? 'UPING';
-        $application['SubAffiliate'] =  (string)$post->subid ?? '';
-        $application['Timeout'] =  (int)$client_detail->timeout ?? '120';
-        $application['TestOnly'] =  (boolean)true;
+        $application->AffiliateId =  (string) "TOMJ-USA";
+        $application->Campaign =  (string)$post->vid ?? 'UPING';
+        $application->SubAffiliate =  (string)$post->subid ?? '';
+        $application->Timeout =  (int)$client_detail->timeout ?? '120';
+        $application->TestOnly =  (boolean)true;
 
         $application->SourceDetails = new SourceDetails();
         $application->SourceDetails->Address = (string)$post->Source->ipAddress;
