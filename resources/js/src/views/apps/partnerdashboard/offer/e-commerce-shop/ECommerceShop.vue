@@ -117,6 +117,7 @@
         <b-card-body>
           <div class="item-wrapper">
             <div>
+              <h3>{{offer.payout.payout_amount}}</h3>
               <h6 class="item-price" v-if="offer.payout.payout_amount == 'CPS'">
                 {{ offer.payout.payout_amount }} %
               </h6>
