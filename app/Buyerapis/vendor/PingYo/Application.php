@@ -98,7 +98,7 @@ class Application
 //            $application = $application->toArray();
             Log::debug('PRE_POST::', (array) $application);
             $application = $application->toArray();
-            $application = json_decode(json_encode($application), true);
+            $application[] = json_decode(json_encode($application), true);
             Log::debug('PRE_POST::', (array) $application);
 
 //        dd($application);
