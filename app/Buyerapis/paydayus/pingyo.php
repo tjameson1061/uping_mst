@@ -383,7 +383,7 @@ class pingyo
 
         if ($validation_result == true) {
 
-            $application[] =  json_decode(json_encode($application), true);
+            $application =  (new Application)->toArray();
             Log::debug('STATUS::', (array)$application);
             dd($application);
 

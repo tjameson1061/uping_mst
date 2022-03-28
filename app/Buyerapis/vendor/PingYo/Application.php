@@ -80,9 +80,8 @@ class Application
 
     public function pre_validate($application)
     {
-        if (!is_null($this->logger)) {
-            Log::debug("Application::send() called");
-        }
+        Log::debug("Application::send() called");
+
         $r = $application->validate();
         Log::debug('PRE_POST::', (array)$r);
 
