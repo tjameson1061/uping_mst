@@ -36,10 +36,11 @@ class leadtreeglobal
         }
 
 
+//        dd($post);
         $lead = array(
-            "AffiliateAPIKey" => "4dd3204d-a01d-452d-ae48-8d8c86343000",
-            "affiliateReference" => (string) $post->vid ?? 'AFF_UP150',
-            "affiliateSubReference" => (string) $post->subid ?? 'AFF_UP150',
+            "AffiliateAPIKey" => $client_detail->parameter1,
+            "affiliateReference" => (string) $post->vid ?? 'AFF_UP151',
+            "affiliateSubReference" => (string) $post->subid ?? 'AFF_UP151',
             "affiliateCampaign" => "10",
 
             "referringUrl" => (string)$post->Source->referringUrl,
@@ -119,8 +120,8 @@ class leadtreeglobal
 
 //		dd($this->response['post_url']);
         $resp = Http::post( $this->response['post_url'], $this->response['post_data'] );
+        dd($resp->object());
 
-        dd($resp);
     }
 
     public function returnresponse()
