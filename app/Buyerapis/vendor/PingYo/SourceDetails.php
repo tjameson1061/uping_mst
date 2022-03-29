@@ -1,5 +1,5 @@
 <?php
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
 class SourceDetails
 {
@@ -7,16 +7,12 @@ class SourceDetails
     public $ClientUserAgent;
     public $CreationUrl;
     public $ReferringUrl;
-    public $LanguageCodes;
 
     private $logger = null;
 
     private $validation_rules = [
         'required' => [
             [['Address', 'ClientUserAgent', 'CreationUrl', 'ReferringUrl']]
-        ],
-        'array' => [
-            [['LanguageCodes']]
         ],
         'url' => [
             [['CreationUrl', 'ReferringUrl']]

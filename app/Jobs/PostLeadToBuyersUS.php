@@ -285,8 +285,6 @@ class PostLeadToBuyersUS implements ShouldQueue
                     Log::debug('Log::', (array) $res);
 
 
-                    // TODO CLEAN
-                    Log::debug('LEAD ID::', (array) $post->uuid);
                     $lead = USLead::where('uuid', $post->uuid)->first();
                     Log::debug('LEAD ID::', (array) $lead);
 
@@ -370,7 +368,8 @@ class PostLeadToBuyersUS implements ShouldQueue
 
                         return $data;
 
-                    } elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'CONDITIONAL') {
+                    }
+                    elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'CONDITIONAL') {
 
                         $data = array(
                             'buyerLeadPrice' => $lender_response['post_price'] ?? '0.00',
@@ -396,7 +395,8 @@ class PostLeadToBuyersUS implements ShouldQueue
 
                         return $data;
 
-                    } else {
+                    }
+                    else {
 
 
                         $data = array(
@@ -404,19 +404,19 @@ class PostLeadToBuyersUS implements ShouldQueue
                             'id' => $lead->id,
                             'leadid' => $lead->uuid,
                             'model_type' => $row->model_type,
-                            'reason' => $lender_response['reason'] ?? 'No Reason Provided'
+                            'reason' => $lender_response['reason'] ?? 'No Reason Provided',
                         );
 
-                        $res = (new USLead)->add($data);
-
-
                         try {
-                            $data['errors'] = $lender_response['errors'] ?? "";
+                            $data['errors'] = $lender_response['errors'] ?? "Validation Failed";
                         } catch (Exception $e) {
                             Log::debug($e);
                             // ignore
-//                            Notification::
                         }
+                        $res = (new USLead)->add($data);
+
+
+
                         $index++;
                         if ($index >= $length) {
                             $this->status_check->percentage = 100;

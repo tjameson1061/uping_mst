@@ -6,9 +6,11 @@
  * Time: 19:57
  */
 
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
-class ExtendedValidator extends \Valitron\Validator {
+use App\Buyerapis\vendor\vlucas\valitron\src\Valitron\Validator;
+
+class ExtendedValidator extends Validator {
     protected function validateRequired_with($field, $value, array $params)
     {
         $field2 = $params[0];

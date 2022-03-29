@@ -1,5 +1,5 @@
 <?php
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;

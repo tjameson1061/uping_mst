@@ -1,6 +1,6 @@
 <?php
 
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
 class BankCardTypes
 {

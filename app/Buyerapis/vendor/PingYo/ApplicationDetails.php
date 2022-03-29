@@ -1,9 +1,10 @@
 <?php
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
 class ApplicationDetails
 {
 
+    public $ConsentToCreditSearch;
     public $Title;
     public $FirstName;
     public $LastName;
@@ -22,11 +23,9 @@ class ApplicationDetails
     public $IncomePaymentType;
     public $NextPayDate;
     public $FollowingPayDate;
+
     public $LoanAmount;
     public $Term;
-    public $NationalIdentityNumber;
-    public $ConsentToCreditSearch;
-    public $ConsentToMarketingEmails;
 
     public $ResidentialStatus;
 
@@ -38,6 +37,12 @@ class ApplicationDetails
     public $AddressMoveIn;
     public $AddressPostcode;
 
+    public $BankName;
+    public $BankAccountNumber;
+    public $BankRoutingNumber;
+    public $BankAccountType;
+    public $BankAccountOpened;
+
     public $MaritalStatus;
     public $NumberOfDependents;
     public $CombinedMonthlyHouseholdIncome;
@@ -45,15 +50,13 @@ class ApplicationDetails
     public $DriversLicenseState;
     public $MilitaryService;
 
-    public $BankName;
-    public $BankAccountNumber;
-    public $BankRoutingNumber;
-    public $BankAccountType;
-    public $BankAccountOpened;
+    public $NationalIdentityNumber;
+//    public $ConsentToMarketingEmails;
 
-    public $MinimumCommissionAmount;
-    public $MaximumCommissionAmount;
-    public $ApplicationExtensions;
+
+//    public $MinimumCommissionAmount;
+//    public $MaximumCommissionAmount;
+//    public $ApplicationExtensions;
 
     private $logger = null;
 
@@ -83,6 +86,7 @@ class ApplicationDetails
             $this->logger->debug("ApplicationDetails::validate() called");
         }
         $validator = new ExtendedValidator(array(
+            'ConsentToCreditSearch' => $this->ConsentToCreditSearch,
             'Title' => $this->Title,
             'FirstName' => $this->FirstName,
             'LastName' => $this->LastName,
@@ -101,8 +105,7 @@ class ApplicationDetails
             'FollowingPayDate' => $this->FollowingPayDate,
             'LoanAmount' => $this->LoanAmount,
             'Term' => $this->Term,
-            'ConsentToCreditSearch' => $this->ConsentToCreditSearch,
-            'ConsentToMarketingEmails' => $this->ConsentToMarketingEmails,
+//            'ConsentToMarketingEmails' => $this->ConsentToMarketingEmails,
             'ResidentialStatus' => $this->ResidentialStatus,
 
             'HouseNumber' => $this->HouseNumber,

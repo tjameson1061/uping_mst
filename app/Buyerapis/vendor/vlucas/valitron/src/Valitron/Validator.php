@@ -1,6 +1,6 @@
 <?php
-namespace Valitron;
-
+//namespace Valitron;
+namespace App\Buyerapis\vendor\vlucas\valitron\src\Valitron;
 use InvalidArgumentException;
 
 /**

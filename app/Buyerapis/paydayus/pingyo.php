@@ -1,10 +1,10 @@
 <?php
 
+use App\Buyerapis\vendor\PingYo\Application;
+use App\Buyerapis\vendor\PingYo\ApplicationDetails;
+use App\Buyerapis\vendor\PingYo\SourceDetails;
+use App\Buyerapis\vendor\PingYo\Status;
 use Illuminate\Support\Facades\Log;
-use PingYo\Application;
-use PingYo\ApplicationDetails;
-use PingYo\SourceDetails;
-use PingYo\Status;
 use Illuminate\Support\Facades\Http;
 
 class pingyo
@@ -14,8 +14,8 @@ class pingyo
     function __construct($client_detail, $post)
     {
 
-        $this->manageDependencies();
-        unset($root, $library, $path);
+//        $this->manageDependencies();
+//        unset($root, $library, $path);
 
 //        try {
 //            $today = new DateTime("now", new DateTimeZone("UTC"));
@@ -232,83 +232,84 @@ class pingyo
 //        }
 
 
-        $application = [];
-        $application['AffiliateId'] =  (string) "TOMJ-USA";
-        $application['Campaign'] =  (string)$post->vid ?? 'UPING';
-        $application['SubAffiliate'] =  (string)$post->subid ?? '';
-        $application['Timeout'] =  (int)$client_detail->timeout ?? '120';
-        $application['TestOnly'] =  (boolean)true;
 
-        $application['SourceDetails'] = [];
-        $application['SourceDetails']['Address'] = (string)$post->Source->ipAddress;
-        $application['SourceDetails']['ClientUserAgent'] = (string)$post->Source->userAgent;
-        $application['SourceDetails']['CreationUrl'] = (string)$post->Source->creationUrl;
-        $application['SourceDetails']['ReferringUrl'] = (string)$post->Source->referringUrl;
 
-        $application['Application'] = [];
-        $application['Application']['ConsentToCreditSearch'] = (boolean)true;
-        $application['Application']['Title'] =  (int)$post->Applicant->nameTitle ?? 1;
-        $application['Application']['FirstName'] =  (string)$post->Applicant->firstName;
-        $application['Application']['LastName'] =  (string)$post->Applicant->lastName;
-        $application['Application']['DateOfBirth'] =  (string)$dateOfBirth;
-        $application['Application']['Email'] =  (string)$post->Applicant->email;
-        $application['Application']['HomePhoneNumber'] =  (string)$post->Applicant->homePhoneNumber;
-        $application['Application']['MobilePhoneNumber'] =  (string)$post->Applicant->cellPhoneNumber;
-        $application['Application']['WorkPhoneNumber'] =  (string)$post->Applicant->workPhoneNumber ?? $post->Applicant->cellPhoneNumber;
-        $application['Application']['EmployerName'] =  (string)$post->Employer->employerName ?? 'NOT AVAILABLE';
-        $application['Application']['JobTitle'] =  (string)$post->Employer->jobTitle ?? 'unknown';
-        $application['Application']['EmploymentStarted'] =  (string)$EmploymentStarted;
-        $application['Application']['IncomeSource'] =  (int)$post->Employer->incomeSource;
-        $application['Application']['PayFrequency'] =  (int)$post->Employer->incomeCycle;
-        $application['Application']['PayAmount'] =  (int)$post->Employer->monthlyIncome;
-        $application['Application']['IncomePaymentType'] =  (int)$post->Employer->incomePaymentType;
+        $application = new Application();
+        $application->AffiliateId =  (string) "TOMJ-USA";
+        $application->Campaign =  (string)$post->vid ?? 'UPING';
+        $application->SubAffiliate =  (string)$post->subid ?? '';
+        $application->Timeout =  (int)$client_detail->timeout ?? '120';
+        $application->TestOnly =  (boolean)false;
 
-        $application['Application']['NextPayDate'] =  (string)$nextPayDate;
-        $application['Application']['FollowingPayDate'] =  (string)$followingPayDate;
+        $SourceDetails = new SourceDetails();
+        $SourceDetails->Address = (string)$post->Source->ipAddress;
+        $SourceDetails->ClientUserAgent = (string)$post->Source->userAgent;
+        $SourceDetails->CreationUrl = (string)$post->Source->creationUrl;
+        $SourceDetails->ReferringUrl = (string)$post->Source->referringUrl;
 
-        $application['Application']['LoanAmount'] =  (int)$post->Loan->loanAmount;
-        $application['Application']['Term'] =  (int)$post->Loan->loanTerms;
-        $application['Application']['ResidentialStatus'] =  (int)$post->Residence->residentialStatus;
-        $application['Application']['HouseNumber'] =  (string)$post->Residence->houseNumber;
-        $application['Application']['HouseName'] =  (string)$post->Residence->houseName;
-        $application['Application']['AddressStreet1'] =  (string)$post->Residence->addressStreet1;
-        $application['Application']['AddressCity'] =  (string)$post->Residence->city;
-        $application['Application']['AddressState'] =  (string)$post->Residence->state;
-        $application['Application']['AddressMoveIn'] =  (string)$AddressMoveIn ?? '10-11-2018';
-        $application['Application']['AddressPostcode'] =  (string)$post->Residence->zip;
-        $application['Application']['BankName'] =  (string)$post->Bank->bankName;
-        $application['Application']['BankAccountNumber'] =  (string)$post->Bank->bankAccountNumber;
-        $application['Application']['BankRoutingNumber'] =  (string)$post->Bank->bankRoutingNumber;
-        $application['Application']['BankAccountType'] =  (int)$post->Bank->bankAccountType;
-        $application['Application']['BankAccountOpened'] =  (string)$BankAccountOpened;
+        $ApplicationDetails = new ApplicationDetails();
+        $ApplicationDetails->ConsentToCreditSearch = (boolean)true;
+        $ApplicationDetails->Title =  (int)$post->Applicant->nameTitle ?? 1;
+        $ApplicationDetails->FirstName =  (string)$post->Applicant->firstName;
+        $ApplicationDetails->LastName =  (string)$post->Applicant->lastName;
+        $ApplicationDetails->DateOfBirth =  (string)$dateOfBirth;
+        $ApplicationDetails->Email =  (string)$post->Applicant->email;
+        $ApplicationDetails->HomePhoneNumber =  (string)$post->Applicant->homePhoneNumber;
+        $ApplicationDetails->MobilePhoneNumber =  (string)$post->Applicant->cellPhoneNumber;
+        $ApplicationDetails->WorkPhoneNumber =  (string)$post->Applicant->workPhoneNumber ?? $post->Applicant->cellPhoneNumber;
+        $ApplicationDetails->EmployerName =  (string)$post->Employer->employerName ?? 'NOT AVAILABLE';
+        $ApplicationDetails->JobTitle =  (string)$post->Employer->jobTitle ?? 'unknown';
+        $ApplicationDetails->EmploymentStarted =  (string)$EmploymentStarted;
+        $ApplicationDetails->IncomeSource =  (int)$post->Employer->incomeSource;
+        $ApplicationDetails->PayFrequency =  (int)$post->Employer->incomeCycle;
+        $ApplicationDetails->PayAmount =  (int)$post->Employer->monthlyIncome;
+        $ApplicationDetails->IncomePaymentType =  (int)$post->Employer->incomePaymentType;
 
-        $application['Application']['MaritalStatus'] =  (int)$post->Applicant->maritalStatus ?? 1;
-        $application['Application']['NumberOfDependents'] =  (int)$post->Applicant->dependants;
-        $application['Application']['CombinedMonthlyHouseholdIncome'] =  (float)$post->Applicant->dependants;
+        $ApplicationDetails->NextPayDate =  (string)$nextPayDate;
+        $ApplicationDetails->FollowingPayDate =  (string)$followingPayDate;
 
-        $application['Application']['DriversLicenseNumber'] =  (string)$post->Applicant->drivingLicenseNumber;
-        $application['Application']['DriversLicenseState'] =  (string)$post->Applicant->drivingLicenseState;
-        $application['Application']['NationalIdentityNumber'] =  (string)$post->Applicant->ssn;
-        $application['Application']['MilitaryService'] =  (int)$post->Applicant->inMilitary;
+        $ApplicationDetails->LoanAmount =  (int)$post->Loan->loanAmount;
+        $ApplicationDetails->Term =  (int)$post->Loan->loanTerms;
+        $ApplicationDetails->ResidentialStatus =  (int)$post->Residence->residentialStatus;
+        $ApplicationDetails->HouseNumber =  (string)$post->Residence->houseNumber;
+        $ApplicationDetails->HouseName =  (string)$post->Residence->houseName;
+        $ApplicationDetails->AddressStreet1 =  (string)$post->Residence->addressStreet1;
+        $ApplicationDetails->AddressCity =  (string)$post->Residence->city;
+        $ApplicationDetails->AddressState =  (string)$post->Residence->state;
+        $ApplicationDetails->AddressMoveIn =  (string)$AddressMoveIn ?? '10-11-2018';
+        $ApplicationDetails->AddressPostcode =  (string)$post->Residence->zip;
+        $ApplicationDetails->BankName =  (string)$post->Bank->bankName;
+        $ApplicationDetails->BankAccountNumber =  (string)$post->Bank->bankAccountNumber;
+        $ApplicationDetails->BankRoutingNumber =  (string)$post->Bank->bankRoutingNumber;
+        $ApplicationDetails->BankAccountType =  (int)$post->Bank->bankAccountType;
+        $ApplicationDetails->BankAccountOpened =  (string)$BankAccountOpened;
 
-        $application['Application']['ConsentToMarketingEmails'] =   (boolean)$post->Consent->consentThirdPartyEmails;
-////      $application['Application'][''         "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
+        $ApplicationDetails->MaritalStatus =  (int)$post->Applicant->maritalStatus ?? 1;
+        $ApplicationDetails->NumberOfDependents =  (int)$post->Applicant->dependants;
+        $ApplicationDetails->CombinedMonthlyHouseholdIncome =  (float)$post->Applicant->dependants;
+
+        $ApplicationDetails->DriversLicenseNumber =  (string)$post->Applicant->drivingLicenseNumber;
+        $ApplicationDetails->DriversLicenseState =  (string)$post->Applicant->drivingLicenseState;
+        $ApplicationDetails->NationalIdentityNumber =  (string)$post->Applicant->ssn;
+        $ApplicationDetails->MilitaryService =  (int)$post->Applicant->inMilitary;
+
+////      $ApplicationDetails->         "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
 //      $application['Application->         "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
 
+
+        $application->SourceDetails = $SourceDetails;
+        $application->Application = $ApplicationDetails;
 
 
         $this->response['timeout'] = $client_detail->timeout;
         $this->response['post_url'] = ($client_detail->status == '0') ? $client_detail->post_url_test : $client_detail->post_url_live;
 
-//        $validation_result = (new Application)->pre_validate($application);
-        $validation_result = true;
+        $validation_result = (new Application)->pre_validate($application);
         if ($validation_result == true) {
 
-            Log::debug('STATUS::', (array)$application);
 
                 $application_status = (new Application)->send($application);
                 Log::debug('STATUS::', (array)$application_status);
-//                $application_status = $application_status->object();
 
             $this->response['application_response'] = $application_status;
 
@@ -331,7 +332,7 @@ class pingyo
 
         $this->response['validated'] = true;
         if ($this->response['validated'] === true) {
-            $status = new PingYo\Status('202', null, $CorrelationId, null);
+            $status = new Status('202', null, $CorrelationId, null);
             Log::debug('RESP STATUS::', (array)$status);
 
             $counter = 0;
@@ -371,7 +372,7 @@ class pingyo
             }
             return $this->response;
         } else {
-            $this->response['accept'] = 'Validation Failed';
+            $this->response['errors'] = 'Validation Failed';
             $this->response['post_status'] = '0';
             $this->response['post_price'] = '0';
             $this->response['post_time'] = $appResponse->post_time;
@@ -383,24 +384,6 @@ class pingyo
 
     }
 
-    private function manageDependencies()
-    {
-        require_once dirname(__DIR__) . '/vendor/PingYo/Application.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/SourceDetails.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/ApplicationDetails.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/Status.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/TitleType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/BankCardType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/ResidentialStatusType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/IncomePaymentType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/PayFrequencyType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/IncomeSourceType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/EmployerIndustryType.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/NationalIdentityNumberType.php';
-        require_once dirname(__DIR__) . '/vendor/autoload.php';
-        require_once dirname(__DIR__) . '/vendor/PingYo/ExtendedValidator.php';
-
-    }
 
 
 }

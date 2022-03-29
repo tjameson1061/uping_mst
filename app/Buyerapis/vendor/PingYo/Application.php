@@ -1,5 +1,5 @@
 <?php
-namespace PingYo;
+namespace App\Buyerapis\vendor\PingYo;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -36,8 +36,8 @@ class Application
             [['Timeout'], 120]
         ],
         'instanceOf' => [
-            [['Application'], 'PingYo\ApplicationDetails'],
-            [['SourceDetails'], 'PingYo\SourceDetails'],
+            [['Application'], 'App\Buyerapis\vendor\PingYo\ApplicationDetails'],
+            [['SourceDetails'], 'App\Buyerapis\vendor\PingYo\SourceDetails'],
         ]
     ];
 
@@ -48,26 +48,23 @@ class Application
 
     public function setApplicationDetails(ApplicationDetails $Application)
     {
-        if (!is_null($this->logger)) {
-            Log::debug("Application::setApplicationDetails() called with ApplicationDetails=" . var_export($Application,
-                    true));
-        }
+//        if (!is_null($this->logger)) {
+            Log::debug("Application::setApplicationDetails() called with ApplicationDetails=" . var_export($Application, true));
+//        }
         $this->Application = $Application;
-        if (!is_null($this->logger)) {
-            $Application->attachLogger($this->logger);
-        }
+//        if (!is_null($this->logger)) {
+//            $Application->attachLogger($this->logger);
+//        }
     }
 
     public function setSourceDetails(SourceDetails $SourceDetails)
     {
-        if (!is_null($this->logger)) {
-            Log::debug("Application::setSourceDetails() called with SourceDetails=" . var_export($SourceDetails,
-                    true));
-        }
-        $this->SourceDetails = $SourceDetails;
-        if (!is_null($this->logger)) {
-            $SourceDetails->attachLogger($this->logger);
-        }
+            Log::debug("Application::setSourceDetails() called with SourceDetails=" . var_export($SourceDetails, true));
+
+            $this->SourceDetails = $SourceDetails;
+//        if (!is_null($this->logger)) {
+//            $SourceDetails->attachLogger($this->logger);
+//        }
     }
 
     public function get_connection_status()
@@ -95,8 +92,9 @@ class Application
 
     public function send($application)
     {
-            Log::debug('PRE_POST::', (array) $application);
+        Log::debug('PRE_POST::', (array) $application);
 
+        $application = json_decode(json_encode($application), true);
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
             $server_output = $output->body();
@@ -109,13 +107,10 @@ class Application
                 return new Status($output->status(), $output, null, null);
 
             } else {
-            return ''
+            Log::debug('PingYo POST Error::', (array)$output);
 
             }
 
-
-
-//            $this->connection_status = $info;
     }
 
     public function validate($full_validation = true)
