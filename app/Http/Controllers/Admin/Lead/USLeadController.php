@@ -139,7 +139,6 @@ class USLeadController extends Controller
     public function post(LeadPostRequestUS $request)
     {
 
-
 //        $ip = $request->ip();
 //        $userAgent = $request->server('HTTP_USER_AGENT');
 

@@ -17,10 +17,10 @@ class pingyo
         $this->manageDependencies();
         unset($root, $library, $path);
 
-        try {
-            $today = new DateTime("now", new DateTimeZone("UTC"));
-        } catch (Exception $e) {
-        }
+//        try {
+//            $today = new DateTime("now", new DateTimeZone("UTC"));
+//        } catch (Exception $e) {
+//        }
 
 
         $dob_day = $post->Applicant->dateOfBirthDay;
@@ -67,9 +67,7 @@ class pingyo
             }
         }
 
-        Log::debug('DOB::', (array)$dateOfBirth);
 
-//        dd($post);
 
         $next_pay_date_day = $post->Employer->nextPayDateDay;
         $next_pay_date_month = $post->Employer->nextPayDateMonth;
@@ -207,34 +205,31 @@ class pingyo
             case 'Other':
                 $post->Applicant->maritalStatus = 7;
         }
-        if ($post->Consent->consentFinancial === '1') {
-            $post->Consent->consentFinancial = true;
-        } else {
-            $post->Consent->consentFinancial = false;
-        }
-        if ($post->Consent->consentCreditSearch == '1') {
-            $post->Consent->consentCreditSearch = true;
-        } else {
-            $post->Consent->consentCreditSearch = false;
-        }
-        if ($post->Consent->consentThirdPartyEmails == '1') {
-            $post->Consent->consentThirdPartyEmails = true;
-        } else {
-            $post->Consent->consentThirdPartyEmails = false;
-        }
-        if ($post->Consent->consentThirdPartySMS == '1') {
-            $post->Consent->consentThirdPartySMS = true;
-        } else {
-            $post->Consent->consentThirdPartySMS = false;
-        }
-        if ($post->Consent->consentThirdPartyPhone == '1') {
-            $post->Consent->consentThirdPartySMS = true;
-        } else {
-            $post->Consent->consentThirdPartyPhone = false;
-        }
-        if ($post->Employer->jobTitle == '') {
-            $post->Employer->jobTitle = 'unknown';
-        }
+//        if ($post->Consent->consentFinancial === '1') {
+//            $post->Consent->consentFinancial = true;
+//        } else {
+//            $post->Consent->consentFinancial = false;
+//        }
+//        if ($post->Consent->consentCreditSearch == '1') {
+//            $post->Consent->consentCreditSearch = true;
+//        } else {
+//            $post->Consent->consentCreditSearch = false;
+//        }
+//        if ($post->Consent->consentThirdPartyEmails == '1') {
+//            $post->Consent->consentThirdPartyEmails = true;
+//        } else {
+//            $post->Consent->consentThirdPartyEmails = false;
+//        }
+//        if ($post->Consent->consentThirdPartySMS == '1') {
+//            $post->Consent->consentThirdPartySMS = true;
+//        } else {
+//            $post->Consent->consentThirdPartySMS = false;
+//        }
+//        if ($post->Consent->consentThirdPartyPhone == '1') {
+//            $post->Consent->consentThirdPartySMS = true;
+//        } else {
+//            $post->Consent->consentThirdPartyPhone = false;
+//        }
 
 
         $application = [];
@@ -300,71 +295,6 @@ class pingyo
 ////      $application['Application'][''         "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
 //      $application['Application->         "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
 
-
-//        $application = array(
-//                "AffiliateId" => (string)"TOMJ-USA",
-//                "Campaign" => (string)$post->vid ?? 'UPING',
-//                "SubAffiliate" => (string)$post->subid ?? '',
-//                "Timeout" => (int)$client_detail->timeout ?? '120',
-//                "TestOnly" => (boolean)true,
-//
-//                "SourceDetails" => array(
-//                    "Address" => (string)$post->Source->ipAddress,
-//                    "ClientUserAgent" => (string)$post->Source->userAgent,
-//                    "CreationUrl" => (string)$post->Source->creationUrl,
-//                    "ReferringUrl" => (string)$post->Source->referringUrl,
-//                ),
-//                "Application" => array(
-//                    "ConsentToCreditSearch" => (boolean)true,
-//                    "Title" => (int)$post->Applicant->nameTitle ?? 1,
-//                    "FirstName" => (string)$post->Applicant->firstName,
-//                    "LastName" => (string)$post->Applicant->lastName,
-//                    "DateOfBirth" => (string)$dateOfBirth,
-//                    "Email" => (string)$post->Applicant->email,
-//                    "HomePhoneNumber" => (string)$post->Applicant->homePhoneNumber,
-//                    "MobilePhoneNumber" => (string)$post->Applicant->cellPhoneNumber,
-//                    "WorkPhoneNumber" => (string)$post->Applicant->workPhoneNumber ?? $post->Applicant->cellPhoneNumber,
-//                    "EmployerName" => (string)$post->Employer->employerName ?? 'NOT AVAILABLE',
-//                    "JobTitle" => (string)$post->Employer->jobTitle ?? 'unknown',
-//                    "EmploymentStarted" => (string)$EmploymentStarted,
-//                    "IncomeSource" => (int)$post->Employer->incomeSource,
-//                    "PayFrequency" => (int)$post->Employer->incomeCycle,
-//                    "PayAmount" => (int)$post->Employer->monthlyIncome,
-//                    "IncomePaymentType" => (int)$post->Employer->incomePaymentType,
-//
-//                    "NextPayDate" => (string)$nextPayDate,
-//                    "FollowingPayDate" => (string)$followingPayDate,
-//
-//                    "LoanAmount" => (int)$post->Loan->loanAmount,
-//                    "Term" => (int)$post->Loan->loanTerms,
-//                    "ResidentialStatus" => (int)$post->Residence->residentialStatus,
-//                    "HouseNumber" => (string)$post->Residence->houseNumber,
-//                    "HouseName" => (string)$post->Residence->houseName,
-//                    "AddressStreet1" => (string)$post->Residence->addressStreet1,
-//                    "AddressCity" => (string)$post->Residence->city,
-//                    "AddressState" => (string)$post->Residence->state,
-//                    "AddressMoveIn" => (string)$AddressMoveIn ?? '10-11-2018',
-//                    "AddressPostcode" => (string)$post->Residence->zip,
-//                    "BankName" => (string)$post->Bank->bankName,
-//                    "BankAccountNumber" => (string)$post->Bank->bankAccountNumber,
-//                    "BankRoutingNumber" => (string)$post->Bank->bankRoutingNumber,
-//                    "BankAccountType" => (int)$post->Bank->bankAccountType,
-//                    "BankAccountOpened" => (string)$BankAccountOpened,
-//
-//                    "MaritalStatus" => (int)$post->Applicant->maritalStatus ?? 1,
-//                    "NumberOfDependents" => (int)$post->Applicant->dependants,
-//                    "CombinedMonthlyHouseholdIncome" => (float)$post->Applicant->dependants,
-//
-//                    "DriversLicenseNumber" => (string)$post->Applicant->drivingLicenseNumber,
-//                    "DriversLicenseState" => (string)$post->Applicant->drivingLicenseState,
-//                    "NationalIdentityNumber" => (string)$post->Applicant->ssn,
-//                    "MilitaryService" => (int)$post->Applicant->inMilitary,
-//
-//                    "ConsentToMarketingEmails" => (boolean)$post->Consent->consentThirdPartyEmails,
-//            //                "MinimumCommissionAmount" => (float) $client_detail->min_price ?? '',
-//            //                "MaximumCommissionAmount" => (float) $client_detail->max_price ?? '',
-//                )
-//            );
 
 
         $this->response['timeout'] = $client_detail->timeout;

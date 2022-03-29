@@ -100,16 +100,22 @@ class Application
 
             $output = Http::post("https://leads.pingyo.co.uk/application/submit", $application);
             $server_output = $output->body();
-//            dd($server_output);
 
-//            Log::debug('POST::', (array) $server_output);
-            Log::debug('POST::', (array) $application);
-//            Log::debug('PingYo::', (array) $output->object());
+            Log::debug('PingYo Post Resp::', (array) $output->body());
+            Log::debug("got response with code " . $output->status() . ': ' . $server_output);
 
-                Log::debug("got response with code " . $output->status() . ': ' . $server_output);
+
+        if ($output->successful()) {
+                return new Status($output->status(), $output, null, null);
+
+            } else {
+            return ''
+
+            }
+
+
 
 //            $this->connection_status = $info;
-            return new Status($output->status(), $server_output, null, $this->logger);
     }
 
     public function validate($full_validation = true)
