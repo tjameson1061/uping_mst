@@ -93,7 +93,7 @@
           </b-avatar>
           <b-tooltip :target="`us-lead-row-${data.item.id}`" placement="top">
             <p class="mb-0">Processed</p>
-            <p class="mb-0">Post Time: 52 secs</p>
+            <p class="mb-0">Post Time: -</p>
             <p class="mb-0">
               <small
                 v-if="data.item.isRedirected == 1"
@@ -280,9 +280,9 @@
             class="text-capitalize"
           >
             <small v-if="data.item.leadStatus == 1">Sold</small>
-            <small v-else-if="data.item.leadStatus == 2">Pending</small>
-            <small v-else-if="data.item.leadStatus == 0">Declined</small>
-            <small v-else-if="data.item.leadStatus == 3">CPF</small>
+            <small v-else-if="data.item.leadStatus == 3">Pending</small>
+            <small v-else-if="data.item.leadStatus == 2">Declined</small>
+            <small v-else-if="data.item.leadStatus == 4">CPF</small>
           </b-badge>
         </template>
 

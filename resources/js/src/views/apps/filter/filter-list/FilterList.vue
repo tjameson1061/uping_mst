@@ -60,7 +60,7 @@
                 ok-only
                 ok-title="Accept"
                 centered
-                title="Post Data"
+                title="Conditions"
             >
                 <code>
                     {{modalPostData}}

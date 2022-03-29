@@ -139,6 +139,7 @@ export default function useLeadList() {
         if (leadStatus === 2) return "warning";
         if (leadStatus === 1) return "success";
         if (leadStatus === 3) return "secondary";
+        if (leadStatus === 4) return "info";
         return "primary";
     };
 
@@ -148,6 +149,7 @@ export default function useLeadList() {
         if (leadStatus === 0) return { variant: "warning", icon: "XIcon" };
         if (leadStatus === 2) return { variant: "danger", icon: "UserXIcon" };
         if (leadStatus === 3) return { variant: "secondary", icon: "LoaderIcon" };
+        if (leadStatus === 4) return { variant: "info", icon: "ActivityIcon" };
         return { variant: "secondary", icon: "XIcon" };
     };
 
