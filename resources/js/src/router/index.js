@@ -54,9 +54,9 @@ router.beforeEach((to, _, next) => {
     if (to.meta.requiresAuth && isLoggedIn) {
         const userData = getUserData()
 
-    if (userData.is_admin == 1 && to.meta.adminAuth) {
+    if (userData.is_admin === 1 && to.meta.adminAuth) {
         next()
-    } else if(userData.is_admin == 0 && to.meta.partnerAuth) {
+    } else if(userData.is_admin === 0 && to.meta.partnerAuth) {
         next()
     } else {
         // if not, redirect to login page.
