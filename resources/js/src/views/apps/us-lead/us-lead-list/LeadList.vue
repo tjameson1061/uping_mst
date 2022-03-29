@@ -47,7 +47,6 @@
         </b-row>
       </div>
 
-<!--        // TODO swap for vue-good-table-->
       <b-table
         ref="refUSLeadsListTable"
         class="position-relative"

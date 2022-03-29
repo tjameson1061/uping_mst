@@ -17,7 +17,7 @@ export default function useReportsList() {
     const tableColumns = [
         {key: 'vid', label: 'AFF ID', sortable: true},
         {key: 'subid', label: 'SUB ID', sortable: true},
-        {key: 'tier', label: 'Tier', sortable: true},
+        {key: 'buyerTierID', label: 'Tier', sortable: true},
         {key: 'vidLeadPrice', label: 'Price', sortable: true},
         {key: 'quality_score', label: 'Lead Quality', sortable: true},
         {key: 'isRedirected', label: 'Redirect', sortable: true},

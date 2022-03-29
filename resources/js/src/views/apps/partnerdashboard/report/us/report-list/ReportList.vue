@@ -105,36 +105,19 @@
           <!-- Column: subid -->
           <template #cell(subid)="data">
               <b-media vertical-align="center">
-                  <b-link
-                      :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
-                      class="font-weight-bold d-block text-nowrap"
-                  >
-                      <b-badge variant="light-primary" pill>
                           <small>  {{ data.item.subid }}
                           </small>
 
-                      </b-badge>
-                  </b-link>
               </b-media>
           </template>
 
 <!--          tier-->
-          <template #cell(tier)="data">
+          <template #cell(buyerTierID)="data">
               <b-media vertical-align="center">
-                  <b-link
-                      :to="{ name: 'apps-reports-view', params: { id: data.item.id } }"
-                      class="font-weight-bold d-block text-nowrap"
-                  >
-                      <b-badge variant="light-primary" pill v-if="data.item.tier == 0">
-                         ALL Tiers
-                      </b-badge>
-                      <b-badge variant="light-primary" pill v-else>
                           <small>
-                              {{ data.item.tier }}
+                              {{ data.item.buyerTierID }}
 
                           </small>
-                      </b-badge>
-                  </b-link>
               </b-media>
           </template>
 
