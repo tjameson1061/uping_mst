@@ -645,39 +645,35 @@ class USLeadController extends Controller
 
     /**
      * @param Request $request
-     * @param $buyer_token
-     * @param $correlationId
+     * @param $leadId
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function mark_cpf_funded(Request $request, $buyer_token, $correlationId)
+    public function mark_cpf_funded(Request $request, $leadId)
     {
-        if (isset($buyer_token)) {
-            try {
-                $valid_token = BuyerAccessToken::where('token', '=', $buyer_token)->get();
-                if ($valid_token->isEmpty()) {
-                    abort(403, 'Not Authorized');
-                }
-            } catch (Exception $e) {
-                abort(403, 'Not Authorized');
-            }
 
-            $query = DB::table('us_leads')->where('id', $correlationId);
+        try {
+
+            $query = DB::table('us_leads')->where('id', $leadId);
 
             $lead = $query->first();
-            $tier = BuyerSetup::find($lead->buyerTierID)->first();
-
+            $tier = BuyerSetup::find('buyer_tier_id', $lead->buyerTierID)->first();
             $partner_detail = PartnerLeadType::where('vid', $lead->vid)->first();
 
             $vidLeadPrice = $tier->tier_price - ($tier->tier_price * ($partner_detail->margin / 100));
 
             $res = $query->update([
-                'leadStatus' => 4, // CPFFunded
+                'leadStatus' => 4,
                 'vidLeadPrice' => $vidLeadPrice,
                 'buyerLeadPrice' => $tier->tier_price,
                 'updated_at' => Carbon::now(),
             ]);
-            echo 'Success:: CPF Funded Received ';
-        } else {
-            abort(403, 'Not Authorized');
+            return Response::json( 'Success:: CPF Funded Received ', 202);
+        }
+        catch (Exception $e) {
+            Log::info('mark_cpf_funded() called');
+            Log::debug($e);
+            return Response::json('Error:: Unable to mark CPF Funded', 418);
+
         }
     }
 
