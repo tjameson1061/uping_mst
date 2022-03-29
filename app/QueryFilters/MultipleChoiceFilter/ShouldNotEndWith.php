@@ -28,38 +28,38 @@ class ShouldNotEndWith extends Filter
 
         switch ($condition) {
             case 'MaritalStatus':
-                $query = DB::table('applicants')->where('id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'maritalStatus';
                 break;
             case 'Email':
-                $query = DB::table('applicants')->where('id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'email';
                 break;
             case 'IncomeSource':
-                $query = DB::table('employers')->where('id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'incomeSource';
                 break;
             case 'IncomeCycle':
-                $query = DB::table('employers')->where('id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'incomeCycle';
                 break;
             case 'ResidentialStatus':
-                $query = DB::table('residences')->where('id', $post->id);
+                $query = DB::table('residences')->where('lead_id', $post->uuid);
                 $keyColumn = 'residentialStatus';
                 break;
             case 'InMilitary':
-                $query = DB::table('applicants')->where('id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'inMilitary';
                 break;
             case 'LicenseState':
                 $keyColumn = 'licenseState';
                 break;
             case 'State':
-                $query = DB::table('county')->where('id', $post->id);
+                $query = DB::table('county')->where('lead_id', $post->uuid);
                 $keyColumn = 'state';
                 break;
             case 'BankAccountType':
-                $query = DB::table('banks')->where('id', $post->id);
+                $query = DB::table('banks')->where('lead_id', $post->uuid);
                 $keyColumn = 'bankAccountType';
                 break;
         }

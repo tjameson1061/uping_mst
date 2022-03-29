@@ -6,8 +6,10 @@ namespace App\QueryFilters\paydayus;
 use App\Models\Lead\USLead;
 use App\Models\Buyer\BuyerFilterUS;
 use App\QueryFilters\MultipleChoiceFilter\ShouldBe;
+use App\QueryFilters\MultipleChoiceFilter\ShouldBeAnyOf;
 use App\QueryFilters\MultipleChoiceFilter\ShouldContain;
 use App\QueryFilters\MultipleChoiceFilter\ShouldEndWith;
+use App\QueryFilters\MultipleChoiceFilter\ShouldNotBeAnyOf;
 use App\QueryFilters\MultipleChoiceFilter\ShouldNotContain;
 use App\QueryFilters\MultipleChoiceFilter\ShouldNotEndWith;
 use App\QueryFilters\NumericFilter\ShouldBeBetween;
@@ -39,14 +41,10 @@ class State
                 $filter_type = 'State';
                 $key_filter['conditions'] = json_decode($key_filter['conditions']);
 
-                if (!empty($key_filter['conditions']->shouldContain)) {
-                    $value = $key_filter['conditions']->shouldContain;
-                    $post = (new ShouldContain)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-                }
-
-                if (!empty($key_filter['conditions']->shouldEndWith)) {
-                    $value = $key_filter['conditions']->shouldEndWith;
-                    $post = (new shouldEndWith)->applyFilters($post, $value, $key_filter['id'], $filter_type);
+                if (!empty($key_filter['conditions']->shouldBeAnyOf)) {
+                    $value = $key_filter['conditions']->shouldBeAnyOf;
+                    $post = (new ShouldBeAnyOf)->applyFilters($post, $value, $key_filter['id'], $filter_type);
+                    dd(111);
                 }
 
                 if (!empty($key_filter['conditions']->shouldBe)) {
@@ -54,14 +52,9 @@ class State
                     $post = (new shouldBe)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
 
-                if (!empty($key_filter['conditions']->shouldNotContain)) {
-                    $value = $key_filter['conditions']->shouldNotContain;
-                    $post = (new shouldNotContain)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-                }
-
-                if ($key_filter['conditions']->shouldNotEndWith !== null) {
-                    $value = $key_filter['conditions']->shouldNotEndWith;
-                    $post = (new ShouldNotEndWith)->applyFilters($post, $value, $key_filter['id'], $filter_type);
+                if (!empty($key_filter['conditions']->shouldNotBeAnyOf)) {
+                    $value = $key_filter['conditions']->shouldNotBeAnyOf;
+                    $post = (new ShouldNotBeAnyOf)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
             }
         }

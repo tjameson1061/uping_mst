@@ -1,49 +1,70 @@
 <template>
-  <div>
+    <div>
 
-    <!-- Form: Personal Info Form -->
-      <b-col
-          cols="12"
-          md="12"
-          lg="12"
-      >
-          <b-form-group
-              label="Should Be Exactly"
-              label-for="contact-options"
-              label-class="mb-1"
-          >
-              <b-form-checkbox-group
-                  id="issc_value"
-                  name="issc_value"
-                  v-model="filterData.conditions"
-                  :options="shouldContainOptions"
-              />
-          </b-form-group>
-      </b-col>
+        <!-- Form: Personal Info Form -->
+
+        <b-col
+                cols="12"
+                class="mb-2"
+        >
+            <h3>
+                Date Of Birth
+            </h3>
+            <small class="text-muted">
+                Filter Settings
+            </small>
+        </b-col>
 
 
+        <!-- Should be between -->
+        <tab-content
+                title="Account Details"
+                icon="feather icon-file-text"
+        >
+            <b-row>
+                <b-col
+                        cols="6"
+                        class="mb-2"
+                >
+                    <small class="text-muted">
 
-      <pre>
-          {{ filterData }}
-      </pre>
-      <b-col
-          cols="12"
-          md="12"
-          lg="12"
-      >
-          <b-form-group
-              label="Should Be Exactly"
-              label-for="contact-options"
-              label-class="mb-1"
-          >
-              <b-form-checkbox-group
-                  id="issb_value"
-                  v-model="filterData.conditions"
-                  :options="shouldBeOptions"
-              />
-          </b-form-group>
-      </b-col>
-  </div>
+                    </small>
+                    <b-form-group
+                            label="Should be less than"
+                            label-for="i-username"
+                    >
+                        <b-form-input
+                                id="shouldBeBetween1"
+                                name="shouldBeBetween1"
+                                placeholder="1000"
+                                type="number"
+                                v-model="filterData.object.shouldBeBetween1"
+                        />
+                    </b-form-group>
+                </b-col>
+                <b-col
+                        cols="6"
+                        class="mb-2"
+                >
+                    <small class="text-muted">
+
+                    </small>
+                    <b-form-group
+                            label="Should be less than"
+                            label-for="i-username"
+                    >
+                        <b-form-input
+                                id="shouldBeBetween2"
+                                name="shouldBeBetween2"
+                                placeholder="1000"
+                                type="number"
+                                v-model="filterData.object.shouldBeBetween2"
+                        />
+                    </b-form-group>
+                </b-col>
+            </b-row>
+        </tab-content>
+    </div>
 </template>
 
 <script>

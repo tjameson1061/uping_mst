@@ -3,10 +3,14 @@
 namespace App\Models\Buyer;
 
 use App\Models\Lead\USLead;
+use App\QueryFilters\paydayus\BankAccountType;
+use App\QueryFilters\paydayus\InMilitary;
+use App\QueryFilters\paydayus\Phone;
+use App\QueryFilters\paydayus\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\QueryFilters\paydayus\DateOfBirthDay;
+use App\QueryFilters\paydayus\DateOfBirth;
 use App\QueryFilters\paydayus\DateOfBirthMonth;
 use App\QueryFilters\paydayus\DateOfBirthYear;
 use App\QueryFilters\paydayus\Email;
@@ -60,7 +64,7 @@ class BuyerFilterUS extends Model
      */
     public static function dateFilters($lead)
     {
-//        $post = (new DateOfBirthDay)->applyFilters($lead);
+        $post = (new DateOfBirth)->applyFilters($lead);
 //        $post = (new DateOfBirthMonth)->applyFilters($post);
 //        $post = (new DateOfBirthYear)->applyFilters($post);
 //        $post = (new NextPayDateDay)->applyFilters($lead);
@@ -106,6 +110,10 @@ class BuyerFilterUS extends Model
         $post = (new IncomeSource)->applyFilters($post);
         $post = (new MaritalStatus)->applyFilters($post);
         $post = (new IncomeCycle)->applyFilters($post);
+        $post = (new InMilitary)->applyFilters($post);
+        $post = (new State)->applyFilters($post);
+        $post = (new BankAccountType)->applyFilters($post);
+        $post = (new Phone)->applyFilters($post);
 
         return $post;
 
@@ -136,19 +144,8 @@ class BuyerFilterUS extends Model
      */
     public static function allBuyerFilters($lead)
     {
-//        $lead = USLead::where('id', $post['lead_id'])->with(
-//            'source',
-//            'loan',
-//            'applicant',
-//            'employer',
-//            'residence',
-//            'bank',
-//            'consent',
-//            'expense'
-//        )
-//            ->first();
-
         $lead = (object)$lead;
+
 
         if ($lead->quote_boost == 1) {
             $lead = (new BuyerFilterUS)->quote_boost($lead);
@@ -157,8 +154,8 @@ class BuyerFilterUS extends Model
         /*** All Filters ***/
 
         $lead = BuyerFilterUS::numericFilters($lead);
-        $lead = BuyerFilterUS::dateFilters($lead);
         $lead = BuyerFilterUS::multiChoiceFilters($lead);
+        $lead = BuyerFilterUS::dateFilters($lead);
 
         return $lead;
 

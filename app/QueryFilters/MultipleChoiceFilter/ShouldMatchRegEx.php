@@ -23,23 +23,23 @@ class ShouldMatchRegEx extends Filter
 
         switch ($condition) {
             case 'mssmre':
-                $query = DB::table('applicants')->where('lead_id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'maritalStatus';
                 break;
             case 'esmre':
-                $query = DB::table('applicants')->where('lead_id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'Email';
                 break;
             case 'issmre':
-                $query = DB::table('employers')->where('lead_id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'IncomeSource';
                 break;
             case 'icsmre':
-                $query = DB::table('employers')->where('lead_id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'IncomeCycle';
                 break;
             case 'rssmre':
-                $query = DB::table('residences')->where('lead_id', $post->id);
+                $query = DB::table('residences')->where('lead_id', $post->uuid);
                 $keyColumn = 'ResidentialStatus';
                 break;
         }

@@ -27,9 +27,9 @@
                 <b-form-checkbox-group
                     id="shouldBeAnyOf"
                     name="shouldBeAnyOf"
-                    v-model="filterData.conditions.shouldBeAnyOf"
-                    :options="residentialStatusOptions"
-                    :checked="filterData.conditions.shouldBeAnyOf"
+                    v-model="filterData.object.shouldBeAnyOf"
+                    :options="stateOptions"
+                    :checked="filterData.object.shouldBeAnyOf"
                 />
             </b-form-group>
         </b-col>
@@ -50,12 +50,27 @@
                 <b-form-checkbox-group
                     id="shouldBe"
                     name="shouldBe"
-                    v-model="filterData.conditions.shouldBe"
-                    :options="residentialStatusOptions"
-                    :checked="filterData.conditions.shouldBe"
+                    v-model="filterData.object.shouldBe"
+                    :options="stateOptions"
+                    :checked="filterData.object.shouldBe"
+                />
+            </b-form-group>
+
+            <b-form-group
+                    label="Should Not Be Any Of"
+                    label-for="contact-options"
+                    label-class="mb-1"
+            >
+                <b-form-checkbox-group
+                        id="shouldNotBeAnyOf"
+                        name="shouldNotBeAnyOf"
+                        v-model="filterData.object.shouldNotBeAnyOf"
+                        :options="stateOptions"
+                        :checked="filterData.object.shouldNotBeAnyOf"
                 />
             </b-form-group>
         </b-col>
+
     </div>
 </template>
 
@@ -82,7 +97,7 @@
                 type: Object,
                 required: true,
             },
-            residentialStatusOptions: {
+            stateOptions: {
                 type: Array,
                 required: true,
             },
@@ -94,7 +109,7 @@
 
             return {
                 filterData,
-                residentialStatusOptions,
+                stateOptions,
             }
         },
     }

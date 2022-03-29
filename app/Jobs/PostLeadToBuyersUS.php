@@ -161,7 +161,7 @@ class PostLeadToBuyersUS implements ShouldQueue
         } else {
             $response = array(
                 'status' => 2,
-                'leadid' => $buyer_response['leadid'],
+                'leadid' => $buyer_response['id'],
                 'id' => $buyer_response['id'],
                 'ModelType' => $buyer_response['model_type'],
                 'price' => '0.00'

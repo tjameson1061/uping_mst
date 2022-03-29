@@ -152,7 +152,7 @@ class BuyerFilter extends Model
             'residence',
             'bank',
             'consent',
-            'expense',
+            'expense'
         )
             ->first();
 
@@ -311,7 +311,7 @@ class BuyerFilter extends Model
         $buyer_list = $post->buyer_list;
 
         foreach ($buyer_list as $key => $index) {
-            if (isset($index->id) && $index->id == $tierIndex) {
+            if (isset($index->id) && $index->buyer_setup_id == $tierIndex) {
                 unset($buyer_list[$key]);
                 $post->buyer_list = $buyer_list;
                 return $post;

@@ -132,6 +132,21 @@
                 />
             </b-tab>
 
+            <!--  Date Filter -->
+            <b-tab v-else-if="filterData.filter_type == 'DateOfBirth'">
+                <template #title>
+                    <feather-icon
+                            icon="InfoIcon"
+                            size="16"
+                            class="mr-0 mr-sm-50"
+                    />
+                    <span class="d-none d-sm-inline">Conditions</span>
+                </template>
+                <date-of-birth
+                        class="mt-2 pt-75"
+                        :filter-data="filterData"
+                />
+            </b-tab>
 
             <!-- Multi Select Filters-->
             <b-tab v-else-if="filterData.filter_type == 'EmploymentStatus'">
@@ -209,6 +224,67 @@
                     :filter-data="filterData"
                 />
             </b-tab>
+            <b-tab v-else-if="filterData.filter_type == 'InMilitary'">
+                <template #title>
+                    <feather-icon
+                        icon="InfoIcon"
+                        size="16"
+                        class="mr-0 mr-sm-50"
+                    />
+                    <span class="d-none d-sm-inline">Conditions</span>
+                </template>
+                <in-military
+                    class="mt-2 pt-75"
+                    :filter-data="filterData"
+                    :in-military-options="inMilitaryOptions"
+                />
+            </b-tab>
+            <b-tab v-else-if="filterData.filter_type == 'State'">
+                <template #title>
+                    <feather-icon
+                        icon="InfoIcon"
+                        size="16"
+                        class="mr-0 mr-sm-50"
+                    />
+                    <span class="d-none d-sm-inline">Conditions</span>
+                </template>
+                <state
+                    class="mt-2 pt-75"
+                    :filter-data="filterData"
+                    :state-options="stateOptions"
+                />
+            </b-tab>
+            <b-tab v-else-if="filterData.filter_type == 'BankAccountType'">
+                <template #title>
+                    <feather-icon
+                        icon="InfoIcon"
+                        size="16"
+                        class="mr-0 mr-sm-50"
+                    />
+                    <span class="d-none d-sm-inline">Conditions</span>
+                </template>
+                <bank-account-type
+                    class="mt-2 pt-75"
+                    :filter-data="filterData"
+                    :bank-account-type-options="bankAccountTypeOptions"
+                />
+            </b-tab>
+            <b-tab v-else-if="filterData.filter_type == 'Phone'">
+                <template #title>
+                    <feather-icon
+                        icon="InfoIcon"
+                        size="16"
+                        class="mr-0 mr-sm-50"
+                    />
+                    <span class="d-none d-sm-inline">Conditions</span>
+                </template>
+                <phone
+                    class="mt-2 pt-75"
+                    :filter-data="filterData"
+                    :phone-options="phoneOptions"
+
+                />
+            </b-tab>
 
 
             <!-- Date Filters-->
@@ -237,6 +313,11 @@
     import MonthlyIncome from "../filter-conditions/uk/MonthlyIncome";
     import MonthlyRent from "../filter-conditions/uk/MonthlyRent";
     import IncomeCycle from "../filter-conditions/uk/IncomeCycle";
+    import InMilitary from "../filter-conditions/us/InMilitary";
+    import State from "../filter-conditions/us/State";
+    import BankAccountType from "../filter-conditions/us/BankAccountType";
+    import Phone from "../filter-conditions/us/Phone";
+    import DateOfBirth from "../filter-conditions/us/DateOfBirth";
     import useFilterList from '../filter-list/useFilterList'
 
     import { useToast } from 'vue-toastification/composition'
@@ -263,6 +344,11 @@
             MonthlyRent,
             MaritalStatus,
             IncomeCycle,
+            InMilitary,
+            State,
+            Phone,
+            DateOfBirth,
+            BankAccountType,
             ToastificationContent,
         },
 
@@ -276,6 +362,7 @@
                 object: {},
                 conditions: {
                     shouldBeAnyOf: [],
+                    shouldNotBeAnyOf: [],
                     shouldBeGreaterThan: [],
                     shouldBeLessThan: [],
                     shouldBeEqualTo: [],
@@ -287,6 +374,8 @@
                     shouldNotContain: '',
                     shouldNotEndWith: '',
                     shouldBe: '',
+
+                    shouldNotMatch: [],
                 },
                 status: '',
             })
@@ -296,6 +385,10 @@
                 incomeCycleOptions,
                 maritalStatusOptions,
                 residentialStatusOptions,
+                stateOptions,
+                inMilitaryOptions,
+                bankAccountTypeOptions,
+                phoneOptions,
                 goBack,
 
             } = useFilterList();
@@ -328,7 +421,10 @@
                 incomeCycleOptions,
                 maritalStatusOptions,
                 residentialStatusOptions,
-
+                stateOptions,
+                inMilitaryOptions,
+                bankAccountTypeOptions,
+                phoneOptions,
                 ToastificationContent,
                 toast,
                 goBack,

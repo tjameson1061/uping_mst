@@ -140,6 +140,8 @@ class USLeadController extends Controller
     {
 
 
+        // validate data points TODO
+
 //        $ip = $request->ip();
 //        $userAgent = $request->server('HTTP_USER_AGENT');
 

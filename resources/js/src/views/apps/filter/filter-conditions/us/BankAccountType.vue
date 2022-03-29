@@ -7,7 +7,7 @@
             class="mb-2"
         >
             <h3>
-                Income Cycle
+               Bank Account Type
             </h3>
             <small class="text-muted">
                 Filter Settings
@@ -27,9 +27,9 @@
                 <b-form-checkbox-group
                     id="shouldBeAnyOf"
                     name="shouldBeAnyOf"
-                    v-model="filterData.conditions.shouldBeAnyOf"
-                    :options="residentialStatusOptions"
-                    :checked="filterData.conditions.shouldBeAnyOf"
+                    v-model="filterData.object.shouldBeAnyOf"
+                    :options="bankAccountTypeOptions"
+                    :checked="filterData.object.shouldBeAnyOf"
                 />
             </b-form-group>
         </b-col>
@@ -50,12 +50,13 @@
                 <b-form-checkbox-group
                     id="shouldBe"
                     name="shouldBe"
-                    v-model="filterData.conditions.shouldBe"
-                    :options="residentialStatusOptions"
-                    :checked="filterData.conditions.shouldBe"
+                    v-model="filterData.object.shouldBe"
+                    :options="bankAccountTypeOptions"
+                    :checked="filterData.object.shouldBe"
                 />
             </b-form-group>
         </b-col>
+
     </div>
 </template>
 
@@ -82,7 +83,7 @@
                 type: Object,
                 required: true,
             },
-            residentialStatusOptions: {
+            bankAccountTypeOptions: {
                 type: Array,
                 required: true,
             },
@@ -94,7 +95,7 @@
 
             return {
                 filterData,
-                residentialStatusOptions,
+                bankAccountTypeOptions,
             }
         },
     }

@@ -5,6 +5,7 @@ namespace App\QueryFilters\NumericFilter;
 
 use App\Models\Buyer\BuyerFilter;
 use App\QueryFilters\Filter;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -26,59 +27,76 @@ class ShouldBeBetween extends Filter
 
         switch ($condition) {
             case 'MonthlyIncome':
-                $query = DB::table('employers')->where('id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'monthlyIncome';
                 break;
             case 'LoanAmount':
-                $query = DB::table('loans')->where('id', $post->id);
+                $query = DB::table('loans')->where('lead_id', $post->uuid);
 
                 $keyColumn = 'loanAmount';
                 break;
             case 'MonthlyMortgageRent':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
 
                 $keyColumn = 'monthlyMortgageRent';
                 break;
             case 'MonthsAtAddress':
-                $query = DB::table('residences')->where('id', $post->id);
+                $query = DB::table('residences')->where('lead_id', $post->uuid);
                 $keyColumn = 'monthsAtAddress';
                 break;
             case 'LoanTerms':
-                $query = DB::table('loans')->where('id', $post->id);
+                $query = DB::table('loans')->where('lead_id', $post->uuid);
                 $keyColumn = 'loanTerms';
                 break;
             case 'CreditExpense':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
                 $keyColumn = 'creditExpense';
                 break;
             case 'TransportExpense':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
                 $keyColumn = 'transportExpense';
                 break;
             case 'OtherExpense':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
                 $keyColumn = 'otherExpense';
                 break;
             case 'UtilityExpense':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
                 $keyColumn = 'utilityExpense';
                 break;
             case 'FoodExpense':
-                $query = DB::table('expenses')->where('id', $post->id);
+                $query = DB::table('expenses')->where('lead_id', $post->uuid);
                 $keyColumn = 'foodExpense';
+                break;
+            case 'DateOfBirth':
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
+                $keyColumn = 'DateOfBirthYear';
                 break;
         }
 
 
+//        dd($values);
+        if ($condition == 'DateOfBirth') {
 
-        $query
-            ->where($keyColumn, '>=', (int)$values[0])
-            ->where($keyColumn, '<=', (int)$values[1]);
+            $date_year = Carbon::now()->year;
+            $greaterThan = $date_year - $values[0];
+            $lessThan = $date_year - $values[1];
+
+
+
+            $query->where($keyColumn, '>=',  $lessThan)
+                ->where($keyColumn, '<=',  $greaterThan);
+        } else {
+            $query
+                ->where($keyColumn, '>=', (int)$values[0])
+                ->where($keyColumn, '<=', (int)$values[1]);
+        }
+
+
+
         $newQuery = $query->get()->toArray();
 
-//        if ($keyColumn === 'loanTerms') {
-//            dd($newQuery);
-//        }
+
         if (!empty($newQuery)) {
 
             return $post;

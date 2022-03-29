@@ -23,9 +23,6 @@
 
 
 
-      <pre>
-          {{ filterData }}
-      </pre>
       <b-col
           cols="12"
           md="12"

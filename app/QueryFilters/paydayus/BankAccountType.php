@@ -41,24 +41,9 @@ class BankAccountType
                     $post = (new ShouldContain)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
 
-                if (!empty($key_filter['conditions']->shouldEndWith)) {
-                    $value = $key_filter['conditions']->shouldEndWith;
-                    $post = (new shouldEndWith)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-                }
-
                 if (!empty($key_filter['conditions']->shouldBe)) {
                     $value = $key_filter['conditions']->shouldBe;
-                    $post = (new shouldBe)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-                }
-
-                if (!empty($key_filter['conditions']->shouldNotContain)) {
-                    $value = $key_filter['conditions']->shouldNotContain;
-                    $post = (new shouldNotContain)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-                }
-
-                if ($key_filter['conditions']->shouldNotEndWith !== null) {
-                    $value = $key_filter['conditions']->shouldNotEndWith;
-                    $post = (new ShouldNotEndWith)->applyFilters($post, $value, $key_filter['id'], $filter_type);
+                    $post = (new ShouldBe)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
             }
         }

@@ -27,23 +27,23 @@ class ShouldBeBetween extends Filter
 
         switch ($condition) {
             case 'mssbb':
-                $query = DB::table('applicants')->where('lead_id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'maritalStatus';
                 break;
             case 'esbb':
-                $query = DB::table('applicants')->where('lead_id', $post->id);
+                $query = DB::table('applicants')->where('lead_id', $post->uuid);
                 $keyColumn = 'Email';
                 break;
             case 'isssbb':
-                $query = DB::table('employers')->where('lead_id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'IncomeSource';
                 break;
             case 'icsbb':
-                $query = DB::table('employers')->where('lead_id', $post->id);
+                $query = DB::table('employers')->where('lead_id', $post->uuid);
                 $keyColumn = 'IncomeCycle';
                 break;
             case 'rssbb':
-                $query = DB::table('residences')->where('lead_id', $post->id);
+                $query = DB::table('residences')->where('lead_id', $post->uuid);
                 $keyColumn = 'ResidentialStatus';
                 break;
         }
