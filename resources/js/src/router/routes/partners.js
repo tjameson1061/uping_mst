@@ -65,6 +65,8 @@ export default [
         name: 'apps-partner-offer-product-details',
         component: () => import('@/views/apps/partnerdashboard/offer/e-commerce-product-details/ECommerceProductDetails.vue'),
         meta: {
+            requiresAuth: true,
+            partnerAuth: true,
             pageTitle: 'Offer Details',
             contentClass: 'ecommerce-application',
             breadcrumb: [

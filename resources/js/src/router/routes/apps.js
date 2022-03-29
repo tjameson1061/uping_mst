@@ -40,7 +40,7 @@ export default [
         component: () => import('@/views/apps/account/AccountSetting.vue'),
         meta: {
             requiresAuth: false,
-            partnerAuth: true,
+            adminAuth: true,
             pageTitle: 'Account Settings',
             breadcrumb: [
                 {
@@ -61,6 +61,8 @@ export default [
         name: 'apps-admin-offers',
         component: () => import('@/views/apps/e-commerce/e-commerce-shop/ECommerceShop.vue'),
         meta: {
+            requiresAuth: false,
+            adminAuth: true,
             contentRenderer: 'sidebar-left-detached',
             contentClass: 'ecommerce-application',
             pageTitle: 'Offers',
@@ -144,6 +146,8 @@ export default [
         name: 'admin-api-docs-uk',
         component: () => import('@/views/apps/apidocs/uk/UKDocsView.vue'),
         meta: {
+            requiresAuth: false,
+            adminAuth: true,
             pageTitle: 'API Docs',
             breadcrumb: [
                 {
@@ -159,6 +163,8 @@ export default [
         name: 'admin-api-docs',
         component: () => import('@/views/apps/apidocs/uk/UKDocs.vue'),
         meta: {
+            requiresAuth: false,
+            adminAuth: true,
             pageTitle: 'Question',
             breadcrumb: [
                 {
