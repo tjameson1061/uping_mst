@@ -51,8 +51,7 @@ class PartDashboardUSController extends Controller
 
     public function todayEarnings($vendor_id)
     {
-        $daily = USLead::where('vid', $vendor_id)
-            ->whereDate('created_at', Carbon::today())->get();
+        $daily = USLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())->get();
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
         $revenue['today_total'] = round($vid_lead_price_total, 2);

@@ -94,7 +94,7 @@ class PartReportController extends Controller
         $vendor_id = $partner->vendor_id;
 
 
-        $reports = UKLead::select('vid', 'subid', 'vidLeadPrice', 'isRedirected', 'tier', 'leadStatus', 'created_at')
+        $reports = UKLead::select('vid', 'subid', 'vidLeadPrice',  'buyerTierID', 'isRedirected', 'tier', 'leadStatus', 'created_at')
             ->where('vid', $vendor_id)
             ->where($wherelist)
             ->orderBy('created_at', 'desc')
