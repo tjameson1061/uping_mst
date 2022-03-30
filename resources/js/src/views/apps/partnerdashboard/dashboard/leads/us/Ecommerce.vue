@@ -42,7 +42,7 @@
         <!-- Affiliate Overview-->
         <b-row class="match-height">
             <b-col lg="12">
-                <u-k-lead-list/>
+                <u-s-lead-list/>
             </b-col>
 
 
@@ -71,8 +71,8 @@
     import EarningsWeek from "./EarningsWeek.vue";
     import EarningsMonth from "./EarningsMonth.vue";
     import EarningsProfit from "./EarningsProfit.vue";
-    import ReportList from "../../../report/uk/report-list/ReportList.vue";
-    import UKLeadList from '../../../uk-lead/uk-lead-list/LeadList.vue'
+    import ReportList from "../../../report/us/report-list/ReportList.vue";
+    import USLeadList from '../../../us-lead/us-lead-list/LeadList.vue'
     import axios from 'axios'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
@@ -80,7 +80,7 @@
     export default {
         components: {
             ReportList,
-            UKLeadList,
+            USLeadList,
             ApexLineAreaChart,
             BRow,
             BCol,

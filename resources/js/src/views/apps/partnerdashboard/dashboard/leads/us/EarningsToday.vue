@@ -25,7 +25,7 @@
                 height="200"
                 class="my-2"
                 :options="goalOverviewRadialBar"
-                :series="[todayRedirection.redirected_ratio[0]]"
+                :series="[todayRedirection.redirected_ratio]"
         />
         <b-row class="text-center mx-0">
             <b-col

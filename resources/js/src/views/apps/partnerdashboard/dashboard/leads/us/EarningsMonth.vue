@@ -178,7 +178,7 @@
         methods: {
             fetchDashboardData() {
                 axios
-                    .get(`/api/partner/getDashboardLeadDataPartner/uk/${this.userData.id}`)
+                    .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
                     .then((response) => {
                         this.monthRedirection = response.data.dashboard_data.redirectionMonth;
                     })

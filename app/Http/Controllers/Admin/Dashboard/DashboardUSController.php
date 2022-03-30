@@ -324,8 +324,8 @@ class DashboardUSController extends Controller
 //        $daily = DB::table('us_leads');
 
         $daily =
-            USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53");
+            USLead::whereDate('created_at', Carbon::today())->get();
+
 //            ->count();
 
         $vid_lead_price_total = $daily->pluck('vidLeadPrice')->sum();
@@ -508,8 +508,7 @@ class DashboardUSController extends Controller
     public function leadCounts()
     {
         $lead_counts = [];
-        $lead_counts['today'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-1 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
+        $lead_counts['today'] =  USLead::whereDate('created_at', Carbon::today())->get()
             ->count();
         $lead_counts['week'] =  USLead::where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
             ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
