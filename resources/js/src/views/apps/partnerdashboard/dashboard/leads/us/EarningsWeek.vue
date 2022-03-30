@@ -1,6 +1,6 @@
 <template>
     <b-card
-        no-body
+            no-body
     >
         <b-card-header>
             <h4 class="mb-0">
@@ -8,28 +8,28 @@
             </h4>
             <b-card-text class="font-medium-5 mb-0">
                 <feather-icon
-                    icon="HelpCircleIcon"
-                    size="21"
-                    class="text-muted cursor-pointer"
-                    v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                    v-b-tooltip.hover.focus.v-primary
-                    title="Earnings For Week"
-                    variant="outline-primary" />
+                        icon="HelpCircleIcon"
+                        size="21"
+                        class="text-muted cursor-pointer"
+                        v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                        v-b-tooltip.hover.focus.v-primary
+                        title="Earnings For Week"
+                        variant="outline-primary"/>
             </b-card-text>
         </b-card-header>
 
         <!-- apex chart -->
         <vue-apex-charts
-            type="radialBar"
-            height="200"
-            class="my-2"
-            :options="goalOverviewRadialBar"
-            :series="[weekRedirection.redirected_ratio[0]]"
+                type="radialBar"
+                height="200"
+                class="my-2"
+                :options="goalOverviewRadialBar"
+                :series="[weekRedirection.redirected_ratio]"
         />
         <b-row class="text-center mx-0">
             <b-col
-                cols="6"
-                class="border-top border-right d-flex align-items-between flex-column py-1"
+                    cols="6"
+                    class="border-top border-right d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
                     Leads
@@ -40,8 +40,8 @@
             </b-col>
 
             <b-col
-                cols="6"
-                class="border-top d-flex align-items-between flex-column py-1"
+                    cols="6"
+                    class="border-top d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
                     Commission
@@ -103,7 +103,7 @@
         data() {
             return {
                 weekRedirection: {
-                    redirected_ratio : 0
+                    redirected_ratio :[0]
                 },
 
                 series: [10],
@@ -177,7 +177,7 @@
         methods: {
             fetchDashboardData() {
                 axios
-                    .get(`/api/partner/getDashboardLeadDataPartner/uk/${this.userData.id}`)
+                    .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
                     .then((response) => {
                         this.weekRedirection = response.data.dashboard_data.redirectionWeek;
                     })

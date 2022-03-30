@@ -48,7 +48,7 @@
                     Commission
                 </b-card-text>
                 <h3 class="font-weight-bolder mb-0">
-                    £ {{ todayEarnings.today_total }}
+                    $ {{ todayEarnings.today_total }}
                 </h3>
             </b-col>
         </b-row>
