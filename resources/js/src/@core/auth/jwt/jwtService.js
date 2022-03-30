@@ -37,15 +37,17 @@ export default class JwtService {
     this.axiosIns.interceptors.response.use(
         response => response,
         error => {
-          console.log(error.response.status)
+          console.log(error.response)
           debugger
           // const { config, response: { status } } = error
           const { config, response } = error
           const originalRequest = config
 
+
+
           // if (error.response.status === 401) {
-          //     console.log(error.response)
-          //     debugger
+              console.log(response)
+              debugger
           //   if (!this.isAlreadyFetchingAccessToken) {
           //     this.isAlreadyFetchingAccessToken = true
           //     this.refreshToken().then(r => {

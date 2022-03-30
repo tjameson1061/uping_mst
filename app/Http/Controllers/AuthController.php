@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -177,32 +178,39 @@ class AuthController extends Controller
             return response()->json(['error'=>$validator->errors()],401);
         }
 
-        $user = new User();
-        $user->name = $request['name'];
-        $user->username = $request['username'];
-        $user->email = $request['email'];
-        $user->password = bcrypt($request['password']);
-        $user->status = 1;
-        $user->is_admin = 0;
-        $user->role = 3;
-        $user->save();
+        try {
+            $user = new User();
+            $user->name = $request['name'];
+            $user->username = $request['username'];
+            $user->email = $request['email'];
+            $user->password = bcrypt($request['password']);
+            $user->status = 1;
+            $user->is_admin = 0;
+            $user->role = 'Partner';
+            $user->save();
 
 
-        $company = new Company();
-        $company->user_id = $user->id;
-        $company->save();
+            $company = new Company();
+            $company->user_id = $user->id;
+            $company->save();
 
-        $payment = new Payment();
-        $payment->user_id = $user->id;
-        $payment->save();
+            $payment = new Payment();
+            $payment->user_id = $user->id;
+            $payment->save();
 
-        Mail::to($user->email)->send(new Welcome($user));
+//            Event::dispatch(Welcome)
+//            Mail::to($user->email)->send(new Welcome($user));
 
+            return response()->json([
+                'message'=> 'Account Successfully registered',
+                'user'=>$user,
+            ], $this->successStatus);
 
-        return response()->json([
-            'message'=> ' User Successfully registered',
-            'user'=>$user,
-        ], $this->successStatus);
+        } catch(\Exception $e) {
+            Log::debug($e);
+            return response()->json(['message' => 'Error creating account'], 400);
+
+        }
     }
 
     /**

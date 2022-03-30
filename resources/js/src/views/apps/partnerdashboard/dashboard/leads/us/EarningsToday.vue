@@ -1,53 +1,54 @@
 <template>
     <b-card
-        no-body
+            no-body
     >
         <b-card-header>
             <h4 class="mb-0">
-               Today
+                Today
             </h4>
             <b-card-text class="font-medium-5 mb-0">
                 <feather-icon
-                    icon="HelpCircleIcon"
-                    size="21"
-                    class="text-muted cursor-pointer"
-                    v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                    v-b-tooltip.hover.focus.v-primary
-                    title="Earnings For Today"
-                    variant="outline-primary" />
+                        icon="HelpCircleIcon"
+                        size="21"
+                        class="text-muted cursor-pointer"
+                        v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                        v-b-tooltip.hover.focus.v-primary
+                        title="Earnings For Today"
+                        variant="outline-primary"
+                />
             </b-card-text>
         </b-card-header>
+
         <!-- apex chart -->
         <vue-apex-charts
-            v-if="todayRedirection"
-            type="radialBar"
-            height="200"
-            class="my-2"
-            :options="goalOverviewRadialBar"
-            :series="[todayRedirection.redirected_ratio[0]]"
+                type="radialBar"
+                height="200"
+                class="my-2"
+                :options="goalOverviewRadialBar"
+                :series="[todayRedirection.redirected_ratio[0]]"
         />
         <b-row class="text-center mx-0">
             <b-col
-                cols="6"
-                class="border-top border-right d-flex align-items-between flex-column py-1"
+                    cols="6"
+                    class="border-top border-right d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
-                   Leads
+                    Leads
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0" v-if="leadCounts">
+                <h3 class="font-weight-bolder mb-0">
                     {{ leadCounts.today }}
                 </h3>
             </b-col>
 
             <b-col
-                cols="6"
-                class="border-top d-flex align-items-between flex-column py-1"
+                    cols="6"
+                    class="border-top d-flex align-items-between flex-column py-1"
             >
                 <b-card-text class="text-muted mb-0">
                     Commission
                 </b-card-text>
-                <h3 class="font-weight-bolder mb-0" v-if="todayEarnings">
-                    $ {{ todayEarnings.today_total }}
+                <h3 class="font-weight-bolder mb-0">
+                    £ {{ todayEarnings.today_total }}
                 </h3>
             </b-col>
         </b-row>
@@ -87,10 +88,6 @@
                 type: Object,
                 required:true,
             },
-            todayRedirection: {
-                type: Object,
-                required:true,
-            },
             todayEarnings: {
                 type: Object,
                 required:true,
@@ -106,9 +103,9 @@
         },
         data() {
             return {
-                // todayRedirection: {
-                //     redirected_ratio : 0
-                // },
+                todayRedirection: {
+                    redirected_ratio :[0]
+                },
 
                 series: [10],
                 goalOverviewRadialBar: {
@@ -176,17 +173,17 @@
             }
         },
         created() {
-            // this.fetchDashboardData();
+            this.fetchDashboardData();
         },
         methods: {
-            // fetchDashboardData() {
-            //     axios
-            //         .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
-            //         .then((response) => {
-            //             this.todayRedirection = response.data.dashboard_data.redirectionToday;
-            //         })
-            //         .catch((error) => console.log(error));
-            // },
+            fetchDashboardData() {
+                axios
+                    .get(`/api/partner/getDashboardLeadDataPartner/us/${this.userData.id}`)
+                    .then((response) => {
+                        this.todayRedirection = response.data.dashboard_data.redirectionToday;
+                    })
+                    .catch((error) => console.log(error));
+            },
         },
     }
 </script>

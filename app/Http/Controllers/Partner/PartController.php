@@ -19,6 +19,28 @@ use Illuminate\Support\Facades\Response;
 
 class PartController extends Controller
 {
+    public function getPartnerStatusUK(Request $request, $id)
+    {
+        $partner = Partner::where('user_id', $id)->where('lead_type', 1)->get();
+
+        if($partner->isNotEmpty()) {
+            return Response::json('Partner Active');
+        } else {
+            return Response::json('Partner Inactive');
+        }
+
+    }
+    public function getPartnerStatusUS(Request $request, $id)
+    {
+        $partner = Partner::where('user_id', $id)->where('lead_type', 2)->get();
+
+        if($partner->isNotEmpty()) {
+            return Response::json('Partner Active');
+        } else {
+            return Response::json('Partner Inactive');
+        }
+
+    }
 
 
     public function getFilterDataUK(Request $request, $id)

@@ -98,7 +98,7 @@ export default function useLeadList() {
                 toast({
                     component: ToastificationContent,
                     props: {
-                        title: "Error fetching users list",
+                        title: "Error fetching dashboard data",
                         icon: "AlertTriangleIcon",
                         variant: "danger",
                     },

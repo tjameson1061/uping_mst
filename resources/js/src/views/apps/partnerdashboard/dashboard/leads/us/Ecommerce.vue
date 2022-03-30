@@ -4,20 +4,18 @@
         <!--Stat Cards-->
         <b-row class="match-height">
             <b-col
-                xl="4"
-                md="4"
+                    xl="4"
+                    md="4"
             >
-                <earnings-today  v-if="userData"
-                                 :today-earnings="todayEarnings"
-                                 :today-redirection="todayRedirection"
-                                 :lead-counts="leadCounts"
-                                 :user-data="userData"
-                                 title="Today"/>
+                <earnings-today :today-earnings="todayEarnings"
+                                :lead-counts="leadCounts"
+                                :user-data="userData"
+                                title="Today"/>
 
             </b-col>
             <b-col
-                xl="4"
-                md="4"
+                    xl="4"
+                    md="4"
             >
                 <earnings-week :week-earnings="weekEarnings"
                                :lead-counts="leadCounts"
@@ -25,8 +23,8 @@
                                title="Week"/>
             </b-col>
             <b-col
-                xl="4"
-                md="4"
+                    xl="4"
+                    md="4"
             >
                 <earnings-month :month-earnings="monthEarnings"
                                 :lead-counts="leadCounts"
@@ -44,8 +42,7 @@
         <!-- Affiliate Overview-->
         <b-row class="match-height">
             <b-col lg="12">
-
-               <u-s-lead-list />
+                <u-k-lead-list/>
             </b-col>
 
 
@@ -74,17 +71,16 @@
     import EarningsWeek from "./EarningsWeek.vue";
     import EarningsMonth from "./EarningsMonth.vue";
     import EarningsProfit from "./EarningsProfit.vue";
-    import ReportList from "../../../report/us/report-list/ReportList.vue";
-    import USLeadList from '../../../us-lead/us-lead-list/LeadList.vue'
+    import ReportList from "../../../report/uk/report-list/ReportList.vue";
+    import UKLeadList from '../../../uk-lead/uk-lead-list/LeadList.vue'
     import axios from 'axios'
-
-
+    import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 
     export default {
         components: {
             ReportList,
-            USLeadList,
+            UKLeadList,
             ApexLineAreaChart,
             BRow,
             BCol,
@@ -104,7 +100,7 @@
             EarningsMonth,
             EarningsProfit,
             CardAnalyticGoalOverview,
-
+            ToastificationContent,
 
         },
         data() {
@@ -121,9 +117,24 @@
             }
         },
         created() {
+            this.fetchPartnerStatus();
             this.fetchDashboardData();
         },
         methods: {
+            approvalModal() {
+                this.$swal({
+                    title: '<span class="font-weight-bolder">Approval <u>Required</u></span>',
+                    icon: 'warning',
+                    html:
+                        '<p><small>  Contact your account manager: </small></p>'
+                        + '<p><span class="font-weight-bolder small">Name:  Tom Jameson </span><br>'
+                        + ' <span class="font-weight-bolder small">Email:  tom@uping.co.uk </span><br>'
+                        + ' <span class="font-weight-bolder small">Skype:  live:.cid.aea911675f20a46c </span><br></p>',
+                    showConfirmButton: false,
+                    buttonsStyling: false,
+                })
+            },
+
             fetchDashboardData() {
                 const userData = getUserData()
                 this.userData = userData
@@ -139,7 +150,27 @@
                         this.affiliate_table_data = response.data.dashboard_data.affiliate_table_data;
                         this.leadCounts = response.data.dashboard_data.leadCounts;
                     })
-                    .catch((error) => console.log(error));
+                    .catch((error) => {
+
+                    });
+            },
+            fetchPartnerStatus() {
+                const userData = getUserData()
+                this.userData = userData
+                axios
+                    .get(`/api/partner/getPartnerStatusUS/${userData.id}`)
+                    .then((response) => {
+                        console.log(response.data)
+                        debugger
+                        if (response.data == 'Partner Active') {
+
+                        } else if (response.data ==  'Partner Inactive') {
+                            this.approvalModal()
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             },
         },
     }

@@ -66,7 +66,7 @@ export default function usePostbacksList() {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching partners list',
+            title: 'Error fetching postbacks',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },

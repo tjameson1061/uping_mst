@@ -107,6 +107,12 @@ class USLeadController extends Controller
         return Response::json(['leads' => $leads]);
     }
 
+//    public function opt_out(Request $request)
+//    {
+//
+//
+//    }
+
     /**
      * @param Request $request
      * @param $id

@@ -43,7 +43,10 @@ use Illuminate\Support\Str;
 Route::get('click/tracker', [ClickTrackerController::class, 'tracker']);
 Route::get('network/sync', [AffiliateNetworkController::class, 'offer_sync']);
 Route::get('conversion/track/postback', [PostbackTrackerController::class, 'postback'])->name('postback');
-Route::get('adv_postback', [PostbackTrackerController::class, 'adv_postback'])->name('adv_postback');
+//Route::get('adv_postback', [PostbackTrackerController::class, 'adv_postback'])->name('adv_postback');
+
+Route::get('marketing/us/opt-out', [USLeadController::class, 'opt_out'])->name('opt-out-us');
+Route::get('marketing/uk/opt-out', [UKLeadController::class, 'opt_out'])->name('opt-out-uk');
 
 
 /* RESET PASSWORD ROUTES */
@@ -123,6 +126,8 @@ Route::group([
 
         /* Partner Account Settings */
         Route::get('/getUserData/{id}', [PartController::class, 'getUserData']);
+        Route::get('/getPartnerStatusUK/{id}', [PartController::class, 'getPartnerStatusUK']);
+        Route::get('/getPartnerStatusUS/{id}', [PartController::class, 'getPartnerStatusUS']);
         Route::patch('/updateAccountInfo/{id}', [PartController::class, 'updateAccountInfo']);
         Route::patch('/updateAccountPassword/{id}', [PartController::class, 'updateAccountPassword']);
         Route::patch('/updateCompany/{id}', [PartController::class, 'updateCompany']);

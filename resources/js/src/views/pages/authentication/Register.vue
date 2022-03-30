@@ -286,8 +286,8 @@ export default {
         if (success) {
           useJwt
             .register({
-              username: this.username,
               name: this.name,
+              username: this.username,
               email: this.email,
               password: this.password,
               confirmation_password: this.confirmation_password,
@@ -306,9 +306,19 @@ export default {
                 })
             })
             .catch(error => {
-                console.log(error)
-                debugger
-              this.$refs.registerForm.setErrors(error.response.data.error)
+                if (error.response.status === 401) {
+                    this.$toast({
+                        component: ToastificationContent,
+                        position: 'top-right',
+                        props: {
+                            title: `Error Creating Account::`,
+                            icon: 'AlertCircleIcon',
+                            variant: 'danger',
+                            text: `Please enter valid credentials`,
+                        },
+                    })
+                }
+              this.$refs.registerForm.setErrors(error.response.error)
             })
         }
       })

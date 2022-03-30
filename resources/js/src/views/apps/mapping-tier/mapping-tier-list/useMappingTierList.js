@@ -75,7 +75,7 @@ export default function useMappingTierList() {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching MappingTier list',
+            title: 'Error fetching Tier list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
