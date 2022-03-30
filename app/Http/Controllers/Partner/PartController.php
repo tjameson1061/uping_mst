@@ -77,9 +77,9 @@ class PartController extends Controller
 
     public function getUserData($id)
     {
-        Log::debug('USER ID::', (array)$id);
+//        Log::debug('USER ID::', (array)$id);
         $user = User::find($id);
-        Log::debug('USER ID::', (array)$user);
+//        Log::debug('USER ID::', (array)$user);
 
         $user['company'] = Company::where('user_id', $id)->first();
 
