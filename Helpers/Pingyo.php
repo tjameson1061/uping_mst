@@ -1,5 +1,7 @@
 <?php
 
+namespace Helpers;
+
 class Pingyo_core {
 
 	var $api_url;
@@ -17,8 +19,6 @@ class Pingyo_core {
 	/* SOF: Default constructor */
 	function __construct() {
 
-//		$this->CI =& get_instance();
-		$this->CI->load->database();
 		$this->override_cache = FALSE;
 		$this->table_prefix = '';
 		$this->table = [

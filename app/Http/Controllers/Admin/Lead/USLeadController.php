@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Jobs\PostLeadToBuyers;
 use App\Models\CheckStatus\CheckStatus;
 use App\Models\CheckStatus\CheckStatusLogger;
+use App\Models\Lead\LeadValidate;
+use App\Models\Lead\UKLead;
 use App\Models\Lead\USLead;
 use App\Models\LMSApplication\Applicant;
 use App\Models\LMSApplication\Bank;
@@ -140,50 +142,30 @@ class USLeadController extends Controller
      * This function accepts applications and posts/maps them to the DB.
      *
      * @param LeadPostRequestUS $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function post(LeadPostRequestUS $request)
     {
+        $post = json_decode($request->getContent());
+        $validated = (new LeadValidate)->validate_data($request);
 
-
-        // validate data points TODO
-
-//        $ip = $request->ip();
-//        $userAgent = $request->server('HTTP_USER_AGENT');
-
-        if ($request->isJson()) {
-            $post = json_decode($request->getContent());
-            Log::debug('DEBUG::', (array)$post);
-        }
-
-        if ($post->vid == null) {
-            return response('AFF ID is required', 300);
-        }
-        if ($post->oid == null) {
-            $post->oid = 1;
+        // Is application valid, if not return errors
+        if ($validated !== true) {
+            return response()->json([
+                'Errors' => $validated
+            ]);
         }
 
         // Retrieve Partner Account Status if VID present.
         $this->partner_detail = Partner::GetPartnerFullDetail($post->vid, $this->leadtype);
-        Log::debug('Partner_vendor::', (array)$this->partner_detail);
-        if ($this->partner_detail === null) {
-            echo 'Partner Not Active';
-            die();
-        }
+        if ($this->partner_detail === null) { echo 'Partner Not Active'; die(); }
+        if (isset($post->response_type)) {$response_type = $post->response_type;} else {$response_type = 'json';}
 
         // Mapping + Add Lead to Database
         $post = $this->store($post);
 
 
-        // Check for duplicates and limits setup up against affiliates.
-//        $partner_limits = (new LmsPartnerLeadType)->partner_limits($request, $this->partner_detail, $this->leadtype);
-//
-//        if (!$partner_limits instanceof Request) {
-//            echo $partner_limits;
-//            die();
-//        }
         // Add the Log to partner lead type table
-        Log::debug('AFF ID::', (array)$this->partner_detail);
         $data['vendor_id'] = $this->partner_detail->vendor_id;
         $data['post_data'] = json_encode($post);
         $data['created_at'] = date('Y-m-d H:i:s');
@@ -192,29 +174,9 @@ class USLeadController extends Controller
         $partnerlogid = $partner_log->id;
 
 
-        // Get Generated Lead ID and log it to Telescope
-        $post->lead_id = DB::table('us_leads')->latest()->first()->id;
-        Log::info('TestMode: ' . isset($post->istest) ?? $post->istest);
-        Log::info('Lead ID: ' . $post->lead_id);
+        // Get Generated Lead ID
+        $post->lead_id = $data['lead_id'];
 
-
-
-//       **** IPQualityScore - Fraud Scoring ****
-//        // Email Validation
-//        $email = $post->email;
-//        $response = $this->ipqs_email($email);
-//
-        // IP / Bot Detection
-//        $response = $this->ipqs_ip($ipAddress, $userAgent);
-//        $res = USLead::quality_check($response, $post->leadid);
-
-
-        Log::debug('RESP TYPE::', (array)$post->response_type);
-        if (isset($post->response_type)) {
-            $response_type = $post->response_type;
-        } else {
-            $response_type = 'json';
-        }
 
         // Status Check Code
         $inputs = $post;

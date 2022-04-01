@@ -388,7 +388,7 @@ class USLead extends Model
     /**
      * This function gets the buyers associated with the VID.
      * @param $post
-     * @return
+     * @return mixed
      */
     public static function getBuyers($post)
     {

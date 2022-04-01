@@ -80,11 +80,10 @@ class BuyerFilterUS extends Model
      * @param $lead
      * @return USLead|mixed
      */
-    public static function numericFilters($lead)
+    public static function numericFilters($post)
     {
 
-        // Get the buyers mapped with VID / Vendor ID
-        $post = USLead::getBuyers($lead);
+
         /*** Numeric Choice Filters ***/
         $post = (new LoanAmount)->applyFilters($post);
         $post = (new MonthlyIncome)->applyFilters($post);

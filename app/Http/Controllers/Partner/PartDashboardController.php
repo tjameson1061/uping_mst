@@ -199,14 +199,11 @@ class PartDashboardController extends Controller
     public function leadCounts($vendor_id)
     {
         $lead_counts = [];
-        $lead_counts['today'] =  UKLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())->get()
-            ->count();
+        $lead_counts['today'] =  UKLead::where('vid', $vendor_id)->whereDate('created_at', Carbon::today())->get()->count();
         $lead_counts['week'] =  UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-7 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-            ->count();
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")->count();
         $lead_counts['month'] =  UKLead::where('vid', $vendor_id)->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))
-            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")
-            ->count();
+            ->where('created_at', '<=', date('Y-m-d') . " 23:53:53")->count();
 
         return $lead_counts;
     }
@@ -222,7 +219,6 @@ class PartDashboardController extends Controller
         $partner = Partner::where('user_id', $id)->where('lead_type', 1)->first();
         $vendor_id = $partner->vendor_id;
 
-//        dd($vendor_id);
 
         $date1 = $request->input('start_date');
         $date2 = $request->input('end_date');

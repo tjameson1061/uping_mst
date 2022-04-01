@@ -3,8 +3,10 @@
 namespace App\Models\IPQS;
 
 use App\Helpers\CurlHelper;
+use App\Http\Requests\LeadPostRequestUS;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 class IPQS extends Model
 {
@@ -12,6 +14,7 @@ class IPQS extends Model
 
     /**
      * @param $request_id
+     * @param $transaction_id
      * @return IPQS
      */
     public static function store($request_id, $transaction_id)
@@ -24,16 +27,15 @@ class IPQS extends Model
         return $ipqs;
     }
 
+
     /**
-     * @param $request
-     * @return array
+     * @param LeadPostRequestUS $request
+     * @return bool
      */
-    public static function ip_url($request)
+    public static function quality_score(LeadPostRequestUS $request)
     {
-        $ipqs = \config('ipqs');
+        $ipqs = config('ipqs');
         $key = $ipqs[0];
-        $timeout = $ipqs[1];
-//        $fast = $ipqs[2];
         $abuse_strictness = $ipqs[3];
 
         $ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'];
@@ -49,32 +51,71 @@ class IPQS extends Model
             'aff_sub3' => $request->aff_sub3,
             'aff_sub4' => $request->aff_sub4,
             'aff_sub5' => $request->aff_sub5,
-            'aff_unique1' => $request->aff_unique1,
-            'aff_unique2' => $request->aff_unique2,
-            'aff_unique3' => $request->aff_unique3,
-            'aff_unique4' => $request->aff_unique4,
-            'user_agent' => $request->server('HTTP_USER_AGENT'),
+            'billing_address_1' => $request->applicant['addressStreet1'] ?? '',
+            'billing_address_2' => $request->applicant['addressStreet2'] ?? '',
+            'billing_city' => $request->applicant['city'] ?? '',
+            'billing_region' => $request->applicant['state'] ?? '',
+            'billing_postcode' => $request->applicant['zip'] ?? '',
+            'billing_country' => $request->applicant['country'] ?? '',
+            'user_agent' => $request->source['userAgent'] ?? $request->server('HTTP_USER_AGENT'),
             'user_language' => $request->server('HTTP_ACCEPT_LANGUAGE'),
             'gclid' => $request->gclid,
             'google_aid' => $request->google_aid,
             'ios_ifa' => $request->ios_ifa,
         );
-        $formatted_parameters = http_build_query($params);
 
         $url = sprintf(
-            'https://www.ipqualityscore.com/api/json/ip/%s/%s?%s',
+            'https://www.ipqualityscore.com/api/json/ip/%s/%s?',
             $key,
             $ip,
-//            '82.8.151.10',
-            $formatted_parameters
         );
 
-        $data = [];
-        $data['url'] = $url;
-        $data['abuse_strictness'] = $abuse_strictness;
-        $data['timeout'] = $timeout;
+        $res = Http::post($url, $params);
+        $response = $res->object();
 
-        return $data;
+
+        if ($response->success == true) {
+            return true;
+        } else {
+            return $response->message;
+        }
+    }
+
+    /**
+     * @param $email
+     * @return bool
+     */
+    public static function verify_email($email)
+    {
+
+        $url = sprintf('https://ipqualityscore.com/api/json/email/ghrOADvR3dnwdcIqeaGeo58ocwS4ExYK/' . $email);
+        $res = Http::post($url);
+        $response = $res->object();
+
+        if ($response->success == true && $response->valid == true) {
+            return true;
+        } else {
+            return $response->message;
+        }
+    }
+
+    /**
+     * @param $phone
+     * @return bool
+     */
+    public static function verify_phone($phone)
+    {
+
+
+        $url = sprintf('https://ipqualityscore.com/api/json/email/ghrOADvR3dnwdcIqeaGeo58ocwS4ExYK/' . $phone);
+        $res = Http::post($url);
+        $response = $res->object();
+
+        if ($response->success == true && $response->valid == true) {
+            return true;
+        } else {
+            return $response->message;
+        }
     }
 
     /**

@@ -208,7 +208,47 @@ class PostLeadToBuyersUS implements ShouldQueue
 //        exit;
     }
 
+    /**
+     *  if ($post->istest != true) {
+    if (isset($post->quality_score)) {
+    $buyer_list->row = $this->quality_score_tracker($post);
+    $post->buyer_list = $buyer_list->row;
+    }
+    }
+     */
 
+    /**
+     * @param $post
+     * @return mixed
+     */
+    public function quality_score_tracker($post)
+    {
+
+        if ($post->quality_score >= 80) {
+            $partner = Partner::where('vendor_id', $post->vendor_id)->first();
+            $mappings = Mapping::where('partner_id', $partner->id)->get();
+
+            foreach ($mappings as $mapping) {
+                $buyer_list = BuyerSetup::whereIn('model_type', 'Pingtree')
+                    ->where('id', $mapping->buyer_setup_id )
+                    ->where('rotate', 1)
+                    ->get();
+
+                dd($buyer_list);
+            }
+        }
+
+        return $post;
+
+    }
+
+    public function network_channel_settings($post)
+    {
+        //
+
+        return $post->buyer_list;
+
+    }
 
 
     /**
@@ -220,34 +260,36 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     public function BuyerPost($post)
     {
+        $post = USLead::getBuyers($post);
+
+
+        // Check Pingtree EPLs
+        $pingtree_tracker_response = $this->GetPingtreeTracker($post);
+
+        // Check affiliate limits on channel settings - outro pingtree traffic
+        $network_channel_response = $this->network_channel_settings($post);
+
+        // Check for high risk leads
+        $quality_response = $this->quality_score_tracker($post);
+
+
+
 
 
         $post = BuyerFilterUS::allBuyerFilters($post);
 
-        $post->subid = $post->subid ?? 'DIRECT';
-
-//        if ($post->istest != true) {
-//            if (isset($post->quality_score)) {
-//                $buyer_list['row'] = $this->QualityScoreChecker($post);
-//                $post->buyer_list = $buyer_list['row'];
-//            }
-//        }
 
 
+        $buyer_list = (object)[];
+        $buyer_list->row = $post->buyer_list;
+        $buyer_list->row = json_decode(json_encode($buyer_list->row), true);
 
 
-        Log::debug('BUYER LIST2::', (array)$post->buyer_list);
-
-
-        $buyer_list['row'] = $post->buyer_list;
-        $buyer_list['row'] = json_decode(json_encode($buyer_list['row']), true);
-
-
-        if (is_array($buyer_list['row']) && !empty($buyer_list['row'])) {
+        if (is_array($buyer_list->row) && !empty($buyer_list->row)) {
             $index = 0;
-            $length = count($buyer_list['row']);
+            $length = count($buyer_list->row);
 
-            foreach ($buyer_list['row'] as $key => $value) {
+            foreach ($buyer_list->row as $key => $value) {
                 $row = (object)$value;
                 $row = $this->GetPingtreeTracker($row, $buyer_list);
 
@@ -431,7 +473,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                         }
                     }
                 } else {
-                    if ($buyer_list['row'] > 1) {
+                    if ($buyer_list->row > 1) {
                         try{
                             $index++;
                         } catch (Exception $e) {
@@ -505,7 +547,7 @@ class PostLeadToBuyersUS implements ShouldQueue
             // Get Sample EPL from each Tree
             if ($lead_count_today < 50) {
 
-                $res = $this->GetBuyerRotate($row, $buyer_list['row'], 'lead_post');
+                $res = $this->GetBuyerRotate($row, $buyer_list->row, 'lead_post');
                 return $res;
 
             } else {
@@ -521,7 +563,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                     $buyer = PingtreeTrackerUS::orderBy('epl', 'DESC')->get();
 
                     if (count($buyer) > 1) {
-                        $row = $this->GetBuyerRotate($row, $buyer_list['row'], 'lead_post',);
+                        $row = $this->GetBuyerRotate($row, $buyer_list->row, 'lead_post',);
 
                         return $row;
 
@@ -772,9 +814,9 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $tree = PingtreeTracker::orderBy('epl', 'DESC')->first();
                 $pingtree = $tree->buyersetup_id;
 
-                $buyer_list['row'] = BuyerSetup::where('id', '=', $pingtree)->first();
+                $buyer_list->row = BuyerSetup::where('id', '=', $pingtree)->first();
 
-                $post->buyer_list = $buyer_list['row'];
+                $post->buyer_list = $buyer_list->row;
 
                 return $post;
             }
