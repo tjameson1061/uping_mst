@@ -53,11 +53,6 @@ class Email
                     $post = (new shouldBe)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
 
-//                if ($key_filter['conditions']->shouldMatchRegEx !== null) {
-//                     $value = $key_filter['conditions']->shouldMatchRegEx;
-//                    $post = (new shouldMatchRegEx)->applyFilters($post, $value, $key_filter['id'], $filter_type);
-//                }
-
                 if (!empty($key_filter['conditions']->shouldNotContain)) {
                      $value = $key_filter['conditions']->shouldNotContain;
                     $post = (new shouldNotContain)->applyFilters($post, $value, $key_filter['id'], $filter_type);

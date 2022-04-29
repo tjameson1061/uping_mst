@@ -56,10 +56,12 @@ class MonthlyIncome
                     $value = $key_filter['conditions']->shouldBeLessThan;
                     $post = (new ShouldBeLessThan)->applyFilters($post, $value, $key_filter['id'], $filter_type);
                 }
-                if ($key_filter['conditions']->shouldBeBetween1 !== null && $key_filter['conditions']->shouldBeBetween2 !== null) {
-                    $values[] = $key_filter['conditions']->shouldBeBetween1;
-                    $values[] = $key_filter['conditions']->shouldBeBetween2;
-                    $post = (new ShouldBeBetween)->applyFilters($post, $values, $key_filter['id'], $filter_type);
+                if(isset($key_filter['conditions']->shouldBeBetween1) && isset($key_filter['conditions']->shouldBeBetween2)) {
+                    if ($key_filter['conditions']->shouldBeBetween1 !== null && $key_filter['conditions']->shouldBeBetween2 !== null) {
+                        $values[] = $key_filter['conditions']->shouldBeBetween1;
+                        $values[] = $key_filter['conditions']->shouldBeBetween2;
+                        $post = (new ShouldBeBetween)->applyFilters($post, $values, $key_filter['id'], $filter_type);
+                    }
                 }
                 if ($key_filter['conditions']->shouldBe !== null) {
                     $values = $key_filter['conditions']->shouldBe;

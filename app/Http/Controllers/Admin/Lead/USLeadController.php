@@ -58,7 +58,6 @@ class USLeadController extends Controller
         $lead_quality = $request->input("lead_quality");
         $redirection = $request->input("redirection");
         $status = $request->input("status");
-
         $query = $request->input("searchQuery");
 
 
@@ -109,11 +108,6 @@ class USLeadController extends Controller
         return Response::json(['leads' => $leads]);
     }
 
-//    public function opt_out(Request $request)
-//    {
-//
-//
-//    }
 
     /**
      * @param Request $request
@@ -207,7 +201,6 @@ class USLeadController extends Controller
 
 
         $data = new USLead();
-//        $data->id = Str::uuid();
         $data->uuid = Str::uuid();
         $data->vid = $this->toString($post->vid);
         $data->subid = $this->toString($post->subid);
@@ -230,7 +223,6 @@ class USLeadController extends Controller
         $res = $data->save();
 
 
-//        $source = (object)$post->source;
         $data->Source = new Source();
         $data->Source->id = $data->Source->id;
         $data->Source->lead_id = $data->uuid;
@@ -249,7 +241,6 @@ class USLeadController extends Controller
         $data->Loan->recentLoanCount = $this->toString($post->loan->recentLoanCount ?? 0);
         $data->Loan->save();
 
-//        Log::debug('POST->APPLICANT::', (array)$post->applicant);
         $data->Applicant = new Applicant();
         $data->Applicant->id = $data->Applicant->id;
         $data->Applicant->lead_id = $data->uuid;
@@ -291,7 +282,6 @@ class USLeadController extends Controller
         $data->Residence->numberOfRenters = $this->toString($post->residence->numberOfRenters ?? 0);
         $data->Residence->save();
 
-//        $post = (object)$post->employer;
         $data->Employer = new Employer();
         $data->Employer->id = $data->Employer->id;
         $data->Employer->lead_id = $data->uuid;
@@ -339,32 +329,8 @@ class USLeadController extends Controller
         $data->Consent->consentThirdPartyPhone = $this->toString($post->consent->consentThirdPartyPhone ?? '0');
         $data->Consent->save();
 
-//        if (isset($data->Additonial)) {
-//
-//            $data->Additional = new Additional();
-//            $data->Additional->id = $data->Additional->id;
-//            $data->Additional->lead_id = $data->id;
-//            $data->Additional->bestTimeToCall = $this->toString($post->additional->bestTimeToCall ?? '');
-//            $data->Additional->creditScore = $this->toString($post->additional->creditScore ?? '');
-//            $data->Additional->isCarOwner = $this->toString($post->additional->isCarOwner ?? '');
-//            $data->Additional->bankruptcy = $this->toString($post->additional->bankruptcy ?? '');
-//            $data->Additional->cosigner = $this->toString($post->additional->cosigner ?? '');
-//            $data->Additional->ref_first_name_1 = $this->toString($post->additional->ref_first_name_1 ?? '');
-//            $data->Additional->ref_last_name_1 = $this->toString($post->additional->ref_last_name_1 ?? '');
-//            $data->Additional->ref_phone_1 = $this->toString($post->additional->ref_phone_1 ?? '');
-//            $data->Additional->ref_relation_1 = $this->toString($post->additional->ref_relation_1 ?? '');
-//            $data->Additional->ref_first_name_2 = $this->toString($post->additional->ref_first_name_2 ?? '');
-//            $data->Additional->ref_last_name_2 = $this->toString($post->additional->ref_last_name_2 ?? '');
-//            $data->Additional->ref_phone_2 = $this->toString($post->additional->ref_phone_2 ?? '');
-//            $data->Additional->ref_relation_2 = $this->toString($post->additional->ref_relation_2 ?? '');
-//            $data->Additional->save();
-//        }
-
-//        dd($data);
 
         $data_update = USLead::latest()->first();
-//        $data_update = USLead::find($data['id']);
-//        dd($data_update);
         $data_update->loan_id = $data->Loan->id;
         $data_update->source_id = $data->Source->id;
         $data_update->applicant_id = $data->Applicant->id;
@@ -372,9 +338,6 @@ class USLeadController extends Controller
         $data_update->employer_id = $data->Employer->id;
         $data_update->bank_id = $data->Bank->id;
         $data_update->consent_id = $data->Consent->id;
-//        if (isset($data->Additional)) {
-//            $data_update->additional_id = $data->Additional->id;
-//        }
         $res = $data_update->save();
 
         return $data;
@@ -434,7 +397,6 @@ class USLeadController extends Controller
             return json_encode($response);
         }
     }
-
 
     /**
      * Randomize Buyer every N posts

@@ -324,7 +324,7 @@ class DashboardController extends Controller
 //        dd($offer_ids);
         return $offer_ids;
     }
-    //Leads
+
     public function todayEarnings()
     {
         $daily = DB::table('uk_leads');
