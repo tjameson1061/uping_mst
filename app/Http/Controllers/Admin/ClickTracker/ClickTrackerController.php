@@ -8,6 +8,8 @@ use App\Models\IPQS;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferCap;
 use App\Models\Partner\Partner;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -20,11 +22,10 @@ class ClickTrackerController extends Controller
 
     /**
      * @param Request $request
+     * @return RedirectResponse
      */
     public function tracker(Request $request)
     {
-
-//        dd($request);
         $tracker = $this->track($request);
         $tracker = $tracker->original;
 
@@ -34,15 +35,23 @@ class ClickTrackerController extends Controller
     /**
      * Track all parameters and create click ID
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function track(Request $request)
     {
+
+        try {
+            $affiliateId = Partner::where('vendor_id', $request->aff_id)->first();
+        } catch (\Exception $e) {
+            Log::debug($e);
+            echo 'Affiliate ID Not Active';
+            die();
+        }
+
+
+
 //        // Check For Offer Caps
 //        $request = (new OfferCap)->check_offer_caps($request);
-//
-//        // GEO Fraud ringadingding
-//
 //        // Check if affiliate is not blocked for the offer.
 //        $request = (new ClickTracker)->block_affiliates($request);
 
@@ -59,14 +68,12 @@ class ClickTrackerController extends Controller
 
         // Update ClickTracker Log
         $data = $this->update($click_log, $ipqs_response);
-
-        $offerid = $data->offer_id;
+        $offer_id = $data->offer_id;
 
         // Get Offer Data
-        $offer_data = $this->get_offer_data($offerid);
+        $offer_data = $this->get_offer_data($offer_id);
 
-        $offer_url = $this->internal_offer_check( $offer_data );
-
+        $offer_url = $this->internal_offer_check($offer_data);
 
         // Get landing page redirect url
 //        $offer_url = $this->get_affiliate_data($affiliate_id, $offer_data);
