@@ -24,7 +24,10 @@ class DateOfBirth
         $buyer_list['row'] = $post->buyer_list;
         Log::debug('BUYER LIST1::', (array)$buyer_list['row']);
 
-        if ($buyer_list['row'] == null) {
+        if ($post->istest == true ) {
+            return $post;
+        }
+        if($buyer_list['row']->isEmpty()) {
             return $post;
         }
 

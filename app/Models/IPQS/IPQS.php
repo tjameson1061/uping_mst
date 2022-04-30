@@ -7,6 +7,7 @@ use App\Http\Requests\LeadPostRequestUS;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class IPQS extends Model
 {
@@ -64,20 +65,25 @@ class IPQS extends Model
             'ios_ifa' => $request->ios_ifa,
         );
 
+
         $url = sprintf(
             'https://www.ipqualityscore.com/api/json/ip/%s/%s?',
             $key,
             $ip,
         );
 
-        $res = Http::post($url, $params);
-        $response = $res->object();
+        try {
+            $res = Http::post($url, $params);
+            $response = $res->object();
 
-
-        if ($response->success == true) {
-            return true;
-        } else {
-            return $response->message;
+            if ($response->success == true) {
+                return $response->fraud_score;
+            } else {
+                Log::debug('Lead Quality::', (array)$response);
+                return $lead_quality = '0';
+            }
+        } catch (\Exception $e) {
+            Log::debug($e);
         }
     }
 

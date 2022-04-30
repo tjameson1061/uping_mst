@@ -17,10 +17,11 @@ class CreateReferralsTable extends Migration
 
             Schema::create('referrals', function (Blueprint $table) {
                 $table->id();
-                $table->integer('vendor_id');
-                $table->integer('referrer_id');
-                $table->integer('geo');
+                $table->string('vendor_id');
+                $table->string('referrer_id');
+                $table->string('geo');
                 $table->float('commission');
+                $table->float('affiliate_price');
 
                 $table->timestamps();
             });

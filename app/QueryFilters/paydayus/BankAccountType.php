@@ -18,10 +18,14 @@ class BankAccountType
     {
         $post = $lead;
 
-        // Get the buyers mapped with VID / Vendor ID
-        $post = USLead::getBuyers($post);
-
         $buyer_list['row'] = $post->buyer_list;
+
+        if ($post->istest == true ) {
+            return $post;
+        }
+        if($buyer_list['row']->isEmpty()) {
+            return $post;
+        }
 
         // Get the tier id/buyer setup id of each buyer mapped with the VID.
         $buyerTierID = BuyerFilterUS::getBuyerTierIds($buyer_list['row']);

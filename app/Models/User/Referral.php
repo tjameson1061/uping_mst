@@ -6,17 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Referral extends Model
 {
     use HasFactory;
 
+
+    /**
+     * @param $referrer_data
+     * @return bool
+     */
     public static function add_commission( $referrer_data )
     {
-        $query = DB::table('referrals')->insert($referrer_data);
-        Log::debug('REFERRER::', (array)$query);
+        $referral = DB::table('referrals')->insert([
+            'vendor_id' => $referrer_data['vendor_id'],
+            'referrer_id' => $referrer_data['referrer_id'],
+            'commission' => $referrer_data['commission'],
+            '$affiliate_price' => $referrer_data['affiliate_price'],
+            'geo' => $referrer_data['geo']
+        ]);
 
-        return $query;
+        return $referral;
     }
 
     public static function getReferrals($id)

@@ -395,15 +395,15 @@ class USLead extends Model
         $post = USLead::preBuyerPost($post);
 
 
-        if ($post->istest == true) {
+        if ($post['istest'] == true) {
             $testBuyer = (new LeadTestController)->getTestBuyerUS();
-            $post->buyer_list = $testBuyer;
+            $post['buyer_list'] = $testBuyer;
         } else {
 
-            $search = $post->search;
+            $search = $post['search'];
 
             $buyer_list = Mapping::GetBuyer($search, $post);
-            $post->buyer_list = $buyer_list;
+            $post['buyer_list'] = $buyer_list;
 
         }
 
@@ -419,31 +419,28 @@ class USLead extends Model
     {
         $search = (object)[];
 
-        if (isset($post->minCommissionAmount) && $post->minCommissionAmount != '0.00') {
-            $search->min_price = $post->minCommissionAmount;
+        if (isset($post['minCommissionAmount']) && $post['minCommissionAmount'] != '0.00') {
+            $search->min_price = $post['minCommissionAmount'];
         }
-        if (isset($post->minCommissionAmount) && $post->minCommissionAmount != '0.00') {
-            $search->max_price = $post->maxCommissionAmount;
+        if (isset($post['minCommissionAmount']) && $post['minCommissionAmount'] != '0.00') {
+            $search->max_price = $post['maxCommissionAmount'];
         }
-        if (isset($post->tier)) {
-            $search->tier = $post->tier;
+        if (isset($post['tier'])) {
+            $search->tier = $post['tier'];
         }
-
-//        if (isset($post->timeout)) {
-//                $search->timeout = $post->timeout;
-//        }
-
-        if (isset($post->vid)) {
-            $search->vid = $post->vid;
+        if (isset($post['timeout'])) {
+            $search->timeout = $post['timeout'];
         }
-
-        if (isset($post->istest) && $post->istest === 1) {
+        if (isset($post['vid'])) {
+            $search->vid = $post['vid'];
+        }
+        if (isset($post['istest']) && $post['istest'] === 1) {
             $search->leadtype = 'testmodeus';
         } else {
             $search->leadtype = '2';
         }
 
-        $post->search = $search;
+        $post['search'] = $search;
 
         return $post;
 

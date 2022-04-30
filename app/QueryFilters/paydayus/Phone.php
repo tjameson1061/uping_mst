@@ -24,18 +24,23 @@ class Phone
 
         $buyer_list['row'] = $post->buyer_list;
 
-        if ($buyer_list['row'] == null) {
-            return $post;
-        }
+//        if ($post->istest == true ) {
+//            return $post;
+//        }
+//        if($buyer_list['row']->isEmpty()) {
+//            return $post;
+//        }
+
+//        dd($buyer_list);
 
         // Get the tier id/buyer setup id of each buyer mapped with the VID.
         $buyerTierID = BuyerFilterUS::getBuyerTierIds($buyer_list['row']);
 
         // Get the filter of each buyer using the tier id.
-        $filters['row'] = BuyerFilterUS::getBuyerFilters($buyerTierID);
+        $filters = BuyerFilterUS::getBuyerFilters($buyerTierID);
 
         /* Loop through the filters and grab conditions & values.  */
-        foreach ($filters['row'] as $key_filter) {
+        foreach ($filters as $key_filter) {
             if ($key_filter['filter_type'] === 'Phone') {
                 $filter_type = 'Phone';
                 $key_filter['conditions'] = json_decode($key_filter['conditions']);

@@ -41,10 +41,7 @@ class Microbilt extends Model
 
         $this->generate_new_access_token();
 
-        $res = $this->verify_bank_account_and_routing_number();
-
-
-        return $res;
+        return $this->verify_bank_account_and_routing_number();
     }
 
     /**

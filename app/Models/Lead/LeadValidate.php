@@ -17,44 +17,44 @@ class LeadValidate extends Model
     {
         $valid = true;
 
-        $email = $request->applicant->email;
-        $cellPhoneNumber = $request->applicant->cellPhoneNumber;
-        $dlnumber = $request->applicant->drivingLicenseNumber;
-        $dlnumberstate = $request->applicant->drivingLicenseState;
-        $firstName = $request->applicant->firstName;
-        $lastName = $request->applicant->lastName;
-        $ssn = $request->applicant->ssn;
+        $email = $request->applicant['email'];
+        $cellPhoneNumber = $request->applicant['cellPhoneNumber'];
+        $dlnumber = $request->applicant['drivingLicenseNumber'];
+        $dlnumberstate = $request->applicant['drivingLicenseState'];
+        $firstName = $request->applicant['firstName'];
+        $lastName = $request->applicant['lastName'];
+        $ssn = $request->applicant['ssn'];
 
-        $validate_lead = $this->quality_score($request);
         $validate_email = IPQS::verify_email($email);
         $validate_phone = IPQS::verify_phone($cellPhoneNumber);
 //        $validate_driving_license = $this->verify_driving_license($dlnumber, $dlnumberstate, $firstName, $lastName);
         $validate_ssn = $this->verify_ssn($ssn);
-        $validated_bank_details = $this->validate_bank($request->bank);
+//        $validated_bank_details = $this->validate_bank($request->bank);
 
 
 //        dd($validate_lead);
-        if ($validate_lead == false) {
-            return $validate_lead;
-        }
-        elseif ($validate_email == false) {
+//        if ($validate_lead == false) {
+//            return $validate_lead;
+//        }
+        if ($validate_email == false) {
             return 'Invalid Email';
         }
         elseif ($validate_ssn == false) {
             return 'Invalid SSN';
-        }
+//        }
 //        elseif ($validate_driving_license !== true) {
 //            return 'Invalid Driving License';
 //        }
-        elseif ($validated_bank_details !== true) {
-            return $validated_bank_details;
+//        elseif ($validated_bank_details !== true) {
+//            return $validated_bank_details;
         } elseif (
 //            $validate_lead == $valid &&
             $validate_email == $valid &&
             $validate_phone == $valid &&
-            $validate_ssn == $valid &&
+            $validate_ssn == $valid
+//            &&
 //            $validate_driving_license == $valid &&
-            $validated_bank_details == $valid
+//            $validated_bank_details == $valid
         ) {
             return true;
         }
@@ -78,8 +78,8 @@ class LeadValidate extends Model
 
     public function validate_bank($bank)
     {
-        $bankaccountnumber = $bank->bankAccountNumber;
-        $bankroutingnumber = $bank->bankRoutingNumber;
+        $bankaccountnumber = $bank['bankAccountNumber'];
+        $bankroutingnumber = $bank['bankRoutingNumber'];
 
         $result = (new Microbilt)->verify($bankaccountnumber, $bankroutingnumber);
 

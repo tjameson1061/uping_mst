@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8e5ce713eb5e1388fbc4ed6c0f5c10a1ed3645d8',
+        'reference' => '7093ba7994e0cb7f53d0e89acbd474c859471cd4',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -436,7 +436,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8e5ce713eb5e1388fbc4ed6c0f5c10a1ed3645d8',
+            'reference' => '7093ba7994e0cb7f53d0e89acbd474c859471cd4',
             'dev_requirement' => false,
         ),
         'laravel/passport' => array(
@@ -627,6 +627,15 @@
             'aliases' => array(),
             'reference' => '14daed4296fae74d9e3201d2c4925d1acb7aa614',
             'dev_requirement' => true,
+        ),
+        'namshi/jose' => array(
+            'pretty_version' => '7.2.3',
+            'version' => '7.2.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../namshi/jose',
+            'aliases' => array(),
+            'reference' => '89a24d7eb3040e285dd5925fcad992378b82bcff',
+            'dev_requirement' => false,
         ),
         'nesbot/carbon' => array(
             'pretty_version' => '2.57.0',
@@ -1358,6 +1367,15 @@
             'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
             'dev_requirement' => false,
         ),
+        'symfony/polyfill-php56' => array(
+            'pretty_version' => 'v1.20.0',
+            'version' => '1.20.0.0',
+            'type' => 'metapackage',
+            'install_path' => NULL,
+            'aliases' => array(),
+            'reference' => '54b8cd7e6c1643d78d011f3be89f3ef1f9f4c675',
+            'dev_requirement' => false,
+        ),
         'symfony/polyfill-php72' => array(
             'pretty_version' => 'v1.25.0',
             'version' => '1.25.0.0',
@@ -1488,6 +1506,17 @@
             'install_path' => __DIR__ . '/../tijsverkoyen/css-to-inline-styles',
             'aliases' => array(),
             'reference' => 'da444caae6aca7a19c0c140f68c6182e337d5b1c',
+            'dev_requirement' => false,
+        ),
+        'tymon/jwt-auth' => array(
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tymon/jwt-auth',
+            'aliases' => array(
+                0 => '1.0.x-dev',
+            ),
+            'reference' => '014be8d493d228d14bbc291b24e835d330c092a0',
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(

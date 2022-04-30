@@ -6,10 +6,12 @@ use App\Http\Controllers\Admin\PostbackTracker\PostbackTrackerController;
 use App\Models\Buyer\BuyerFilterUS;
 use App\Models\Buyer\BuyerRotation;
 use App\Models\Buyer\BuyerSetup;
+use App\Models\CheckStatus\CheckStatus;
 use App\Models\CheckStatus\CheckStatusLogger;
 use App\Http\Controllers\Admin\Lead\LeadTestController;
 use App\Http\Controllers\Partner\ReferralController;
 use App\Models\Buyer\BuyerFilter;
+
 //use App\Models\Buyer\Rotation;
 use App\Models\Lead\USLead;
 use App\Models\Mapping\Mapping;
@@ -23,6 +25,8 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,37 +38,34 @@ class PostLeadToBuyersUS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-//    public $timeout = 3600;
 //    public $tries = 3;
 
-    private $leadtype = 2;
-    private $post;
-    private $inputs;
-    private $partner_detail;
-    private $partnerlogid;
-    private $data;
-    private $status_check;
-    private $buyer_status;
+    public int $timeout = 3600;
+    private int $leadtype = 2;
+    private array $partner_detail;
+    private object $partner_log;
+    private array $buyer_status;
+    private array $post;
+    private CheckStatus $status_check;
 
 
     /**
      * Create a new job instance.
-     *
-     * @return void
+     * @param $post
+     * @param $partner_detail
+     * @param $partner_log
+     * @param $status_check
      */
-    public function __construct($post, $inputs, $partnerDetail, $partnerlogid, $data, $status_check)
+    public function __construct(array $post, array $partner_detail, object $partner_log, CheckStatus $status_check)
     {
         $this->post = $post;
-        $this->inputs = $inputs;
-        $this->partner_detail = $partnerDetail;
-        $this->partnerlogid = $partnerlogid;
-        $this->data = $data;
+        $this->partner_detail = $partner_detail;
+        $this->partner_log = $partner_log;
         $this->status_check = $status_check;
     }
 
     /**
      * Execute the job.
-     *
      * @return void
      */
     public function handle()
@@ -72,150 +73,60 @@ class PostLeadToBuyersUS implements ShouldQueue
         $startTime = explode(' ', microtime());
         $startTime = $startTime[1] + $startTime[0];
         $post = $this->post;
-        $inputs = $this->inputs;
-        $data = $this->data;
-        $partnerlogid = $this->partnerlogid;
+        $partner_log_id = $this->partner_log->id;
 
 
-        Log::info('Posting lead to buyer');
         $buyer_response = $this->BuyerPost($post);
-        Log::debug('DEBUG RESP::', (array) $buyer_response);
+        Log::debug('DEBUG RESP::', (array)$buyer_response);
 
 
-        // Parse buyer response
+        $buyer_response['leadid'] = $this->post['uuid'];
         if (!is_null($buyer_response) && $buyer_response['leadStatus'] == "1" || $buyer_response['leadStatus'] == "3") {
-            $offer_detail = Offer::get($inputs['oid']);
-            Log::debug('OFFER::', (array) $offer_detail);
+            // Parse buyer response
+            $offer_detail = Offer::get($post['oid']);
 
             if ($buyer_response['leadStatus'] == "1") {
-                $response = array(
-                    'status' => 1,
-                    'price' => $buyer_response['price'],
-                    'leadid' => $buyer_response['leadid'],
-                    'ModelType' => $buyer_response['ModelType'],
-                    'id' => $buyer_response['id'],
-                    );
+                $status = 1;
+                $response = $this->buyer_response($buyer_response, $status);
+
             } else {
-                $response = array(
-                    'status' => 3,
-                    'price' => $buyer_response['price'],
-                    'leadid' => $buyer_response['leadid'],
-                    'ModelType' => $buyer_response['ModelType'],
-                    'id' => $buyer_response['id'],
-                    );
+                $status = 3;
+                $response = $this->buyer_response($buyer_response, $status);
             }
 
-            $offer_id = $offer_detail['id'];
-
-            $internal_offers = [3,4];
-
-            if ($offer_id == 3 || $offer_id == 4) {
-
-                $payoutAmount = $offer_detail['payout']['payoutAmount'];
-                $thresholdAmount = $offer_detail['payout']['revenueAmount'];
-
-                if ($thresholdAmount > 0) {
-                    if ($offer_id == 3) {
-                        $accumulatorAmount = 0 + $this->partner_detail->accuCPLus20;
-                    } elseif ($offer_id == 4) {
-                        $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
-                    }
-                    $accumulatorAmount = $accumulatorAmount + $response['price'];
-
-                    Log::debug('THRESHOLD::', (array)$thresholdAmount);
-
-                    if ($accumulatorAmount >= $thresholdAmount) {
-                        $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
-                        $response['Threshold'] = 'true';
-                    } else {
-                        $response['Threshold'] = 'false';
-                    }
-
-//                    if ($response['Threshold'] == true && $offer_id == 3) {
-//                        PostbackTrackerController::
-//                    }
-
-                    if ($offer_id == 4) {
-                        $lead_data = array(
-                            'id' => $this->partner_detail->id,
-                            'accuCPAus100' => $accumulatorAmount
-                        );
-                    } elseif ($offer_id == 3) {
-                        $lead_data = array(
-                            'id' => $this->partner_detail->id,
-                            'accuCPLus20' => $accumulatorAmount
-                        );
-                    }
-
-                    $response_lead_data = Partner::AddLeadType($lead_data);
-
-                }
-            }
-
-
-
-            if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
-                $rate = USLead::GetDailyRate();
-                $response['price'] = $response['price'] * $rate['usd'];
-            }
+            $accumulator = $this->update_accumulator($offer_detail, $response);
         } else {
-            $response = array(
-                'status' => 2,
-                'leadid' => $buyer_response['id'],
-                'id' => $buyer_response['id'],
-                'ModelType' => $buyer_response['model_type'],
-                'price' => '0.00'
-            );
+            $status = 2;
+
+            $response = $this->buyer_response($buyer_response, $status);
         }
 
         Log::debug('Response array: ' . json_encode($response));
 
+        // Store Lead Log
         $logs = USLead::getlog($response['leadid']);
 
-        if (count($logs) > 0) {
-            $log = $logs[0];
-            if ($log->buyer_id == "1") {
-                $response["check_status"] = true;
-            } else {
-                $response['check_status'] = false;
-            }
-        }
+        // get check status response
+        $response['check_status'] = $this->get_check_status_logs($response, $logs);
 
-        $post_response = $this->curl_response_post($response, $post['response_type']);
-        Log::debug('Response:: ' . $post_response);
+        // Return lead response
+        $post_response = $this->curl_response_post($response, $this->post['response_type']);
 
-
+        // End journey timer.
         $etime = explode(' ', microtime());
         $etime = ($etime[1] + $etime[0]);
         $post_time = $etime - $startTime;
 
-        $data = array(
-            'id' => $partnerlogid,
-            'lead_id' => $response['leadid'],
-            'post_response' => $post_response,
-            'post_status' => $response['status'],
-            'post_time' => $post_time
-        );
-
-        $res = USLead::update_log_partner($data);
+        // Update partner log
+        $partner_log = $this->update_partner_log($partner_log_id, $response, $post_response, $post_time);
 
         // response is ready to return, marking job as completed.
         $this->status_check->resp = $post_response;
         $this->status_check->percentage = 100;
         $this->status_check->status = 'completed';
         $this->status_check->save();
-//        echo $post_response;
-//        exit;
     }
 
-    /**
-     *  if ($post->istest != true) {
-    if (isset($post->quality_score)) {
-    $buyer_list->row = $this->quality_score_tracker($post);
-    $post->buyer_list = $buyer_list->row;
-    }
-    }
-     */
 
     /**
      * @param $post
@@ -224,22 +135,22 @@ class PostLeadToBuyersUS implements ShouldQueue
     public function quality_score_tracker($post)
     {
 
-        if ($post->quality_score >= 80) {
-            $partner = Partner::where('vendor_id', $post->vendor_id)->first();
-            $mappings = Mapping::where('partner_id', $partner->id)->get();
+        if ($post['quality_score'] >= 80) {
+            $partner = Partner::where('vendor_id', $post['vid'])->first();
+            $mappings = Mapping::where('partner_id', $partner->id)->get()->toArray();
 
             foreach ($mappings as $mapping) {
-                $buyer_list = BuyerSetup::whereIn('model_type', 'Pingtree')
-                    ->where('id', $mapping->buyer_setup_id )
+                $buyer_list = BuyerSetup::where('model_type', 'Pingtree')
+                    ->where('id', $mapping['buyer_setup_id'])
                     ->where('rotate', 1)
+                    ->where('status', 1)
                     ->get();
-
-                dd($buyer_list);
             }
+            $post['buyer_list'] = $buyer_list;
+            return $post;
+        } else {
+            return $post;
         }
-
-        return $post;
-
     }
 
     public function network_channel_settings($post)
@@ -260,271 +171,146 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     public function BuyerPost($post)
     {
+        // Get Buyers
         $post = USLead::getBuyers($post);
 
-
-        // Check Pingtree EPLs
-        $pingtree_tracker_response = $this->GetPingtreeTracker($post);
-
-        // Check affiliate limits on channel settings - outro pingtree traffic
-        $network_channel_response = $this->network_channel_settings($post);
-
         // Check for high risk leads
-        $quality_response = $this->quality_score_tracker($post);
+        $post = $this->quality_score_tracker($post);
 
-
-
-
-
+        // Buyer Filters
         $post = BuyerFilterUS::allBuyerFilters($post);
 
 
+        // Check Pingtree EPLs
+//        $pingtree_tracker_response = $this->GetPingtreeTracker($post);
+//        dd($pingtree_tracker_response);
+        // Check affiliate limits on channel settings - pingtree traffic
+//        $network_channel_response = $this->network_channel_settings($post);
+//        dd($network_channel_response);
 
-        $buyer_list = (object)[];
-        $buyer_list->row = $post->buyer_list;
-        $buyer_list->row = json_decode(json_encode($buyer_list->row), true);
+        // Assign buyer list
+        $buyer_list = $post->buyer_list;
+        $buyer_list = json_decode(json_encode($buyer_list), true);
 
 
-        if (is_array($buyer_list->row) && !empty($buyer_list->row)) {
+        if (is_array($buyer_list) && !empty($buyer_list)) {
             $index = 0;
-            $length = count($buyer_list->row);
+            $length = count($buyer_list);
 
-            foreach ($buyer_list->row as $key => $value) {
+            foreach ($buyer_list as $key => $value) {
                 $row = (object)$value;
-                $row = $this->GetPingtreeTracker($row, $buyer_list);
 
                 $filename = app_path("Buyerapis/paydayus/" . strtolower($row->buyername) . ".php");
-                Log::debug('BuyerFile::', (array) $filename);
+                Log::debug('BuyerFile::', (array)$filename);
 
                 if (file_exists($filename)) {
                     require_once($filename);
-
-
 
 
                     $classname = strtolower($row->buyername);
                     $obj = new $classname($row, $post);
 
                     $lender_response = $obj->returnresponse();
-                    Log::debug('Lender Response::', (array) $lender_response);
 
-                    $datalogo = array(
-                        'lead_id' => $post->lead_id,
-                        'vendor_id' => $post->vid,
-                        'buyer_id' => $row->buyer_id,
-                        'buyer_setup_id' => $row->id,
-                        'post_price' => $lender_response['post_price'] ?? "",
-                        'post_url' => $lender_response['post_url'] ?? "",
-                        'post_data' => json_encode($lender_response['post_data'] ?? ""),
-                        'post_response' => json_encode($lender_response['post_res'] ?? ""),
-                        'post_status' => $lender_response['post_status'] ?? "",
-                        'post_time' => $lender_response['post_time'] ?? "",
-                        'lender_found' => $lender_response['LenderFound'] ?? "",
-                        'created_at' => date('Y-m-d H:i:s')
-                    );
-                    Log::debug('Log::', (array) $datalogo);
-                    $res = USLead::AddLog($datalogo);
-                    Log::debug('Log::', (array) $res);
+                    Log::debug('Lender Response::', (array)$lender_response);
+
+                    $res = $this->add_post_log($post, $row, $lender_response);
 
 
                     $lead = USLead::where('uuid', $post->uuid)->first();
-                    Log::debug('LEAD ID::', (array) $lead);
+                    Log::debug('LEAD ID::', (array)$lead);
+
+                    // Lead accepted By BUYER
+                    if (isset($lender_response['post_price']) &&
+                        isset($lender_response['accept']) &&
+                        $lender_response['accept'] == 'ACCEPTED') {
+
+                        $lead_status = 1;
+
+                        // Get lender price and sub margin.
+                        $price = $this->lender_accepted($lender_response, $post);
+
+                        // check if lead has referrer - if so, add commission to referrer.
+                        $referrer = $this->check_lead_referrer($post, $lender_response, $price);
+
+                        // Update lead status/info
+                        $lead_updated = $this->update_lead_status($lender_response, $row, $lead, $price);
+
+                        // Accepted Response Data
+                        return $accepted_data = $this->lead_response($lead, $row, $price, $lead_status);
+
+                        // Lead Conditionally accepted By BUYER
+                    } elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'CONDITIONAL') {
+
+                        $price = '0.00';
+                        $lead_status = 3;
+
+                        // Update lead status/info
+                        $lead_updated = $this->update_lead_status($lender_response, $row, $lead, $price);
+
+                        // Conditional Response Data
+                        return $conditional_data = $this->lead_response($lead, $row, $price, $lead_status);
+
+                        // Lead Declined By BUYER
+                    } elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'REJECTED') {
+
+                        $lead_status = 2;
+                        $price = '0.00';
 
 
-                    if (isset($lender_response['post_price']) && isset($lender_response['accept']) && $lender_response['accept'] == 'ACCEPTED') {
-
-                        if (!empty($this->partner_detail->margin)) {
-                            if ($post->tier === 0) {
-                                $price =
-                                    $lender_response['post_price'] - ($lender_response['post_price'] * ($this->partner_detail->margin / 100));
-                            } else {
-                                $price =
-                                    $lender_response['post_price'] - ($lender_response['post_price'] * ($this->partner_detail->margin / 100));
-                            }
-                        } else {
-
-                            $price = $lender_response['post_price'];
-
-                        }
-
-
-                        try {
-                            $partner = Partner::where('vendor_id', '=', $post->vid)->first();
-                            $user = User::where('id', $partner->user_id)->first();
-
-                            if (!empty($user->referrer_id)) {
-
-                                $referrer_commission =
-                                    $lender_response['post_price'] - ($lender_response['post_price'] * (95 / 100));
-
-                                $price = $price - $referrer_commission;
-
-                                // Add referrer Commission to Partner ID
-                                $referrer_vid = $user->referrer_id;
-                                $referrer_partner = Partner::where('user_id', '=', $referrer_vid)->first();
-
-                                $referrer_data = array(
-                                    'vendor_id' => $post->vid,
-                                    'referrer_id' => $referrer_partner,
-                                    'commission' => $referrer_commission,
-                                    'geo' => '1',
-                                );
-                                Log::debug('REFERRER::', (array) $referrer_data);
-                                $ref_com_response = Referral::add_commission($referrer_data);
-                                Log::debug('REFERRER STORE::', (array) $ref_com_response);
-
-                            }
-                        } catch (Exception $e) {
-                            Log::debug($e);
-                        }
-
-
-
-
-                        Log::debug('PRICE::', (array)$price);
-
-
-                        $data = array(
-                            'buyerLeadPrice' => $lender_response['post_price'],
-                            'vidLeadPrice' => $price,
-                            'buyerid' => $row->buyer_id,
-                            'model_type' => $row->model_type,
-                            'buyerTierID' => $row->buyer_tier_id,
-                            'redirectUrl' => $lender_response['redirect_url'] ?? "",
-                            'leadStatus' => '1',
-                            'id' => $lead->id
-                        );
-                        $resp = (new USLead)->add($data);
-                        Log::debug('LEAD::', (array) $resp);
-
-
-                        $data = array(
-                            'price' => $price,
-                            'leadStatus' => '1',
-                            'leadid' => $lead->uuid,
-                            'id' => $lead->id,
-                            'ModelType' => $row->model_type
-                        );
-
-
-
-                        return $data;
-
-                    }
-                    elseif (isset($lender_response['accept']) && $lender_response['accept'] == 'CONDITIONAL') {
-
-                        $data = array(
-                            'buyerLeadPrice' => $lender_response['post_price'] ?? '0.00',
-                            'vidLeadPrice' => '0.00',
-                            'buyerid' => $row->buyer_id,
-                            'model_type' => $row->model_type,
-                            'buyerTierID' => $row->buyer_tier_id,
-                            'redirectUrl' => $lender_response['redirect_url'] ?? "",
-                            'leadStatus' => '3',
-                            'id' => $lead->id,
-                        );
-                        $resp = (new USLead)->add($data);
-
-
-                        $data = array(
-                            'price' => '0.00',
-                            'leadStatus' => '3',
-                            'leadid' => $lead->uuid,
-                            'id' => $lead->id,
-                            'ModelType' => $row->model_type
-
-                        );
-
-                        return $data;
-
-                    }
-                    else {
-
-
-                        $data = array(
-                            'leadStatus' => '2',
-                            'id' => $lead->id,
-                            'leadid' => $lead->uuid,
-                            'model_type' => $row->model_type,
-                            'reason' => $lender_response['reason'] ?? 'No Reason Provided',
-                        );
-
-                        try {
-                            $data['errors'] = $lender_response['errors'] ?? "Validation Failed";
-                        } catch (Exception $e) {
-                            Log::debug($e);
-                            // ignore
-                        }
-                        $res = (new USLead)->add($data);
-
+                        $decline_response = $this->lead_response($lead, $row, $price, $lead_status);
 
 
                         $index++;
                         if ($index >= $length) {
                             $this->status_check->percentage = 100;
                             $this->status_check->save();
-                            Log::debug('Status Check::', (array) $this->status_check);
-                            return $data;
+                            Log::debug('Status Check::', (array)$this->status_check);
+                            return $decline_response;
                         } else {
                             $this->status_check->percentage = (($index) / $length) * 100;
-                            Log::debug('Status Check::', (array) $this->status_check);
+                            Log::debug('Status Check::', (array)$this->status_check);
                             $this->status_check->save();
                             continue;
                         }
                     }
-                } else {
-                    if ($buyer_list->row > 1) {
-                        try{
-                            $index++;
-                        } catch (Exception $e) {
-                            Log::debug($e);
-
-                            $data = array(
-                                'id' =>$lead->id,
-                                'leadStatus' => '2',
-                                'leadid' => $lead->uuid,
-                                'model_type' => $row->model_type,
-                                'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
-                            );
-
-                            $res = (new USLead)->add($data);
-//
-                        }
-                    } else {
-                        $data = array(
-                            'id' => $lead->id,
-                            'leadStatus' => '2',
-                            'leadid' => $lead->uuid,
-                            'model_type' => $row->model_type,
-                            'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
-                        );
-
-                        $res = (new USLead)->add($data);
-
-                        return $data;
-
-                    }
-                    Log::debug('Buyer file not found: ' . $filename);
                 }
             }
-
-            // use case
-        } else {
-            $data = array(
-                'id' => $post->uuid,
-                'leadStatus' => '2',
-                'model_type' => '2',
-                'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
-
-            );
-
-            $res = (new USLead)->add($data);
-
-            Log::debug('No Buyer found');
+//                } else {
+//                    if ($buyer_list > 1) {
+//                        try {
+//                            $index++;
+//                        } catch (Exception $e) {
+//                            Log::debug($e);
 //
+//                            $lead_status = 2;
+//                            $price = '0.00';
+//
+//
+//
+//                            $data_response = $this->lead_response($lead, $row, $price, $lead_status);
+//
+//                            return $data_response;
+//                        }
+//                    } else {
+//                        $lead_status = 2;
+//                        $price = '0.00';
+//
+//                        $data_response = $this->lead_response($lead, $row, $price, $lead_status);
+//
+//                        return $data_response;
+//                    }
+//                    Log::debug('Buyer file not found: ' . $filename);
+//                }
+//            }
+            // When no buyers are Found Or Lead has Not Sols - Decline the Lead
+        } else {
+            // No buyers found - lead not sold.
+
+            $data = $this->no_lender_found($post);
+            Log::debug('no_lender_found() called');
+
             return $data;
-
-
         }
     }
 
@@ -537,6 +323,8 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     public function GetPingtreeTracker($row, $buyer_list)
     {
+
+//        $buyer_list = $post['buyer_list'];
 
         if ($row->rotate === 1) {
 
@@ -595,9 +383,9 @@ class PostLeadToBuyersUS implements ShouldQueue
     public function GetBuyerRotate($row, $buyers, string $type)
     {
 
-        Log::debug('Buyers List ROW::', (array) $row);
+        Log::debug('Buyers List ROW::', (array)$row);
         if (count($buyers) < 1) {
-            Log::debug('Fallback Buyer Filtered Buyers ROW::', (array) $row);
+            Log::debug('Fallback Buyer Filtered Buyers ROW::', (array)$row);
 
             $buyers = BuyerSetup::where('id', '=', 2)->first();
         }
@@ -640,7 +428,7 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     public function buyer_rotate($row)
     {
-        Log::debug('buyer Rotate::,' , (array) $row);
+        Log::debug('buyer Rotate::,', (array)$row);
         $buyer_rotate = BuyerRotation::where('buyer_setup_id', '=', $row->buyer_setup_id)->first();
 
         return $buyer_rotate;
@@ -650,82 +438,19 @@ class PostLeadToBuyersUS implements ShouldQueue
 
     /**
      * Return Curl Response in XML | JSON
-     * @param $client_response
-     * @param $response_type
+     * @param array $client_response
+     * @param string $response_type
      * @return false|string
      */
-    function curl_response_post($client_response, $response_type)
+    function curl_response_post(array $client_response, string $response_type)
     {
-        Log::debug('CLIENT RES::', (array) $client_response);
-//        dd($client_response);
         if (isset($response_type) && $response_type === 'xml') {
-            header("Content-type: text/xml; charset=utf-8");
-            $res = '<?xml version="1.0"?>';
-            $res .= '<PostResponse>';
+            $response = $this->xml_response($client_response);
 
-            if (isset($client_response['status']) && $client_response['status'] === 1) {
-                $res .= '<Response>LenderFound</Response>';
-
-            } elseif (isset($client_response['status']) && $client_response['status'] === 3) {
-                $res .= '<Response>ConditionalLenderFound</Response>';
-            } else {
-                $res .= '<Response>NoLenderFound</Response>';
-            }
-            $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
-            $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
-            $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
-            $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) . '</RedirectURL>' : '';
-            $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
-            if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
-                $res .= '<ModelType>CPS</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPA') {
-                $res .= '<ModelType>CPA</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPL') {
-                $res .= '<ModelType>CPL</ModelType>';
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPF') {
-                $res .= '<ModelType>CPF</ModelType>';
-            } else {
-                $res .= '<ModelType>Pingtree</ModelType>';
-            }
-            $res .= isset($client_response['errors']) ? '<Errors>' . $client_response['errors'] . '</Errors>' : '';
-            $res .= '</PostResponse>';
-            return $res;
+            return $response;
         } else {
-            header("Content-type: application/json; charset=utf-8");
-            $response = array();
-            $response[0] = array(
-                'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
-                'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '0.00',
-                'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) : '',
-                'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
-            );
-            if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPS']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPA') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPA']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPL') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPL']);
-            } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPF') {
-                $response[0] = array_merge($response[0], ['ModelType' => 'CPF']);
-            } else {
-                $response[0] = array_merge($response[0], ['ModelType' => 'Pingtree']);
-            }
+            $response = $this->json_response($client_response);
 
-            if ($client_response['status'] == '1' && (!empty($client_response['CheckStatusID']))) {
-                $response[0] = array_merge($response[0], ['CheckStatusID' => $client_response['CheckStatusID']]);
-            }
-            if ($client_response['status'] == '1' && !empty($client_response['Threshold'])) {
-                $response[0] = array_merge($response[0], ['Threshold' => $client_response['Threshold']]);
-            }
-            if (isset($client_response['Descriptions']) && !empty($client_response['Descriptions'])) {
-                $response[0] = array_merge($response[0], ['Descriptions' => $client_response['Descriptions']]);
-            }
-            if (isset($client_response['Errors']) && !empty($client_response['Errors'])) {
-                $response[0] = array_merge($response[0], ['Errors' => $client_response['Errors']]);
-            }
-            if (isset($client_response['CheckStatus']) && !empty($client_response['CheckStatus'])) {
-                $response[0] = array_merge($response[0], ['CheckStatus' => $client_response['CheckStatus']]);
-            }
             return json_encode($response);
         }
     }
@@ -814,9 +539,8 @@ class PostLeadToBuyersUS implements ShouldQueue
                 $tree = PingtreeTracker::orderBy('epl', 'DESC')->first();
                 $pingtree = $tree->buyersetup_id;
 
-                $buyer_list->row = BuyerSetup::where('id', '=', $pingtree)->first();
+                $post->buyer_list = BuyerSetup::where('id', '=', $pingtree)->first();
 
-                $post->buyer_list = $buyer_list->row;
 
                 return $post;
             }
@@ -825,5 +549,389 @@ class PostLeadToBuyersUS implements ShouldQueue
         return $post;
     }
 
+    /**
+     * @param object $post
+     * @param object $row
+     * @param $lender_response
+     * @return bool
+     */
+    private function add_post_log(object $post, object $row, $lender_response)
+    {
+        $datalogo = array(
+            'lead_id' => $post->lead_id,
+            'vendor_id' => $post->vid,
+            'buyer_id' => $row->buyer_id,
+            'buyer_setup_id' => $row->id,
+            'post_price' => $lender_response['post_price'] ?? "",
+            'post_url' => $lender_response['post_url'] ?? "",
+            'post_data' => json_encode($lender_response['post_data'] ?? ""),
+            'post_response' => json_encode($lender_response['post_res'] ?? ""),
+            'post_status' => $lender_response['post_status'] ?? "",
+            'post_time' => $lender_response['post_time'] ?? "",
+            'lender_found' => $lender_response['LenderFound'] ?? "",
+            'created_at' => date('Y-m-d H:i:s')
+        );
+        $res = USLead::AddLog($datalogo);
 
+        return $res;
+    }
+
+    /**
+     * @param $lender_response
+     * @param object $post
+     * @return float|int
+     */
+    private function lender_accepted($lender_response, object $post)
+    {
+        if (!empty($this->partner_detail->margin)) {
+            if ($post->tier === 0) {
+                $price =
+                    $lender_response['post_price'] - ($lender_response['post_price'] * ($this->partner_detail->margin / 100));
+            } else {
+                $price =
+                    $lender_response['post_price'] - ($lender_response['post_price'] * ($this->partner_detail->margin / 100));
+            }
+        } else {
+
+            $price = $lender_response['post_price'];
+
+        }
+        return $price;
+    }
+
+    /**
+     * @param object $post
+     * @param $lender_response
+     * @param $price
+     * @return bool
+     */
+    private function check_lead_referrer(object $post, $lender_response, $price)
+    {
+        try {
+            $partner = Partner::where('vendor_id', '=', $post->vid)->first();
+            $user = User::where('id', $partner->user_id)->first();
+
+            if (isset($user->referrer_id)) {
+
+                $referrer_commission = $lender_response['post_price'] - ($lender_response['post_price'] * (95 / 100));
+                $affiliate_price = $price - $referrer_commission;
+
+                // Add referrer Commission to Partner ID
+                $referrer_id = $user->referrer_id;
+                $referrer_partner = Partner::where('vendor_id', '=', $referrer_id)->first();
+
+                $referrer_data = array(
+                    'vendor_id' => $post->vid,
+                    'referrer_id' => $referrer_partner->vendor_id,
+                    'commission' => $referrer_commission,
+                    '$affiliate_price' => $affiliate_price,
+                    'geo' => '1',
+                );
+                $add_commission_response = Referral::add_commission($referrer_data);
+                Log::debug('REFERRER STORE::', (array)$add_commission_response);
+
+                if ($add_commission_response) {
+                    return true;
+                } else {
+                    Log::debug('Unable to Add referrer Commission::', (array)$post->uuid);
+                }
+            }
+        } catch (Exception $e) {
+            Log::debug($e);
+            return false;
+        }
+    }
+
+    /**
+     * @param $lender_response
+     * @param object $row
+     * @param object $lead
+     * @param float $price
+     * @return bool|int
+     */
+    private function update_lead_status($lender_response, object $row, object $lead, float $price)
+    {
+        $data = array(
+            'buyerLeadPrice' => $lender_response['post_price'],
+            'vidLeadPrice' => $price,
+            'buyerid' => $row->buyer_id,
+            'model_type' => $row->model_type,
+            'buyerTierID' => $row->buyer_tier_id,
+            'redirectUrl' => $lender_response['redirect_url'] ?? "",
+            'leadStatus' => '1',
+            'id' => $lead->id
+        );
+        $resp = (new USLead)->add($data);
+        Log::debug('LEAD::', (array)$resp);
+
+
+        return $resp;
+    }
+
+
+    /**
+     * @param object $lead
+     * @param object $row
+     * @param int $price
+     * @param int $lead_status
+     * @return array
+     */
+    private function lead_response(object $lead, object $row, int $price, int $lead_status)
+    {
+        try {
+            $data['errors'] = $lender_response['errors'] ?? "Validation Failed";
+        } catch (Exception $e) {
+            Log::debug($e);
+            // ignore
+        }
+
+        $data = array(
+            'price' => $price,
+            'leadStatus' => $lead_status,
+            'leadid' => $lead->uuid,
+            'id' => $lead->id,
+            'ModelType' => $row->model_type
+        );
+
+        return $data;
+    }
+
+    /**
+     * @param array|null $buyer_response
+     * @param int $status
+     * @return array
+     */
+    private function buyer_response(?array $buyer_response, int $status)
+    {
+        $response = array(
+            'status' => $status,
+            'price' => $buyer_response['price'] ?? '0.00',
+            'leadid' => $buyer_response['leadid'],
+            'ModelType' => $buyer_response['ModelType'] ?? 2,
+            'id' => $buyer_response['id'],
+        );
+        return $response;
+    }
+
+    /**
+     * @param $thresholdAmount
+     * @param $offer_id
+     * @param $response
+     * @return int
+     */
+    private function accumulate_cpa_offers($thresholdAmount, $offer_id, $response)
+    {
+        if ($thresholdAmount > 0) {
+            if ($offer_id == 3) {
+                $accumulatorAmount = 0 + $this->partner_detail->accuCPLus20;
+            } elseif ($offer_id == 4) {
+                $accumulatorAmount = 0 + $this->partner_detail->accuCPAus100;
+            }
+            $accumulatorAmount = $accumulatorAmount + $response['price'];
+
+            Log::debug('THRESHOLD::', (array)$thresholdAmount);
+
+            if ($accumulatorAmount >= $thresholdAmount) {
+                $accumulatorAmount = $accumulatorAmount - $thresholdAmount;
+                $response['Threshold'] = 'true';
+            } else {
+                $response['Threshold'] = 'false';
+            }
+
+            if ($offer_id == 4) {
+                $lead_data = array(
+                    'id' => $this->partner_detail->id,
+                    'accuCPAus100' => $accumulatorAmount
+                );
+            } elseif ($offer_id == 3) {
+                $lead_data = array(
+                    'id' => $this->partner_detail->id,
+                    'accuCPLus20' => $accumulatorAmount
+                );
+            }
+
+            return $accumulator_updated = Partner::AddLeadType($lead_data);
+        }
+    }
+
+    /**
+     * @param array $partner_detail
+     * @param array $response
+     * @return float|int
+     */
+    private function currency_type(array $partner_detail, array $response)
+    {
+        if (!empty($this->partner_detail) && $this->partner_detail->currencyType != "USD") {
+            $rate = USLead::GetDailyRate();
+            $response['price'] = $response['price'] * $rate['usd'];
+        }
+        return $response['price'];
+    }
+
+    /**
+     * @param array $response
+     * @param array $logs
+     * @return bool
+     */
+    private function get_check_status_logs(array $response, array $logs)
+    {
+        if (count($logs) > 0) {
+            $log = $logs[0];
+            if ($log->buyer_id == "1") {
+                return $response["check_status"] = true;
+            } else {
+                return $response['check_status'] = false;
+            }
+        } else {
+            return $response['check_status'] = false;
+        }
+    }
+
+    /**
+     * @param $partner_log_id
+     * @param array $response
+     * @param string $post_response
+     * @param string $post_time
+     * @return Model|Builder|object|null
+     */
+    private function update_partner_log($partner_log_id, array $response, string $post_response, string $post_time)
+    {
+        $data = array(
+            'id' => $partner_log_id,
+            'lead_id' => $response['leadid'],
+            'post_response' => $post_response,
+            'post_status' => $response['status'],
+            'post_time' => $post_time
+        );
+
+        return USLead::update_log_partner($data);
+    }
+
+    /**
+     * @param Offer $offer_detail
+     * @param array $response
+     * @return int
+     */
+    private function update_accumulator(Offer $offer_detail, array $response)
+    {
+        $offer_id = $offer_detail['id'];
+        $internal_offers = [3, 4, 6, 7];
+
+        if (in_array($offer_id, $internal_offers)) {
+
+            $payoutAmount = $offer_detail['payout']['payoutAmount'];
+            $thresholdAmount = $offer_detail['payout']['revenueAmount'];
+
+            $accumulator_updated = $this->accumulate_cpa_offers($thresholdAmount, $offer_id, $response);
+            $current_type = $this->currency_type($this->partner_detail, $response);
+
+            return $accumulator_updated;
+        }
+    }
+
+    /**
+     * @param array $client_response
+     * @return string
+     */
+    private function xml_response(array $client_response)
+    {
+        header("Content-type: text/xml; charset=utf-8");
+        $res = '<?xml version="1.0"?>';
+        $res .= '<PostResponse>';
+
+        if (isset($client_response['status']) && $client_response['status'] === 1) {
+            $res .= '<Response>LenderFound</Response>';
+
+        } elseif (isset($client_response['status']) && $client_response['status'] === 3) {
+            $res .= '<Response>ConditionalLenderFound</Response>';
+        } else {
+            $res .= '<Response>NoLenderFound</Response>';
+        }
+        $res .= ($client_response['status'] == '1') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
+        $res .= ($client_response['status'] == '3') ? '<Price>' . $client_response['price'] . '</Price>' : '0.00';
+        $res .= ($client_response['status'] == '1' || '2' || '3') ? '<Leadid>' . $client_response['leadid'] . '</Leadid>' : '<Leadid>' . $client_response['leadid'] . '</Leadid>';
+        $res .= ($client_response['status'] == '1') ? '<RedirectURL>' . 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) . '</RedirectURL>' : '';
+        $res .= ($client_response['status'] == '1' && !empty($client_response['Threshold'])) ? '<Threshold>' . $client_response['Threshold'] . '</Threshold>' : '';
+        if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
+            $res .= '<ModelType>CPS</ModelType>';
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPA') {
+            $res .= '<ModelType>CPA</ModelType>';
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPL') {
+            $res .= '<ModelType>CPL</ModelType>';
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPF') {
+            $res .= '<ModelType>CPF</ModelType>';
+        } else {
+            $res .= '<ModelType>Pingtree</ModelType>';
+        }
+        $res .= isset($client_response['errors']) ? '<Errors>' . $client_response['errors'] . '</Errors>' : '';
+        $res .= '</PostResponse>';
+
+        return $res;
+    }
+
+    /**
+     * @param array $client_response
+     * @return array
+     */
+    private function json_response(array $client_response)
+    {
+        header("Content-type: application/json; charset=utf-8");
+        $response = array();
+        $response[0] = array(
+            'Response' => ($client_response['status'] == '1') ? 'LenderFound' : 'NoLenderFound',
+            'Price' => ($client_response['status'] == '1') ? $client_response['price'] : '0.00',
+            'RedirectURL' => ($client_response['status'] == '1') ? 'https://portal.uping.co.uk/api/application/usa/redirecturl/' . $this->redirecturl_encrypt($client_response['id']) : '',
+            'Leadid' => ($client_response['status'] == '1' || '2') ? $client_response['leadid'] : '',
+        );
+        if ($client_response['status'] && $client_response['ModelType'] === 'CPS') {
+            $response[0] = array_merge($response[0], ['ModelType' => 'CPS']);
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPA') {
+            $response[0] = array_merge($response[0], ['ModelType' => 'CPA']);
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPL') {
+            $response[0] = array_merge($response[0], ['ModelType' => 'CPL']);
+        } elseif (isset($client_response['status']) && $client_response['ModelType'] === 'CPF') {
+            $response[0] = array_merge($response[0], ['ModelType' => 'CPF']);
+        } else {
+            $response[0] = array_merge($response[0], ['ModelType' => 'Pingtree']);
+        }
+
+        if ($client_response['status'] == '1' && (!empty($client_response['CheckStatusID']))) {
+            $response[0] = array_merge($response[0], ['CheckStatusID' => $client_response['CheckStatusID']]);
+        }
+        if ($client_response['status'] == '1' && !empty($client_response['Threshold'])) {
+            $response[0] = array_merge($response[0], ['Threshold' => $client_response['Threshold']]);
+        }
+        if (isset($client_response['Descriptions']) && !empty($client_response['Descriptions'])) {
+            $response[0] = array_merge($response[0], ['Descriptions' => $client_response['Descriptions']]);
+        }
+        if (isset($client_response['Errors']) && !empty($client_response['Errors'])) {
+            $response[0] = array_merge($response[0], ['Errors' => $client_response['Errors']]);
+        }
+        if (isset($client_response['CheckStatus']) && !empty($client_response['CheckStatus'])) {
+            $response[0] = array_merge($response[0], ['CheckStatus' => $client_response['CheckStatus']]);
+        }
+        return $response;
+    }
+
+    /**
+     * @param object $post
+     * @return array
+     */
+    private function no_lender_found(object $post)
+    {
+
+        $data = array(
+            'id' => $post->lead_id,
+            'leadStatus' => '2',
+            'model_type' => '2',
+            'reason' => $lender_response['reason'] ?? 'All Buyers rejected.',
+//            'price' => '0.00'
+
+        );
+
+        $res = (new USLead)->add($data);
+        Log::debug('No Buyer found');
+
+        return $data;
+    }
 }

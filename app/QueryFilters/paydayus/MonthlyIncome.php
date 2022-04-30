@@ -32,7 +32,10 @@ class MonthlyIncome
         $buyer_list['row'] = $post->buyer_list;
 
 
-        if ($buyer_list['row'] == null) {
+        if ($post->istest == true ) {
+            return $post;
+        }
+        if($buyer_list['row']->isEmpty()) {
             return $post;
         }
 

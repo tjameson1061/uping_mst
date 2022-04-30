@@ -24,10 +24,12 @@ class InMilitary
 
         $buyer_list['row'] = $post->buyer_list;
 
-        if ($buyer_list['row'] == null) {
+        if ($post->istest == true ) {
             return $post;
         }
-
+        if($buyer_list['row']->isEmpty()) {
+            return $post;
+        }
         // Get the tier id/buyer setup id of each buyer mapped with the VID.
         $buyerTierID = BuyerFilterUS::getBuyerTierIds($buyer_list['row']);
 

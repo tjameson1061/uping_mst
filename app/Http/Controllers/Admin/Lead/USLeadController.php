@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\PostLeadToBuyers;
 use App\Models\CheckStatus\CheckStatus;
 use App\Models\CheckStatus\CheckStatusLogger;
+use App\Models\IPQS\IPQS;
 use App\Models\Lead\LeadValidate;
 use App\Models\Lead\UKLead;
 use App\Models\Lead\USLead;
@@ -29,6 +30,7 @@ use App\Models\Partner\PartnerLeadType;
 use Carbon\Carbon;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,13 +41,16 @@ use Illuminate\Support\Str;
 class USLeadController extends Controller
 {
 
-    var int $leadtype = 2;
-    var $partner_detail = [];
-    var $partner_status = '';
+    public int $leadtype = 2;
+    public array $partner_detail = [];
+    public string $partner_status = '';
+    public string $response_type = '';
+    public string $affiliate_id = '';
+
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index(Request $request)
     {
@@ -59,7 +64,6 @@ class USLeadController extends Controller
         $redirection = $request->input("redirection");
         $status = $request->input("status");
         $query = $request->input("searchQuery");
-
 
 
         $wherelist = array();
@@ -112,7 +116,7 @@ class USLeadController extends Controller
     /**
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -136,70 +140,56 @@ class USLeadController extends Controller
      * This function accepts applications and posts/maps them to the DB.
      *
      * @param LeadPostRequestUS $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
     public function post(LeadPostRequestUS $request)
     {
-        $post = json_decode($request->getContent());
         $validated = (new LeadValidate)->validate_data($request);
 
         // Is application valid, if not return errors
-        if ($validated !== true) {
-            return response()->json([
-                'Errors' => $validated
-            ]);
-        }
+        $valid_app = $this->application_validate($validated);
 
-        // Retrieve Partner Account Status if VID present.
-        $this->partner_detail = Partner::GetPartnerFullDetail($post->vid, $this->leadtype);
-        if ($this->partner_detail === null) { echo 'Partner Not Active'; die(); }
-        if (isset($post->response_type)) {$response_type = $post->response_type;} else {$response_type = 'json';}
+        // Check Lead Quality
+        $lead_quality = IPQS::quality_score($request);
+
+        // Decode the Application
+        $post = json_decode($request->getContent());
+
+        // Retrieve Partner Account Status if AFF ID present.
+        $this->partner_detail = $this->getPartnerDetails($post->vid, $this->leadtype);
+
+        // Check and set Request response type
+        $this->response_type = $this->getResponseType($post->response_type);
 
         // Mapping + Add Lead to Database
-        $post = $this->store($post);
+        $post = $this->store($post, $lead_quality);
 
-
-        // Add the Log to partner lead type table
-        $data['vendor_id'] = $this->partner_detail->vendor_id;
-        $data['post_data'] = json_encode($post);
-        $data['created_at'] = date('Y-m-d H:i:s');
-        $data['lead_id'] = USLead::latest()->first()->id;
-        $partner_log = USLead::add_log_partner($data);
-        $partnerlogid = $partner_log->id;
-
+        // Add Partner Log
+        $partner_log = $this->prepare_log_data($post);
 
         // Get Generated Lead ID
-        $post->lead_id = $data['lead_id'];
-
+        $post['lead_id'] = $partner_log->lead_id;
 
         // Status Check Code
-        $inputs = $post;
-        $status_check = new CheckStatus();
-        $status_check->lead_id = $post->uuid;
-        $status_check->status = "pending";
-        $status_check->percentage = 0;
-        $status_check->correlationId = Str::uuid();
-        $status_check->save();
+        $status_check = $this->CheckStatusStart($post);
 
         // Passing all required parameters to Job to get processed.
         $post = $post->toArray();
-        $inputs = $inputs->toArray();
         $partner_detail = $this->partner_detail;
 
-        PostLeadToBuyersUS::dispatch( $post, $inputs, $partner_detail, $partnerlogid, $data, $status_check);
-        $resp = $this->curl_response_status($status_check, $response_type);
+        PostLeadToBuyersUS::dispatch($post, $partner_detail, $partner_log, $status_check);
+        $resp = $this->curl_response_status($status_check, $this->response_type);
         echo $resp;
         die();
     }
 
     /**
      * @param $post
+     * @param $lead_quality
      * @return USLead
      */
-    public function store($post)
+    public function store($post, $lead_quality)
     {
-
-
         $data = new USLead();
         $data->uuid = Str::uuid();
         $data->vid = $this->toString($post->vid);
@@ -220,7 +210,8 @@ class USLeadController extends Controller
         $data->istest = $this->toString($post->istest ?? false);
         $data->response_type = $this->toString($post->response_type ?? 'json');
         $data->quote_boost = $this->toString($post->quote_boost ?? '0');
-        $res = $data->save();
+        $data->quality_score = $this->toString($lead_quality ?? '0');
+        $data->save();
 
 
         $data->Source = new Source();
@@ -338,7 +329,7 @@ class USLeadController extends Controller
         $data_update->employer_id = $data->Employer->id;
         $data_update->bank_id = $data->Bank->id;
         $data_update->consent_id = $data->Consent->id;
-        $res = $data_update->save();
+        $data_update->save();
 
         return $data;
 
@@ -454,9 +445,9 @@ class USLeadController extends Controller
         $api_received_at = Carbon::now()->microsecond;
 
 
-        Log::debug('REDIRECT ID::', (array) $id);
+        Log::debug('REDIRECT ID::', (array)$id);
         $data['id'] = $this->redirecturl_decrypt($id);
-        Log::debug('REDIRECT ID::', (array) $data['id']);
+        Log::debug('REDIRECT ID::', (array)$data['id']);
 
         $data['created_at'] = date('Y-m-d H:i:s', strtotime('-15 minutes'));
         $redirecturl = (new USLead)->UpdateRedirectUrl($data);
@@ -480,7 +471,6 @@ class USLeadController extends Controller
     {
         return $unsecure = substr(substr($id, 2), 0, -2);
     }
-
 
 
     /**
@@ -578,7 +568,7 @@ class USLeadController extends Controller
     /**
      * @param Request $request
      * @param $leadId
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function mark_cpf_funded(Request $request, $leadId)
     {
@@ -599,9 +589,8 @@ class USLeadController extends Controller
                 'buyerLeadPrice' => $tier->tier_price,
                 'updated_at' => Carbon::now(),
             ]);
-            return Response::json( 'Success:: CPF Funded Received ', 202);
-        }
-        catch (Exception $e) {
+            return Response::json('Success:: CPF Funded Received ', 202);
+        } catch (Exception $e) {
             Log::info('mark_cpf_funded() called');
             Log::debug($e);
             return Response::json('Error:: Unable to mark CPF Funded', 418);
@@ -612,7 +601,7 @@ class USLeadController extends Controller
     /**
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getUsLeadLog(Request $request, $id)
     {
@@ -623,5 +612,78 @@ class USLeadController extends Controller
 
     }
 
+    /**
+     * @param $vid
+     * @param int $leadtype
+     * @return mixed
+     */
+    private function getPartnerDetails($vid, int $leadtype)
+    {
+        $partner_detail = Partner::GetPartnerFullDetail($vid, $leadtype);
 
+        if ($partner_detail === null) {
+            echo 'Partner Not Active';
+            die();
+        }
+
+        return $partner_detail;
+    }
+
+    /**
+     * @param $response_type
+     * @return string
+     */
+    private function getResponseType($response_type)
+    {
+        if (!isset($response_type)) {
+            $response_type = 'json';
+        }
+
+        return $response_type;
+    }
+
+    /**
+     * @param bool $validated
+     * @return bool|JsonResponse
+     */
+    private function application_validate(bool $validated)
+    {
+        if ($validated !== true) {
+            return response()->json([
+                'Errors' => $validated
+            ]);
+        }
+
+        return $validated;
+    }
+
+    /**
+     * @param $post
+     * @return CheckStatus
+     */
+    private function CheckStatusStart($post)
+    {
+        $status_check = new CheckStatus();
+        $status_check->lead_id = $post->uuid;
+        $status_check->status = "pending";
+        $status_check->percentage = 0;
+        $status_check->correlationId = Str::uuid();
+        $status_check->save();
+
+        return $status_check;
+    }
+
+    /**
+     * @param $post
+     * @return mixed
+     */
+    private function prepare_log_data($post)
+    {
+        $data['vendor_id'] = $this->partner_detail['vendor_id'];
+        $data['post_data'] = json_encode($post);
+        $data['lead_id'] = USLead::latest()->first()->id;
+        $data['created_at'] = date('Y-m-d H:i:s');
+
+        return USLead::add_log_partner($data);
+    }
 }

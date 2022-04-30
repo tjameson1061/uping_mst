@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\CurlHelper;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -157,7 +158,7 @@ class roundsky
 //                "minimum_price" => (int)'',
                 "sub_id" => (string)$post->subid ?? 'UPING',
 //                "first_name" => (string)$post->Applicant->firstName,
-                "first_name" => (string)'declined',
+                "first_name" => (string)'approved',
                 "last_name" => (string)$post->Applicant->lastName,
                 "email" => (string)$post->Applicant->email,
                 "birth_date" => (string)$dateOfBirth,
@@ -200,13 +201,22 @@ class roundsky
         $validation_result = true;
         if ($validation_result == true) {
 
+            $api_creds = $lead['partner'] . ':' . $lead['partner_password'];
+            $url = $this->response['post_url'];
+            $params = http_build_query($this->response['post_data']);
+            $header = '';
+            $timeout = $this->response['timeout'];
 
-            $application_status = Http::asForm()->post( $this->response['post_url'], $this->response['post_data'] );
-            $application_status = $application_status->object();
+//            $client = new Client();
+//            $client->
+
+            $response = (new App\Helpers\CurlHelper)->curl_post($url, $params, $header, $timeout, $api_creds);
+            $resp = json_decode($response['res'], true);
 
 
-            Log::debug('RESP POST::', (array)$application_status);
-            $this->response['application_response'] = (array)$application_status;
+            Log::debug('RESP POST::', (array)$resp);
+            $this->response['application_response'] = (array)$resp;
+            $this->response['post_time'] = (string)$response['post_time'];
 
         } else {
             $this->response['application_response'] = $validation_result;
@@ -222,29 +232,27 @@ class roundsky
 
         $resp_data = json_encode($appResponse);
 
-        $this->response['post_res'] = $appResponse;
-        $this->response['post_time'] = $appResponse->post_time ?? 'Not available';
-
+        $this->response['post_res'] = $resp_data;
         Log::debug('RESP2 :: ', (array)$this->response);
+
 
         if ($appResponse['DECISION'] == 'APPROVED') {
             $this->response['accept'] = 'ACCEPTED';
-            $this->response['post_price'] = $appResponse->price;
+            $this->response['post_price'] = $appResponse['PRICE'];
             $this->response['post_status'] = '1';
-            $this->response['redirect_url'] = $appResponse->url;
-            $this->response['reason'] = $appResponse['message'] ?? 'Not available';
-            $this->response['post_time'];
+            $this->response['redirect_url'] = $appResponse['URL'];
+            $this->response['reason'] = $appResponse['MESSAGE'] ?? 'Not available';
+            $this->response['post_time'] ?? '0.00';
 
 
         } else {
-            $this->response['accept'] = 'DECLINED';
+            $this->response['accept'] = 'REJECTED';
             $this->response['post_status'] = '0';
-            $this->response['post_price'] = '0';
-            $this->response['post_time'];
-            $this->response['reason'] = $appResponse['message']  ?? 'Not available';;
+            $this->response['post_price'] = '0.00';
+            $this->response['post_time'] ?? '0.00';
+            $this->response['reason'] = $appResponse['MESSAGE']  ?? 'Not available';;
 
         }
-        //print_r($this->response);exit;
         return $this->response;
     }
 }

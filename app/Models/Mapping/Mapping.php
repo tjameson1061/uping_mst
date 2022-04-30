@@ -96,15 +96,15 @@ class Mapping extends Model
      */
     public static function GetBuyer($search, $post)
     {
+
         $search = (array)$search;
 
-
-        $vendor = Partner::where('vendor_id', '=', $post->vid)->first();
-        $post->vendor_id = $vendor->id;
-
+        $vendor = Partner::where('vendor_id', '=', $post['vid'])->first();
+        $post['vendor_id'] = $vendor->id;
 
 
-        $search['vid'] = $post->vendor_id;
+
+        $search['vid'] = $post['vendor_id'];
 
         $query = DB::table('mappings')
             ->select(
@@ -162,7 +162,7 @@ class Mapping extends Model
         }
 
         $buyers = $buyers->get();
-//        dd($buyers);
+
         if ($buyers->isEmpty()) {
             echo json_encode(['error' => 'Tier Not Found']);
             die();

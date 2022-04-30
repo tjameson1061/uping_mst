@@ -59,25 +59,25 @@ class BuyerFilterUS extends Model
     /**
      * Date Filters
      *
-     * @param $lead
+     * @param $post
      * @return USLead|mixed
      */
-    public static function dateFilters($lead)
+    public static function dateFilters($post)
     {
-        $post = (new DateOfBirth)->applyFilters($lead);
+        $post = (new DateOfBirth)->applyFilters($post);
 //        $post = (new DateOfBirthMonth)->applyFilters($post);
 //        $post = (new DateOfBirthYear)->applyFilters($post);
 //        $post = (new NextPayDateDay)->applyFilters($lead);
 //        $post = (new FollowingPayDateDay)->applyFilters($post);
 
 
-        return $lead;
+        return $post;
     }
 
     /**
      * Numeric Filters
      *
-     * @param $lead
+     * @param $post
      * @return USLead|mixed
      */
     public static function numericFilters($post)
@@ -138,7 +138,7 @@ class BuyerFilterUS extends Model
      * This function sends the lead through the buyer filters
      * and returns filtered $post.
      *
-     * @param $post
+     * @param $lead
      * @return mixed
      */
     public static function allBuyerFilters($lead)
@@ -151,7 +151,6 @@ class BuyerFilterUS extends Model
         }
 
         /*** All Filters ***/
-
         $lead = BuyerFilterUS::numericFilters($lead);
         $lead = BuyerFilterUS::multiChoiceFilters($lead);
         $lead = BuyerFilterUS::dateFilters($lead);
@@ -334,7 +333,6 @@ class BuyerFilterUS extends Model
     static function getBuyerTierIds($buyer_list)
     {
         foreach ($buyer_list as $buyer) {
-//            dd($buyer_list);
             if ($buyer->buyername == 'testmodeus') {
                 $buyerTierID[] = 2;
 

@@ -47,7 +47,6 @@ class Partner extends Model
      */
     public static function GetPartnerFullDetail($id, $leadtype)
     {
-//        dd($id);
 
         $status_inactive = DB::table('partners',)
             ->select('partners.*', 'lms_partner_leadtype.*', 'partners.status AS PStatus')
@@ -60,7 +59,6 @@ class Partner extends Model
             ->where('partners.vendor_id', $id)
             ->where('lms_partner_leadtype.lead_type', '=', $leadtype)
             ->get();
-//        dd($status_inactive);
 
         $status_active = DB::table('partners',)
             ->select('partners.*', 'lms_partner_leadtype.*', 'partners.status AS PStatus')
@@ -73,7 +71,6 @@ class Partner extends Model
             ->where('partners.vendor_id', $id)
             ->where('lms_partner_leadtype.lead_type', '=', $leadtype)
             ->get();
-//        dd($status_active);
 
         $status_inactive = json_decode(json_encode($status_inactive), true);
 
@@ -93,7 +90,8 @@ class Partner extends Model
             die();
         }
 
-        return $status_active->first();
+        $status_active = (array)$status_active->first();
+        return $status_active;
     }
 
     /**
@@ -287,15 +285,13 @@ class Partner extends Model
     public static function AddLeadType($data)
     {
         if (isset($data['id']) && !empty($data['id'])) {
-            $res = DB::table('lms_partner_leadtype')
+            $response = DB::table('lms_partner_leadtype')
                 ->where('id', $data['id']);
 
-            $res->update($data);
+            $response->update($data);
             Log::debug('Threshold:: updated successfully');
 
-            $response = $res->get()->first();
-
-            return $response;
+            return $response->get()->first();
         }
 
 

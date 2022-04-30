@@ -273,31 +273,6 @@ class BuyerFilter extends Model
     }
 
     /**
-     * This function gets the tier index of failed buyer filters
-     * and flips/pushes them to an array.
-     *
-     * @param $buyerTierID
-     * @param $filteredTierID
-     * @return int[]|string[]
-     */
-    public
-    static function getTierIndex($buyerTierID, $filteredTierID)
-    {
-//        foreach ($buyerTierID as $k => $v) {
-        dd($filteredTierID);
-//            foreach ($filteredTierID as $key => $val) {
-//
-//                $result = array_intersect($buyerTierID, $filteredTierID);
-////                dd($result);
-//                $tierIndex = array_flip($result);
-////                dd($tierIndex);
-//
-//                return $tierIndex;
-//            }
-    }
-//    }
-
-    /**
      * This function removes the buyer from the list who's
      * filter failed, where it returned null or false.
      *
@@ -310,8 +285,9 @@ class BuyerFilter extends Model
     {
         $buyer_list = $post->buyer_list;
 
+
         foreach ($buyer_list as $key => $index) {
-            if (isset($index->id) && $index->buyer_setup_id == $tierIndex) {
+            if (isset($index->id) && $index->id == $tierIndex) {
                 unset($buyer_list[$key]);
                 $post->buyer_list = $buyer_list;
                 return $post;
