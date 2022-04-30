@@ -113,7 +113,7 @@
                   :alt="`${offer.name}-${offer.id}`"
                   fluid
                   class="card-img-top p-3"
-                  :src="require('@/assets/images/offer_logo/loanie.png')"
+                  :src="require('@/assets/images/offer_logo/loanie-logo.png')"
 
               />
             <b-img
