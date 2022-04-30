@@ -2,3 +2,4 @@
 ./vendor
 .env
 database/database.db
+node_modules
