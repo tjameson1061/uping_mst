@@ -31,14 +31,14 @@ use Symfony\Component\Mime\RawMessage;
  */
 class SmtpTransport extends AbstractTransport
 {
-    private bool $started = false;
-    private int $restartThreshold = 100;
-    private int $restartThresholdSleep = 0;
-    private int $restartCounter = 0;
-    private int $pingThreshold = 100;
-    private float $lastMessageTime = 0;
+    private $started = false;
+    private $restartThreshold = 100;
+    private $restartThresholdSleep = 0;
+    private $restartCounter;
+    private $pingThreshold = 100;
+    private $lastMessageTime = 0;
     private $stream;
-    private string $domain = '[127.0.0.1]';
+    private $domain = '[127.0.0.1]';
 
     public function __construct(AbstractStream $stream = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
     {
@@ -62,7 +62,7 @@ class SmtpTransport extends AbstractTransport
      *
      * @return $this
      */
-    public function setRestartThreshold(int $threshold, int $sleep = 0): static
+    public function setRestartThreshold(int $threshold, int $sleep = 0): self
     {
         $this->restartThreshold = $threshold;
         $this->restartThresholdSleep = $sleep;
@@ -85,7 +85,7 @@ class SmtpTransport extends AbstractTransport
      *
      * @return $this
      */
-    public function setPingThreshold(int $seconds): static
+    public function setPingThreshold(int $seconds): self
     {
         $this->pingThreshold = $seconds;
 
@@ -104,7 +104,7 @@ class SmtpTransport extends AbstractTransport
      *
      * @return $this
      */
-    public function setLocalDomain(string $domain): static
+    public function setLocalDomain(string $domain): self
     {
         if ('' !== $domain && '[' !== $domain[0]) {
             if (filter_var($domain, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
@@ -297,15 +297,14 @@ class SmtpTransport extends AbstractTransport
             throw new LogicException('You must set the expected response code.');
         }
 
-        if (!$response) {
-            throw new TransportException(sprintf('Expected response code "%s" but got an empty response.', implode('/', $codes)));
-        }
-
         [$code] = sscanf($response, '%3d');
         $valid = \in_array($code, $codes);
 
-        if (!$valid) {
-            throw new TransportException(sprintf('Expected response code "%s" but got code "%s", with message "%s".', implode('/', $codes), $code, trim($response)), $code);
+        if (!$valid || !$response) {
+            $codeStr = $code ? sprintf('code "%s"', $code) : 'empty code';
+            $responseStr = $response ? sprintf(', with message "%s"', trim($response)) : '';
+
+            throw new TransportException(sprintf('Expected response code "%s" but got ', implode('/', $codes)).$codeStr.$responseStr.'.', $code ?: 0);
         }
     }
 
@@ -342,7 +341,10 @@ class SmtpTransport extends AbstractTransport
         $this->restartCounter = 0;
     }
 
-    public function __sleep(): array
+    /**
+     * @return array
+     */
+    public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }

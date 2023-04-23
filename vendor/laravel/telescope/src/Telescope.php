@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Testing\Fakes\EventFake;
 use Laravel\Telescope\Contracts\EntriesRepository;
 use Laravel\Telescope\Contracts\TerminableRepository;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Throwable;
 
 class Telescope
@@ -146,7 +145,7 @@ class Telescope
             (static::runningApprovedArtisanCommand($app) ||
             static::handlingApprovedRequest($app))
         ) {
-            static::startRecording();
+            static::startRecording($loadMonitoredTags = false);
         }
     }
 
@@ -246,13 +245,24 @@ class Telescope
     /**
      * Start recording entries.
      *
+     * @param  bool  $loadMonitoredTags
      * @return void
      */
-    public static function startRecording()
+    public static function startRecording($loadMonitoredTags = true)
     {
-        app(EntriesRepository::class)->loadMonitoredTags();
+        if ($loadMonitoredTags) {
+            app(EntriesRepository::class)->loadMonitoredTags();
+        }
 
-        static::$shouldRecord = ! cache('telescope:pause-recording');
+        $recordingPaused = false;
+
+        try {
+            $recordingPaused = cache('telescope:pause-recording');
+        } catch (Exception) {
+            //
+        }
+
+        static::$shouldRecord = ! $recordingPaused;
     }
 
     /**
@@ -269,7 +279,7 @@ class Telescope
      * Execute the given callback without recording Telescope entries.
      *
      * @param  callable  $callback
-     * @return void
+     * @return mixed
      */
     public static function withoutRecording($callback)
     {
@@ -278,7 +288,7 @@ class Telescope
         static::$shouldRecord = false;
 
         try {
-            call_user_func($callback);
+            return call_user_func($callback);
         } finally {
             static::$shouldRecord = $shouldRecord;
         }
@@ -307,10 +317,6 @@ class Telescope
             return;
         }
 
-        $entry->type($type)->tags(Arr::collapse(array_map(function ($tagCallback) use ($entry) {
-            return $tagCallback($entry);
-        }, static::$tagUsing)));
-
         try {
             if (Auth::hasResolvedGuards() && Auth::hasUser()) {
                 $entry->user(Auth::user());
@@ -318,6 +324,10 @@ class Telescope
         } catch (Throwable $e) {
             // Do nothing.
         }
+
+        $entry->type($type)->tags(Arr::collapse(array_map(function ($tagCallback) use ($entry) {
+            return $tagCallback($entry);
+        }, static::$tagUsing)));
 
         static::withoutRecording(function () use ($entry) {
             if (collect(static::$filterUsing)->every->__invoke($entry)) {
@@ -562,10 +572,6 @@ class Telescope
      */
     public static function catch($e, $tags = [])
     {
-        if ($e instanceof Throwable && ! $e instanceof Exception) {
-            $e = new FatalThrowableError($e);
-        }
-
         event(new MessageLogged('error', $e->getMessage(), [
             'exception' => $e,
             'telescope' => $tags,

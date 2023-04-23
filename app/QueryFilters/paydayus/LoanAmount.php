@@ -21,11 +21,13 @@ class LoanAmount
     {
         $post = $lead;
 
-        $buyer_list['row'] = $post->buyer_list;
-
         if ($post->istest == true ) {
             return $post;
         }
+
+        $buyer_list['row'] = $post->buyer_list;
+
+
         if($buyer_list['row']->isEmpty()) {
             return $post;
         }

@@ -4,6 +4,16 @@ use Illuminate\Support\Str;
 
 return [
 
+
+
+    // ...
+
+    'basic_auth' => [
+        'username' => env('HORIZON_BASIC_AUTH_USERNAME'),
+        'password' => env('HORIZON_BASIC_AUTH_PASSWORD'),
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Horizon Domain
@@ -70,7 +80,8 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => ['web', 'horizonBasicAuth'],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +180,7 @@ return [
             'connection' => 'redis',
             'queue' => ['default'],
             'balance' => 'auto',
-            'maxProcesses' => 1,
+            'maxProcesses' => 10,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 128,
@@ -190,7 +201,7 @@ return [
 
         'local' => [
             'supervisor-1' => [
-                'maxProcesses' => 3,
+                'maxProcesses' => 10,
             ],
         ],
     ],

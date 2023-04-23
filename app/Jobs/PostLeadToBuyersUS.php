@@ -75,29 +75,24 @@ class PostLeadToBuyersUS implements ShouldQueue
         $post = $this->post;
         $partner_log_id = $this->partner_log->id;
 
-
         $buyer_response = $this->BuyerPost($post);
-        Log::debug('DEBUG RESP::', (array)$buyer_response);
-
 
         $buyer_response['leadid'] = $this->post['uuid'];
+
         if (!is_null($buyer_response) && $buyer_response['leadStatus'] == "1" || $buyer_response['leadStatus'] == "3") {
             // Parse buyer response
             $offer_detail = Offer::get($post['oid']);
 
             if ($buyer_response['leadStatus'] == "1") {
                 $status = 1;
-                $response = $this->buyer_response($buyer_response, $status);
-
             } else {
                 $status = 3;
-                $response = $this->buyer_response($buyer_response, $status);
             }
+            $response = $this->buyer_response($buyer_response, $status);
+            $this->update_accumulator($offer_detail, $response);
 
-            $accumulator = $this->update_accumulator($offer_detail, $response);
         } else {
             $status = 2;
-
             $response = $this->buyer_response($buyer_response, $status);
         }
 
@@ -118,7 +113,7 @@ class PostLeadToBuyersUS implements ShouldQueue
         $post_time = $etime - $startTime;
 
         // Update partner log
-        $partner_log = $this->update_partner_log($partner_log_id, $response, $post_response, $post_time);
+        $this->update_partner_log($partner_log_id, $response, $post_response, $post_time);
 
         // response is ready to return, marking job as completed.
         $this->status_check->resp = $post_response;
@@ -171,16 +166,15 @@ class PostLeadToBuyersUS implements ShouldQueue
      */
     public function BuyerPost($post)
     {
+
         // Get Buyers
         $post = USLead::getBuyers($post);
-
-        // Check for high risk leads
-        $post = $this->quality_score_tracker($post);
+//
+//        // Check for high risk leads
+//        $post = $this->quality_score_tracker($post);
 
         // Buyer Filters
         $post = BuyerFilterUS::allBuyerFilters($post);
-
-
         // Check Pingtree EPLs
 //        $pingtree_tracker_response = $this->GetPingtreeTracker($post);
 //        dd($pingtree_tracker_response);
@@ -211,6 +205,7 @@ class PostLeadToBuyersUS implements ShouldQueue
                     $obj = new $classname($row, $post);
 
                     $lender_response = $obj->returnresponse();
+//                    dd($lender_response);
 
                     Log::debug('Lender Response::', (array)$lender_response);
 

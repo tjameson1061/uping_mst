@@ -8,6 +8,7 @@ export default [
             requiresAuth: true,
         }
     },
+
     {
         path: '/dashboard/admin/us',
         name: 'admin-dashboard-leads-us',

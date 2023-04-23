@@ -844,11 +844,19 @@ export default [
     // TELESCOPE
     {
         path: '/telescope',
-        name: 'apps-telescope',
-        meta: {
-            requiresAuth: true,
-            adminAuth: true
-        }
+        // name: 'apps-telescope',
+        // meta: {
+        //     requiresAuth: true,
+        //     adminAuth: true
+        // }
+    },
+    {
+        path: '/horizon',
+        // name: 'apps-telescope',
+        // meta: {
+        //     requiresAuth: true,
+        //     adminAuth: true
+        // }
     },
     // HORIZON
     // {

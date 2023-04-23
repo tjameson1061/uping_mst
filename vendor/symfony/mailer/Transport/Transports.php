@@ -23,19 +23,19 @@ use Symfony\Component\Mime\RawMessage;
  */
 final class Transports implements TransportInterface
 {
-    /**
-     * @var array<string, TransportInterface>
-     */
-    private array $transports = [];
+    private $transports;
     private $default;
 
     /**
-     * @param iterable<string, TransportInterface> $transports
+     * @param TransportInterface[] $transports
      */
     public function __construct(iterable $transports)
     {
+        $this->transports = [];
         foreach ($transports as $name => $transport) {
-            $this->default ??= $transport;
+            if (null === $this->default) {
+                $this->default = $transport;
+            }
             $this->transports[$name] = $transport;
         }
 
@@ -59,7 +59,13 @@ final class Transports implements TransportInterface
             throw new InvalidArgumentException(sprintf('The "%s" transport does not exist (available transports: "%s").', $transport, implode('", "', array_keys($this->transports))));
         }
 
-        return $this->transports[$transport]->send($message, $envelope);
+        try {
+            return $this->transports[$transport]->send($message, $envelope);
+        } catch (\Throwable $e) {
+            $headers->addTextHeader('X-Transport', $transport);
+
+            throw $e;
+        }
     }
 
     public function __toString(): string

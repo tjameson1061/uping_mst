@@ -77,7 +77,8 @@ return [
 
     'middleware' => [
         'web',
-        Authorize::class,
+//        Authorize::class,
+        'horizonBasicAuth'
     ],
 
     /*
@@ -92,7 +93,7 @@ return [
     */
 
     'only_paths' => [
-        // 'api/*'
+         'api/*'
     ],
 
     'ignore_paths' => [

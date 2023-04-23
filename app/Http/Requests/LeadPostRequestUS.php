@@ -30,7 +30,7 @@ class LeadPostRequestUS extends FormRequest
 //            'tier' => 'required_without_all:minCommissionAmount,maxCommissionAmount',
 //            'tier' => 'required_without_all:minCommissionAmount,maxCommissionAmount',
 
-            'source.ipAddress' => 'required|ip',
+//            'source.ipAddress' => 'required|ip',
             'source.userAgent' => 'required',
             'source.creationUrl' => 'required',
             'source.referringUrl' => 'required',
@@ -42,7 +42,12 @@ class LeadPostRequestUS extends FormRequest
 
             'applicant.nameTitle' => [
                 'required',
-                Rule::in('Mr', 'Miss', 'Mrs', 'Ms'),
+                Rule::in(
+                    1,
+                    2,
+                    3,
+                    4
+                ),
             ],
             'applicant.firstName' => [
                 'required', 'min:2', 'regex:/^[a-zA-Z-\'" ]+$/',
@@ -63,17 +68,19 @@ class LeadPostRequestUS extends FormRequest
             'applicant.workPhoneNumber' => 'required', 'min:10',
             'applicant.maritalStatus' => [
                 Rule::in(
-                    'Single',
-                    'Married',
-                    'LivingTogether',
-                    'Separated',
-                    'Divorced',
-                    'Widowed',
-                    'Other'
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
                 ),
             ],
             'applicant.dependants' => [
                 Rule::in(
+                    0,
                     1,
                     2,
                     3,
@@ -83,10 +90,10 @@ class LeadPostRequestUS extends FormRequest
             'applicant.inMilitary' => [
                 'required',
                 Rule::in(
-                    'None',
-                    'Veteran',
-                    'Reserves',
-                    'ActiveDuty'
+                    1,
+                    2,
+                    3,
+                    4,
                 ),
             ],
             'applicant.drivingLicenseState' => 'required', 'min:2',
@@ -99,12 +106,7 @@ class LeadPostRequestUS extends FormRequest
             'residence.residentialStatus' => [
                 'required',
                 Rule::in(
-                    'HomeOwner',
-                    'PrivateTenant',
-                    'CouncilTenant',
-                    'LivingWithParents',
-                    'LivingWithFriends',
-                    'Other'
+                    1,2,3,4,5,6
                 ),
             ],
             'residence.addressStreet1' => 'required', 'different:houseNumber', 'min:4', 'max:128',
@@ -116,7 +118,7 @@ class LeadPostRequestUS extends FormRequest
             'residence.monthsAtAddress' => [
                 'required',
 //                'min:0', 'max:60',
-                Rule::in(12, 24, 36, 48, 60, 72, 84, 96),
+                Rule::in(0, 12, 24, 36, 48, 60, 72, 84, 96),
             ],
 
 
@@ -126,47 +128,25 @@ class LeadPostRequestUS extends FormRequest
 //            'employer.jobTitle' => 'required_if:','min:1', 'max:128',
             'employer.incomeSource' =>  [
                 'required',
-                Rule::in(
-                    'SelfEmployed',
-                    'EmployedFullTime',
-                    'EmployedPartTime',
-                    'EmployedTemporary',
-                    'Pension',
-                    'DisabilityBenefits',
-                    'Benefits',
-                    'Retired',
-                    'Unemployed',
-                    'Student',
-                    'ArmedForces',
+                Rule::in(1,2,3,4,5,6,7,8,9,10,11,
+
                 ),
             ],
             'employer.incomeCycle' => [
                 'required',
                 Rule::in(
-                    'SpecificDayOfMonth',
-                    'Weekly',
-                    'BiWeekly',
-                    'Fortnightly',
-                    'LastDayMonth',
-                    'LastWorkingDayMonth',
-                    'TwiceMonthly',
-                    'FourWeekly',
-                    'LastFriday',
-                    'LastWednesday',
-                    'LastTuesday',
-                    'LastThursday',
-                    'LastMonday',
+                    1,2,3,4,5,6,7,8,9,10,11,12,13,14
                 ),
             ],
             'employer.monthlyIncome' => 'required', 'gte:100', 'lte:15000',
             'employer.monthsAtEmployer' => [
                 'required',
-                Rule::in(12, 24, 36, 48, 60, 72, 84, 96),
+                Rule::in(0, 12, 24, 36, 48, 60, 72, 84, 96),
 
             ],
             'employer.incomePaymentType' => [
                 'required',
-                Rule::in('Cheque', 'Cash', 'RegionalDirectDeposit', 'NonRegionalDirectDeposit'),
+                Rule::in(1,2,3,4),
             ],
             'employer.nextPayDateDay' => 'required', 'min:2', 'max:2', 'size:2',
             'employer.nextPayDateMonth' => 'required', 'min:2', 'max:2', 'size:2',
@@ -180,7 +160,7 @@ class LeadPostRequestUS extends FormRequest
             'bank.bankName' => 'required', 'min:2', 'max:64',
             'bank.bankAccountType' => [
                     'required',
-                    Rule::in('Checking', 'Savings'),
+                    Rule::in(5,6),
         ],
 
             'bank.bankAccountNumber' => 'required', 'min:4', 'max:30',
@@ -194,7 +174,7 @@ class LeadPostRequestUS extends FormRequest
 //
 
             'consent.consentFinancial' => 'required|boolean',
-            'consent.consentThirdPartyEmails' => 'required|boolean',
+            'consent.consentToMarketingEmails' => 'required|boolean',
 
 //            'combinedMonthlyHouseholdIncome' => 'requiredIf:maritalStatus, Married', 'required', '' [21]
         ];

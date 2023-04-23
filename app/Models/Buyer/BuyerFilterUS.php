@@ -143,6 +143,7 @@ class BuyerFilterUS extends Model
      */
     public static function allBuyerFilters($lead)
     {
+
         $lead = (object)$lead;
 
 
